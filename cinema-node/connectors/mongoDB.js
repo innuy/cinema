@@ -1,6 +1,18 @@
 var mongoose = require('mongoose');
 
-module.exports.connectMongo = function() {
+module.exports.isConnected =function () {
+    const db = mongoose.connection;
+    var state = db.readyState;
+    if (state === 0)
+        return 'disconnected';
+    else if (state === 1)
+        return 'connected';
+    else if (state === 2)
+        return 'connecting';
+    else if (state === 3)
+        return 'disconnecting';
+};
+
 
 module.exports.connectMongo = () => (
     new Promise((resolve, reject) => {
