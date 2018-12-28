@@ -1,0 +1,17 @@
+.filmElementContainer{
+
+}
+
+.filmElementDelete{
+    width: 10%;
+    margin-left: 83%;
+    margin-top: 2%;
+}
+
+.filmElementMainText{
+    font-size: 14px;
+}
+
+.filmElementSecondaryText{
+    font-size: 10px;
+}
