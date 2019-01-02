@@ -21,5 +21,9 @@ module.exports = router => {
         handlers.getById,
     );
 
+    router.put('/movies/:id',
+        handlers.putById,
+    );
+
     return router;
 };

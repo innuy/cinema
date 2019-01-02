@@ -7,12 +7,20 @@ let app;
 
 const Movie = require("../../../db/models/movies");
 
-const testingMovieData = {
+const testingMovieData2 = {
     name: "Toy Story",
     image: "image link",
     duration: "1h10m",
-    actors: "Buzz",
+    actors: ["Buzz"],
     summary: "Great movie"
+};
+
+const testingMovieData = {
+    name: "Hercules",
+    image: "image link",
+    duration: "1h20m",
+    actors: ["Hercules", "Megara", "Zeus"],
+    summary: "Awesome movie"
 };
 
 async function moviePostTest() {

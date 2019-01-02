@@ -17,3 +17,18 @@ module.exports.getById = (req, res) => {
     Movie.find(details)
         .then(movie => res.send(movie))
 };
+
+module.exports.putById = (req, res) => {
+    const id = req.params.id;
+    const details = { '_id': new ObjectID(id) };
+
+    Movie.findOneAndUpdate(
+        details,
+        { $set: req.body},
+        { new: true },
+    )
+        .then(movie => {
+            res.send(movie);
+        })
+        .catch(err => res.send(err))
+};

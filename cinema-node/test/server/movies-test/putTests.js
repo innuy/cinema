@@ -1,13 +1,18 @@
 const sinon = require('sinon');
-const expect = require("chai").expect;
+var chai = require('chai');
 const assert = require("chai").assert;
-const should = require("chai").should();
+const expect = chai.expect;
+const assert = chai.assert;
+const should = chai.should();
 const request = require('supertest');
 let app;
 
-const Movie = require("../../db/models/movies");
+const Movie = require("../../../db/models/movies");
+
+const testingMovieIdToSearch = '5c267aa85335a14c175cb0dd';
 
 const testingMovieData = {
+    id: testingMovieIdToSearch,
     name: "Toy Story",
     image: "image link",
     duration: "1h10m",
@@ -15,41 +20,44 @@ const testingMovieData = {
     summary: "Great movie"
 };
 
-var testingMovieIdToSearch='5c267aa85335a14c175cb0dd';
+const testingUpdateMovieData = {
+    _id: testingMovieIdToSearch,
+    name: "Toy Story",
+    image: "image link",
+    duration: "2h10m",
+    actors: ["Buzz", "Woody", "Andy"],
+    summary: "Best movie ever!!!"
+};
 
-async function movieGetTest() {
+
+async function moviePutTest() {
     await request(app)
-        .get('/movies')
-        .send(testingMovieData)
+        .put('/movies/' + testingMovieIdToSearch)
+        .send(testingUpdateMovieData)
         .then(res => {
-            res.should.be.an('object');
-            res.body.should.be.an('array').that.is.not.empty;
-            console.log('body');
-            console.log(res.body);
-            console.log('name');
-            console.log(res.body[0].name);
-
-            assert.strictEqual(res.status, 200);
-            res.body.forEach( movie => {
-                assert.strictEqual(movie.name, testingMovieData.name)
-            });
-
+            res.body.should.be.an('object');
+            res.status.should.not.equal(404);
+            assert.equal(res.body.name, testingUpdateMovieData.name);
+            assert.equal(res.body.id, testingUpdateMovieData.id);
+            assert.equal(res.body.duration, testingUpdateMovieData.duration);
+            assert.deepEqual(res.body.actors, testingUpdateMovieData.actors);
+            assert.equal(res.body.summary, testingUpdateMovieData.summary);
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 
 describe("Movie Put Test", function() {
     beforeEach(() => {
-        // sinon.stub(Movie, 'create').resolves(testingMovieData);
-        app = require('../../app');
+        sinon.stub(Movie, 'findOneAndUpdate').resolves(testingUpdateMovieData);
+        app = require('../../../app');
     });
 
     afterEach(() => {
-        // Movie.create.restore();
+        Movie.findOneAndUpdate.restore();
     });
 
-    it('Movie Successful Put', movieGetTest);
+    it('Movie Successful Put', moviePutTest);
 });

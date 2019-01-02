@@ -15,7 +15,7 @@ const testingMovieData = {
     summary: "Great movie"
 };
 
-var testingMovieIdToSearch='5c267aa85335a14c175cb0dd';
+const testingMovieIdToSearch = '5c267aa85335a14c175cb0dd';
 
 async function movieGetTest() {
     await request(app)
