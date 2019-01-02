@@ -23,8 +23,7 @@ async function movieGetTest() {
         .send(testingMovieData)
         .then(res => {
             res.should.be.an('object');
-            res.body.should.be.an('array');
-            res.body.should.be//not empty array
+            res.body.should.be.an('array').that.is.not.empty;
             console.log('body');
             console.log(res.body);
             console.log('name');
@@ -41,30 +40,8 @@ async function movieGetTest() {
         })
 }
 
-async function movieGetTestbyId() {
-    await request(app)
-        .get('/movies/'+testingMovieIdToSearch)
-        .send(testingMovieData)
-        .then(res => {
-            res.should.be.an('object');
 
-            console.log('Movie id requested');
-            console.log(testingMovieIdToSearch);
-            console.log('Movie id received');
-            console.log(res.body[0]._id);
-
-            assert.strictEqual(res.status, 200);
-            res.body.forEach( movie => {
-                assert.strictEqual(movie._id, testingMovieIdToSearch)
-            });
-
-        })
-        .catch(err => {
-            console.log(err);
-        })
-}
-
-describe("Mongo-Mongoose connection test", function() {
+describe("Movie Put Test", function() {
     beforeEach(() => {
         // sinon.stub(Movie, 'create').resolves(testingMovieData);
         app = require('../../app');
@@ -74,6 +51,5 @@ describe("Mongo-Mongoose connection test", function() {
         // Movie.create.restore();
     });
 
-    it('Movie Successful Get', movieGetTest);
-    it('Movie Successful Get  by Id', movieGetTestbyId);
+    it('Movie Successful Put', movieGetTest);
 });

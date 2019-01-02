@@ -10,7 +10,7 @@ describe("Mongo-Mongoose connection test", function() {
         require('dotenv').config();
         await db.connectMongo()
             .then(() => {
-                console.log(db.isConnected())
+                console.log(db.isConnected());
                 const movie = new Movie();
                 movie.name = 'a';
                 movie.save();
