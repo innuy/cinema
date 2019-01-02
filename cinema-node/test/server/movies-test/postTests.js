@@ -5,7 +5,7 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
-const Movie = require("../../db/models/movies");
+const Movie = require("../../../db/models/movies");
 
 const testingMovieData = {
     name: "Toy Story",
@@ -20,8 +20,6 @@ async function moviePostTest() {
         .post('/movies')
         .send(testingMovieData)
         .then(res => {
-            console.log("Succesfuly created " + testingMovieData.name);
-            console.log(res.text);
             res.should.be.an('object');
             assert.strictEqual(res.status, 200);
             assert.strictEqual(res.text, "Succesfuly created " + testingMovieData.name);
@@ -34,7 +32,10 @@ async function moviePostTest() {
 describe("Movie Post Test", function() {
     beforeEach(() => {
         sinon.stub(Movie, 'create').resolves(testingMovieData);
-        app = require('../../app');
+        sinon
+            .stub(Movie.prototype, 'save')
+            .resolves(() => testingMovieData);
+        app = require('../../../app');
     });
 
     afterEach(() => {
@@ -42,4 +43,6 @@ describe("Movie Post Test", function() {
     });
 
     it('Movie Successful Post', moviePostTest);
+
+
 });

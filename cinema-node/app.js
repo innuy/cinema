@@ -19,9 +19,9 @@ app.use(bodyParser.json());
 
 db.connectMongo().then( () => {
   console.log(db.isConnected());
-    app.listen(port, () => {
-      console.log('We are live on ' + port);
-    });
+  app.listen(port, () => {
+    console.log('We are live on ' + port);
+  });
 });
 
 app.use('/', routes(router));
