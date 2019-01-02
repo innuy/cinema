@@ -5,7 +5,7 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
-const Movie = require("../../db/models/movies");
+const Movie = require("../../../db/models/movies");
 
 const testingMovieData = {
     name: "Toy Story",
@@ -23,12 +23,7 @@ async function movieGetTest() {
         .send(testingMovieData)
         .then(res => {
             res.should.be.an('object');
-            res.body.should.be.an('array').that.is.not.empty;
-            console.log('body');
-            console.log(res.body);
-            console.log('name');
-            console.log(res.body[0].name);
-
+            res.body.should.be.an('array');
             assert.strictEqual(res.status, 200);
             res.body.forEach( movie => {
                 assert.strictEqual(movie.name, testingMovieData.name)
@@ -46,16 +41,8 @@ async function movieGetTestbyId() {
         .send(testingMovieData)
         .then(res => {
             res.should.be.an('object');
-
-            console.log('Movie id requested');
-            console.log(testingMovieIdToSearch);
-            console.log('Movie id received');
-            console.log(res.body[0]._id);
-
             assert.strictEqual(res.status, 200);
-            res.body.forEach( movie => {
-                assert.strictEqual(movie._id, testingMovieIdToSearch)
-            });
+            assert.strictEqual(res.body._id, testingMovieIdToSearch)
 
         })
         .catch(err => {
@@ -64,6 +51,9 @@ async function movieGetTestbyId() {
 }
 
 describe("Movie Get Test", function() {
+    beforeEach(() => {
+        app = require('../../../app');
+    });
 
     afterEach(() => {
         Movie.find.restore();
@@ -71,12 +61,10 @@ describe("Movie Get Test", function() {
 
     it('Movie Successful Get', () => {
         sinon.stub(Movie, 'find').resolves([testingMovieData]);
-        app = require('../../app');
         movieGetTest;
     });
     it('Movie Successful Get  by Id', () => {
         sinon.stub(Movie, 'find').resolves(testingMovieData);
-        app = require('../../app');
         movieGetTestbyId;
     });
 });
