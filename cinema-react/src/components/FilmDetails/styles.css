@@ -1,0 +1,14 @@
+.filmDetailsContainer{
+    width: 30%;
+    margin-left: 35%;
+    margin-top: 20px;
+}
+
+.filmInput{
+    width: 100%;
+}
+
+.filmDetailsSeparator{
+    height: 15px;
+    width: 100%;
+}

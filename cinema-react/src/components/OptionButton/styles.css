@@ -1,6 +1,13 @@
 .optionButtonContainer{
+    width: 100%;
+    text-align: center;
+}
+
+.optionButtonInner{
     border-style: solid;
     border-color: black;
-    border-radius: 20%;
+    border-radius: 15%;
     border-width: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
 }

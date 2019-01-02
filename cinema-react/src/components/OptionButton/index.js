@@ -12,9 +12,11 @@ class OptionButton extends Component {
     render() {
 
         return (
-            <button className="optionButtonContainer" onClick={this.props.onClick}>
-                {this.props.text}
-            </button>
+            <div className="optionButtonContainer">
+                <button className="optionButtonInner" onClick={this.props.onClick}>
+                    {this.props.text}
+                </button>
+            </div>
         );
     }
 }
