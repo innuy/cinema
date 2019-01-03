@@ -27,8 +27,27 @@ module.exports.putById = (req, res) => {
         { $set: req.body},
         { new: true },
     )
-        .then(movie => {
-            res.send(movie);
+    .then(movie => res.send(movie))
+    .catch(err => res.send(err))
+};
+
+module.exports.deleteById = (req, res) => {
+    const id = req.params.id;
+    const details = { '_id': new ObjectID(id) };
+    Movie.find(details)
+        .then(movies =>{
+            if (movies.length >0){
+                Movie.findOneAndDelete(details)
+                    .then(movie => {
+                        res.status(204);
+                        res.send({});
+                    })
+                    .catch(err => res.send(err))
+            }
+            else{
+                res.status(404);
+                res.send({});
+            }
         })
         .catch(err => res.send(err))
 };

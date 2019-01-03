@@ -25,5 +25,9 @@ module.exports = router => {
         handlers.putById,
     );
 
+    router.delete('/movies/:id',
+        handlers.deleteById,
+    );
+
     return router;
 };
