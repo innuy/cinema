@@ -16,7 +16,7 @@ class FilmElement extends Component {
 
         return (
             <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 filmElementContainer">
-                <img className="filmElementDelete" src={cross} onClick={this.props.deleteFilm(this.props.id)}/>
+                {this.props.isAdmin ? <img className="filmElementDelete" src={cross} onClick={this.props.deleteFilm(this.props.id)}/> : null}
                 <div className="filmElementMainText">{this.props.film.name}</div>
                 <div className="filmElementSecondaryText">{this.props.film.genre}</div>
                 <div className="filmElementSecondaryText">DURATION: {this.props.film.duration} hs</div>
@@ -31,6 +31,7 @@ class FilmElement extends Component {
 FilmElement.propTypes = {
     film: PropTypes.object.isRequired,
     deleteFilm: PropTypes.func.isRequired,
+    isAdmin: PropTypes.bool.isRequired
 };
 
 

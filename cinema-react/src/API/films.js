@@ -12,9 +12,27 @@ export function getFilms(callback){
     });
 }
 
-export function addFilm(callback){
+export function addFilm(film, callback){
 
-    axios.post(urls.films)
+    axios.put(urls.films, {film})
+        .then((response) => {
+            callback(true);
+        }).catch((error) => {
+        callback(false, "There was an error with the connection");
+    });
+}
+
+export function editFilm(film, callback){
+    axios.post(urls.films, {film})
+        .then((response) => {
+            callback(true);
+        }).catch((error) => {
+        callback(false, "There was an error with the connection");
+    });
+}
+
+export function deleteFilm(id, callback){
+    axios.delete(urls.films, {params: {id}})
         .then((response) => {
             callback(true);
         }).catch((error) => {

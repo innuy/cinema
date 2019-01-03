@@ -6,7 +6,8 @@ import {getFilms, addFilm} from "../../API/films";
 class FilmContainer extends Component {
 
     state = {
-      films: [{},{},{}],
+        films: [{},{},{}],
+        isAdmin: false,
     };
 
     constructor(props){
@@ -38,7 +39,7 @@ class FilmContainer extends Component {
 
     render() {
         return (
-            <FilmView films={this.state.films} addFilm={this.addFilm} deleteFilm={this.deleteFilm}/>
+            <FilmView films={this.state.films} addFilm={this.addFilm} deleteFilm={this.deleteFilm} isAdming={this.state.isAdmin}/>
         );
     }
 }

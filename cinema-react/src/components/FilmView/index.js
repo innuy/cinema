@@ -19,7 +19,7 @@ class FilmView extends Component {
         const result = [];
 
         for(let i = 0; i < this.props.films.length; i++){
-            result.push(<FilmElement key={"movie_"+i} film={this.props.films[i]} deleteFilm={this.props.deleteFilm}/>);
+            result.push(<FilmElement key={"movie_"+i} film={this.props.films[i]} deleteFilm={this.props.deleteFilm} isAdmin={this.props.isAdmin}/>);
         }
 
         return result
@@ -36,9 +36,9 @@ class FilmView extends Component {
                 <div className="row filmViewContainer justify-content-center">
                     {this.renderFilms()}
                 </div>
-                <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">
+                {this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">
                     <OptionButton onClick={this.handleAddFilm} text={"Add Film"}/>
-                </div>
+                </div> : null}
             </div>
         );
     }
@@ -48,6 +48,7 @@ FilmView.propTypes = {
     films: PropTypes.array.isRequired,
     addFilm: PropTypes.func.isRequired,
     deleteFilm: PropTypes.func.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
 };
 
 export default FilmView;

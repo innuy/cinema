@@ -33,36 +33,46 @@ class FilmDetails extends Component {
             <div className="filmDetailsContainer">
                 <div className="filmDetailsTitle">Title:</div>
                 <input className="filmInput" value={this.state.film.title} onChange={(event) => {
+                    const film = this.state.film;
+                    film.title = event.target.value;
                     this.setState({
-                       title: event.target.value
+                       film
                     });
                 }}/>
                 <div className="filmDetailsSeparator"/>
                 <div className="filmDetailsTitle">Genre:</div>
                 <input className="filmInput" value={this.state.film.genre} onChange={(event) => {
+                    const film = this.state.film;
+                    film.genre = event.target.value;
                     this.setState({
-                        genre: event.target.value
+                        film
                     });
                 }}/>
                 <div className="filmDetailsSeparator"/>
                 <div className="filmDetailsTitle">Director:</div>
                 <input className="filmInput" value={this.state.film.director} onChange={(event) => {
+                    const film = this.state.film;
+                    film.director = event.target.value;
                     this.setState({
-                        director: event.target.value
+                        film
                     });
                 }}/>
                 <div className="filmDetailsSeparator"/>
                 <div className="filmDetailsTitle">Cast:</div>
                 <input className="filmInput" value={this.state.film.cast} onChange={(event) => {
+                    const film = this.state.film;
+                    film.cast = event.target.value;
                     this.setState({
-                        cast: event.target.value
+                        film
                     });
                 }}/>
                 <div className="filmDetailsSeparator"/>
                 <div className="filmDetailsTitle">Duration:</div>
                 <input className="filmInput" value={this.state.film.duration} onChange={(event) => {
+                    const film = this.state.film;
+                    film.duration = event.target.value;
                     this.setState({
-                        duration: event.target.value
+                        film
                     });
                 }}/>
                 <div className="filmDetailsSeparator"/>
