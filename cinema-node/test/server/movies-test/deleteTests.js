@@ -9,21 +9,24 @@ const Movie = require("../../../db/models/movies");
 
 const testingMovieIdToDelete = '5c2e105c8509f424122c4067';
 
+const testingMovieWrongIdToDelete = '000000000000000000000001';
+
 const movieGetTest = require('./getTests');
 
 const testingMovieData = {
     name: "Toy Story",
     image: "image link",
     duration: "1h10m",
-    actors: "Buzz",
-    summary: "Great movie"
+    actors: ["Buzz"],
+    summary: "Great movie",
+    director: "John Lasseter"
 };
 
 async function movieDeleteTestbyId() {
     await request(app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
-        .then((res, resolve) => {
+        .then((res) => {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.equal(res.status, 204);
@@ -34,11 +37,24 @@ async function movieDeleteTestbyId() {
         })
 }
 
+async function movieWrongIdDeleteTest() {
+    await request(app)
+        .del('/movies/' + testingMovieWrongIdToDelete)
+        .send()
+        .then((res) => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.equal(res.status, 404);
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
 describe("Movie Delete by id test", async function () {
     beforeEach(() => {
         app = require('../../../app');
-        sinon.stub(Movie, 'find').resolves([testingMovieData]);
-        sinon.stub(Movie, 'findOneAndDelete').resolves();
     });
 
     afterEach(() => {
@@ -46,5 +62,14 @@ describe("Movie Delete by id test", async function () {
         Movie.findOneAndDelete.restore();
     });
 
-    it('Successful', movieDeleteTestbyId);
+    it('Successful - Delete movie', () => {
+        sinon.stub(Movie, 'find').resolves([testingMovieData]);
+        sinon.stub(Movie, 'findOneAndDelete').resolves();
+        movieDeleteTestbyId;
+    });
+    it('Failed - Wrong id', () => {
+        sinon.stub(Movie, 'find').resolves(null);
+        sinon.stub(Movie, 'findOneAndDelete').resolves(null);
+        movieWrongIdDeleteTest;
+    });
 });

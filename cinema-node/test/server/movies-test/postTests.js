@@ -12,7 +12,8 @@ const testingMovieData2 = {
     image: "image link",
     duration: "1h10m",
     actors: ["Buzz"],
-    summary: "Great movie"
+    summary: "Great movie",
+    director: "John Lasseter"
 };
 
 const testingMovieData = {
@@ -20,7 +21,8 @@ const testingMovieData = {
     image: "image link",
     duration: "1h20m",
     actors: ["Hercules", "Megara", "Zeus"],
-    summary: "Awesome movie"
+    summary: "Awesome movie",
+    director: "Brett Ratner"
 };
 
 async function moviePostTest() {
@@ -30,7 +32,30 @@ async function moviePostTest() {
         .then(res => {
             res.should.be.an('object');
             assert.strictEqual(res.status, 200);
-            assert.strictEqual(res.text, "Succesfuly created " + testingMovieData.name);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+async function movieEmptyPostTest() {
+    await request(app)
+        .post('/movies')
+        .send()
+        .then(res => {
+            assert.strictEqual(res.status, 400);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+async function movieWrongNamePostTest() {
+    await request(app)
+        .post('/movies')
+        .send({ name : 1})
+        .then(res => {
+            assert.strictEqual(res.status, 400);
         })
         .catch(err => {
             console.log(err);
@@ -48,9 +73,10 @@ describe("Movie Post Test", function () {
 
     afterEach(() => {
         Movie.create.restore();
+        Movie.prototype.save.restore();
     });
 
-    it('Movie Successful Post', moviePostTest);
-
-
+    it('Successful - Create movie', moviePostTest);
+    it('Failed - Empty request', movieEmptyPostTest);
+    it('Failed - Request with wrong name ', movieWrongNamePostTest);
 });
