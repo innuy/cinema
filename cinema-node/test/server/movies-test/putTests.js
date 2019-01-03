@@ -1,6 +1,6 @@
 const sinon = require('sinon');
 var chai = require('chai');
-const assert = require("chai").assert;
+chai.use(require('chai-string'));
 const expect = chai.expect;
 const assert = chai.assert;
 const should = chai.should();
@@ -49,7 +49,7 @@ async function moviePutTest() {
 }
 
 
-describe("Movie Put Test", function() {
+describe("Movie Put Test", function () {
     beforeEach(() => {
         sinon.stub(Movie, 'findOneAndUpdate').resolves(testingUpdateMovieData);
         app = require('../../../app');

@@ -25,7 +25,7 @@ async function movieGetTest() {
             res.should.be.an('object');
             res.body.should.be.an('array');
             assert.strictEqual(res.status, 200);
-            res.body.forEach( movie => {
+            res.body.forEach(movie => {
                 assert.strictEqual(movie.name, testingMovieData.name)
             });
 
@@ -37,7 +37,7 @@ async function movieGetTest() {
 
 async function movieGetTestbyId() {
     await request(app)
-        .get('/movies/'+testingMovieIdToSearch)
+        .get('/movies/' + testingMovieIdToSearch)
         .send(testingMovieData)
         .then(res => {
             res.should.be.an('object');
@@ -50,7 +50,7 @@ async function movieGetTestbyId() {
         })
 }
 
-describe("Movie Get Test", function() {
+describe("Movie Get Test", function () {
     beforeEach(() => {
         app = require('../../../app');
     });

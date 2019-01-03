@@ -10,7 +10,6 @@ describe("Mongo-Mongoose connection test", function() {
         require('dotenv').config();
         await db.connectMongo()
             .then(() => {
-                console.log(db.isConnected());
                 const movie = new Movie();
                 movie.name = 'a';
                 movie.save();
@@ -34,7 +33,6 @@ describe("Mongo-Mongoose connection test", function() {
         this.retries(2);
         await Movie.findOne({name: 'a'})
             .then(movie => {
-                console.log(movie.name);
                 expect(movie.name).to.equal('a');
             })
             .catch(err => {

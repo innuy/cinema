@@ -37,7 +37,7 @@ async function moviePostTest() {
         })
 }
 
-describe("Movie Post Test", function() {
+describe("Movie Post Test", function () {
     beforeEach(() => {
         sinon.stub(Movie, 'create').resolves(testingMovieData);
         sinon

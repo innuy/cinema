@@ -23,8 +23,8 @@ async function movieDeleteTestbyId() {
     await request(app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
-        .then((res,resolve) => {
-            setTimeout(()=>{
+        .then((res, resolve) => {
+            setTimeout(() => {
                 res.should.be.an('object');
                 assert.equal(res.status, 204);
             });
@@ -34,7 +34,7 @@ async function movieDeleteTestbyId() {
         })
 }
 
-describe("Movie Delete Test", async function() {
+describe("Movie Delete by id test", async function () {
     beforeEach(() => {
         app = require('../../../app');
         sinon.stub(Movie, 'find').resolves([testingMovieData]);
@@ -46,5 +46,5 @@ describe("Movie Delete Test", async function() {
         Movie.findOneAndDelete.restore();
     });
 
-    it('Movie Successful Delete by Id', movieDeleteTestbyId);
+    it('Successful', movieDeleteTestbyId);
 });
