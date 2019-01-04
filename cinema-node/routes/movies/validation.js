@@ -4,23 +4,23 @@ Joi.objectId = require('joi-objectid')(Joi);
 
 const create = celebrate({
     body:{
-        name: Joi.string().min(6).max(30).required(),
+        name: Joi.string().required(),
         duration: Joi.string().required(),
         image: Joi.string(),
-        director: Joi.string().min(6).max(50).required(),
+        director: Joi.string().required(),
         actors: Joi.array().items(Joi.string()).required(),
-        summary: Joi.string().min(6).max(100).required(),
+        summary: Joi.string().required(),
     }
 });
 
 const get = celebrate({
     query: {
-        name: Joi.string().min(6).max(30),
+        name: Joi.string(),
         duration: Joi.string(),
         image: Joi.string(),
-        director: Joi.string().min(6).max(50),
+        director: Joi.string(),
         actors: Joi.array().items(Joi.string()),
-        summary: Joi.string().min(6).max(100),
+        summary: Joi.string(),
     }
 });
 
@@ -35,12 +35,12 @@ const putById = celebrate({
         id: Joi.objectId(),
     },
     body: {
-        name: Joi.string().min(6).max(30).required(),
+        name: Joi.string().required(),
         duration: Joi.string().required(),
         image: Joi.string(),
-        director: Joi.string().min(6).max(50).required(),
+        director: Joi.string().required(),
         actors: Joi.array().items(Joi.string()).required(),
-        summary: Joi.string().min(6).max(100).required(),
+        summary: Joi.string().required(),
     }
 });
 
