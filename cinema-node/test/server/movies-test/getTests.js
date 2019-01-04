@@ -22,7 +22,7 @@ const testingMovieWrongId = '000000000000000000000001';
 async function getMovieListWithFilters() {
     await request(app)
         .get('/movies')
-        .send(testingMovieFilterData)
+        .query(testingMovieFilterData)
         .then(res => {
             res.should.be.an('object');
             res.body.should.be.an('array');
@@ -40,7 +40,7 @@ async function getMovieListWithFilters() {
 async function getMovieListWithoutFilters() {
     await request(app)
         .get('/movies')
-        .send()
+        .query()
         .then(res => {
             res.should.be.an('object');
             res.body.should.be.an('array');
@@ -58,7 +58,7 @@ async function getMovieListWithoutFilters() {
 async function getMovieListWithWrongFilters() {
     await request(app)
         .get('/movies')
-        .send(testingMovieWrongFilterData)
+        .query(testingMovieWrongFilterData)
         .then(res => {
             res.should.be.an('object');
             res.body.should.be.an('array');
@@ -76,7 +76,7 @@ async function getMovieListWithWrongFilters() {
 async function getMovieById() {
     await request(app)
         .get('/movies/' + testingMovieIdToSearch)
-        .send(testingMovieFilterData)
+        .query()
         .then(res => {
             res.should.be.an('object');
             assert.strictEqual(res.status, 200);
@@ -91,7 +91,7 @@ async function getMovieById() {
 async function getMovieWithWrongId() {
     await request(app)
         .get('/movies/' + testingMovieWrongId)
-        .send(testingMovieFilterData)
+        .query()
         .then(res => {
             res.should.be.an('object');
             assert.strictEqual(res.status, 404);

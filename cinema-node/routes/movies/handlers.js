@@ -10,7 +10,7 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.get = (req, res) => {
-    Movie.find(req.body)
+    Movie.find(req.query)
         .then(movie => res.send(movie))
         .catch(err => errors.databaseError(err))
 };

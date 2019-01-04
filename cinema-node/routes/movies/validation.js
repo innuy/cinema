@@ -14,7 +14,7 @@ const create = celebrate({
 });
 
 const get = celebrate({
-    body:{
+    query: {
         name: Joi.string().min(6).max(30),
         duration: Joi.string(),
         image: Joi.string(),
