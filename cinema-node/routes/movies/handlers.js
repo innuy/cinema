@@ -5,7 +5,7 @@ var ObjectID = require('mongodb').ObjectID;
 
 module.exports.create = (req, res) => {
     Movie.create(req.body)
-        .then(movie => res.send('Succesfuly created ' + movie.name))
+        .then(movie => res.send(movie))
         .catch(err => errors.databaseError(err))
 };
 
