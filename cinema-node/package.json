@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dbTest": "./node_modules/.bin/mocha test/db/**/*.js --reporter spec",
-    "serverTest": "./node_modules/.bin/mocha test/server/**/*.js --reporter spec",
+    "test": "./node_modules/.bin/mocha test/server/**/*.js --reporter spec",
     "dev": "nodemon app.js"
   },
   "dependencies": {
