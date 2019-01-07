@@ -15,3 +15,12 @@ module.exports.auditoriumNotFound = res => {
         "message": "there is no auditorium here"
     });
 };
+
+module.exports.auditoriumChangingSize = res => {
+    res.status(403);
+    res.send({
+        "statusCode": 403,
+        "error": "Not Found",
+        "message": "the auditorium size is locked"//for the time being because of the seat references in the tickets
+    });
+};

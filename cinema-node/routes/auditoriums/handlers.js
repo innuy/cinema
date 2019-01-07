@@ -43,3 +43,45 @@ module.exports.getById = (req, res) => {
         })
         .catch(err => errors.databaseError(err, res))
 };
+
+function auditoriumSizeUpdated(auditorium, req) {
+    return (auditorium.seatRows != req.body.seatRows) ||
+        (auditorium.seatColumns != req.body.seatColumns);
+}
+
+function updateAuditoriumDocument(req, res) {
+    const idFilter = {'_id': new ObjectID(req.params.id)};
+    const setToReturnUpdatedValue = {new: true};
+    const parametersToSet = {$set: req.body};
+    Auditorium.findOneAndUpdate(
+        idFilter,
+        parametersToSet,
+        setToReturnUpdatedValue,
+    )
+        .then(auditorium => {
+            if (thereIsNoAuditorium(auditorium)) {
+                errors.auditoriumNotFound(res);
+            } else {
+                res.send();
+            }
+        })
+        .catch(err => errors.databaseError(err, res))
+}
+
+module.exports.putById = (req, res) => {
+    const idFilter = {'_id': new ObjectID(req.params.id)};
+
+    Auditorium.findOne(idFilter)
+        .then(auditorium => {
+            if (thereIsNoAuditorium(auditorium)) {
+                errors.auditoriumNotFound(res);
+            }
+            else if (auditoriumSizeUpdated(auditorium, req)) {
+                errors.auditoriumChangingSize(res);
+            }
+            else {
+                updateAuditoriumDocument(req, res);
+            }
+        })
+        .catch(err => errors.databaseError(err, res))
+};
