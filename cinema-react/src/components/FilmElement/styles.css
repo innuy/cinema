@@ -10,8 +10,15 @@
 
 .filmElementMainText{
     font-size: 14px;
+    color: var(--subText);
 }
 
 .filmElementSecondaryText{
     font-size: 10px;
+    color: var(--text);
+}
+
+.filmElementImage{
+    width: 70%;
+    margin-left: 15%;
 }

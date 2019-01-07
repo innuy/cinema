@@ -33,6 +33,7 @@ class FilmView extends Component {
 
         return (
             <div>
+                <div className="filmViewTitle">All Films</div>
                 <div className="row filmViewContainer justify-content-center">
                     {this.renderFilms()}
                 </div>

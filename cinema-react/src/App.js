@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import FirstProcess from "./containers/FirstProcess";
 import FilmContainer from "./containers/FilmContainer";
 import FilmDetailsContainer from "./containers/FilmDetailsContainer";
+import AddFilmContainer from "./containers/AddFilmContainer";
 
 import './App.css';
 
@@ -17,6 +18,7 @@ class App extends Component {
                 <Route exact path='/signup' component={null}/>
                 {/*ADMIN SCREENS*/}
                 <Route exact path='/films' component={FilmContainer}/>
+                <Route exact path='/addFilm' component={AddFilmContainer}/>
                 <Route exact path='/film/:id' component={FilmDetailsContainer}/>
                 <Route exact path='/auditoriums' component={null}/>
                 <Route exact path='/presentations' component={null}/>

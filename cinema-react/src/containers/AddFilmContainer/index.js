@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import FilmDetails from "../../components/FilmDetails";
 import NavBar from "../../components/NavBar";
 
-import {editFilm} from "../../API/films";
+import {addFilm} from '../../API/films';
 
-class FilmDetailsContainer extends Component {
+class AddFilmContainer extends Component {
 
     state = {
         id: 0,
@@ -14,7 +14,7 @@ class FilmDetailsContainer extends Component {
     constructor(props){
         super(props);
 
-        this.editFilm = this.editFilm.bind(this);
+        this.addFilm = this.addFilm.bind(this);
     }
 
     componentWillMount() {
@@ -26,10 +26,10 @@ class FilmDetailsContainer extends Component {
         /* TODO: GET FILM BY ID */
     }
 
-    editFilm(newFilm){
-        editFilm(newFilm, () => {
+    addFilm(newFilm){
+        addFilm(newFilm, () => {
             //TODO: NAVIGATE BACK
-        })
+        });
     }
 
 
@@ -37,10 +37,10 @@ class FilmDetailsContainer extends Component {
         return (
             <div>
                 <NavBar isAdmin={true}/>
-                <FilmDetails film={this.state.film} callback={this.editFilm} buttonText={"EDIT"}/>
+                <FilmDetails film={this.state.film} callback={this.addFilm} buttonText={"ADD"}/>
             </div>
         );
     }
 }
 
-export default FilmDetailsContainer;
+export default AddFilmContainer;
