@@ -1,4 +1,3 @@
-
 const handlers = require('./handlers');
 const validation = require('./validation');
 
@@ -15,6 +14,17 @@ module.exports = router => {
         validation.create,
         handlers.create,
     );
+
+    router.get('/auditoriums',
+        validation.get,
+        handlers.get,
+    );
+
+    router.get('/auditoriums/:id',
+        validation.getById,
+        handlers.getById,
+    );
+
 
     return router;
 
