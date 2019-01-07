@@ -1,9 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const movies = require('./movies');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const resourceRoutes = [movies];
 
-module.exports = router;
+module.exports = router => {
+  resourceRoutes.forEach(routes => routes(router));
+  return router;
+};
