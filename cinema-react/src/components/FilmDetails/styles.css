@@ -1,0 +1,38 @@
+.filmDetailsContainer{
+    width: 40%;
+    margin-left: 5%;
+    margin-top: 20px;
+    background-color: var(--background);
+}
+
+.filmDetailsPageTitle{
+    color: var(--headerText);
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.filmDetailsTitleContainer{
+    width: 100%;
+}
+
+.filmDetailsTitle{
+    color: var(--subText);
+    font-weight: bold;
+}
+
+.filmDetailsTitleButton{
+    width: 10%;
+    float: right;
+}
+
+.filmInput{
+    width: 100%;
+    color: var(--text);
+}
+
+.filmDetailsSeparator{
+    height: 15px;
+    width: 100%;
+}

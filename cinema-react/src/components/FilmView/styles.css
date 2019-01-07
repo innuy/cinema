@@ -1,0 +1,12 @@
+.filmViewContainer{
+    flex-direction: row;
+    background-color: var(--secondBackground);
+}
+
+.filmViewTitle{
+    font-weight: bolder;
+    font-size: 20px;
+    color: var(--headerText);
+    width: 100%;
+    text-align: center;
+}
