@@ -85,3 +85,37 @@ module.exports.putById = (req, res) => {
         })
         .catch(err => errors.databaseError(err, res))
 };
+module.exports.deleteById = (req, res) => {
+    const idFilter = {'_id': new ObjectID(req.params.id)};
+    Auditorium.find(idFilter)
+        .then(auditoriums => {
+            if (thereIsNoAuditorium(auditoriums)) {
+                errors.auditoriumNotFound(res);
+            } else {
+                deleteAuditoriumById(idFilter, res);
+            }
+        })
+        .catch(err => errors.databaseError(err, res))
+};
+
+
+function deleteAuditoriumById(idFilter, res) {
+    Seat.deleteMany({auditorium: idFilter._id})
+        .catch(err => errors.databaseError(err, res))
+
+    Auditorium.findOneAndDelete(idFilter)
+        .then(dbresponse => {
+            res.status(204);
+            res.send({});
+        })
+        .catch(err => errors.databaseError(err, res))
+
+}
+
+function thereIsNoAuditorium(movie) {
+    if (Array.isArray(movie))
+        return movie.length === 0;
+    else
+        return movie === null;
+}
+

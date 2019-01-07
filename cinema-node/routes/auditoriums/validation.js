@@ -33,9 +33,16 @@ const putById = celebrate({
     }
 });
 
+const deleteById = celebrate({
+    params: {
+        id: Joi.objectId().required(),
+    }
+});
+
 module.exports = {
     create,
     get,
     getById,
     putById,
+    deleteById,
 };

@@ -7,6 +7,7 @@ const request = require('supertest');
 let app;
 
 const Auditorium = require("../../../db/models/auditoriums");
+const Seat = require("../../../db/models/seats");
 
 const testingAuditoriumIdToSearch = '5c2d020e4b4dee53e9fd3f9b';
 const testingAuditoriumWrongIdToSearch = '000000000000000000000001';
@@ -83,26 +84,31 @@ describe("Auditorium Put Test", function () {
     afterEach(() => {
         Auditorium.findOneAndUpdate.restore();
         Auditorium.findOne.restore();
+        Seat.deleteMany.restore();
     });
 
     it('Successful - Update auditorium',() => {
         sinon.stub(Auditorium, 'findOne').resolves();
         sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumPutTest;
     });
     it('Failed - Incomplete auditorium data',() => {
         sinon.stub(Auditorium, 'findOne').resolves();
         sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumIncompletePutTest;
     });
     it('Failed - Wrong id',() => {
         sinon.stub(Auditorium, 'findOne').resolves(null);
         sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumWrongIdPutTest;
     });
     it('Failed - Db error',() => {
         sinon.stub(Auditorium, 'findOne').throws();
         sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumPutTest;
     });
 });

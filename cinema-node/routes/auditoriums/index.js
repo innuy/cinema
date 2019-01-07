@@ -1,6 +1,5 @@
 const handlers = require('./handlers');
 const validation = require('./validation');
-
 /**
  * Auditorium routes.
  *
@@ -30,6 +29,10 @@ module.exports = router => {
         handlers.putById,
     );
 
+    router.delete('/auditoriums/:id',
+        validation.deleteById,
+        handlers.deleteById,
+    );
 
     return router;
 
