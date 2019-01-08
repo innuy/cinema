@@ -29,6 +29,14 @@ class FilmDetails extends Component {
         imageError: false,
     };
 
+    componentWillMount() {
+        if(this.props.film){
+            this.setState({
+                film: this.props.film
+            });
+        }
+    }
+
     renderCast(){
         const res = [
             <div className="filmDetailsTitleContainer row">
@@ -136,6 +144,7 @@ class FilmDetails extends Component {
 }
 
 FilmDetails.propTypes = {
+    film: PropTypes.object,
     callback: PropTypes.func.isRequired,
     buttonText: PropTypes.string.isRequired,
 };

@@ -1,0 +1,24 @@
+.auditoriumElementContainer{
+
+}
+
+.auditoriumElementDelete{
+    width: 10%;
+    margin-left: 83%;
+    margin-top: 2%;
+}
+
+.auditoriumElementMainText{
+    font-size: 14px;
+    color: var(--subText);
+}
+
+.auditoriumElementSecondaryText{
+    font-size: 10px;
+    color: var(--text);
+}
+
+.auditoriumElementImage{
+    width: 70%;
+    margin-left: 15%;
+}
