@@ -6,13 +6,13 @@ var ObjectID = require('mongodb').ObjectID;
 module.exports.create = (req, res) => {
     Movie.create(req.body)
         .then(movie => res.send(movie))
-        .catch(err => errors.databaseError(err))
+        .catch(err => errors.databaseError(err, res))
 };
 
 module.exports.get = (req, res) => {
     Movie.find(req.query)
         .then(movie => res.send(movie))
-        .catch(err => errors.databaseError(err))
+        .catch(err => errors.databaseError(err, res))
 };
 
 module.exports.getById = (req, res) => {
@@ -27,7 +27,7 @@ module.exports.getById = (req, res) => {
                 res.send(movie);
             }
         })
-        .catch(err => errors.databaseError(err))
+        .catch(err => errors.databaseError(err, res))
 };
 
 module.exports.putById = (req, res) => {
@@ -47,7 +47,7 @@ module.exports.putById = (req, res) => {
                 res.send();
             }
         })
-        .catch(err => errors.databaseError(err))
+        .catch(err => errors.databaseError(err, res))
 };
 
 module.exports.deleteById = (req, res) => {
@@ -60,7 +60,7 @@ module.exports.deleteById = (req, res) => {
                 deleteMovieById(id_filter, res);
             }
         })
-        .catch(err => errors.databaseError(err))
+        .catch(err => errors.databaseError(err, res))
 };
 
 function deleteMovieById(id_filter, res) {
@@ -69,7 +69,7 @@ function deleteMovieById(id_filter, res) {
             res.status(204);
             res.send({});
         })
-        .catch(err => errors.databaseError(err))
+        .catch(err => errors.databaseError(err, res))
 }
 
 function thereIsNoMovie(movie) {

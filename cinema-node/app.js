@@ -2,7 +2,7 @@
 var express = require('express');
 const bodyParser = require('body-parser');
 const {errors} = require('celebrate');
-var cors = require('cors')
+var cors = require('cors');
 
 // Internal modules
 var db = require('./connectors/mongoDB');
