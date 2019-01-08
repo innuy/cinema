@@ -29,5 +29,10 @@ module.exports = router => {
         handlers.putById,
     );
 
+    router.delete('/presentations/:id',
+        validation.deleteById,
+        handlers.deleteById,
+    );
+
     return router;
 };

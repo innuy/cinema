@@ -49,6 +49,28 @@ module.exports.putById = (req, res) => {
         .catch(err => errors.databaseError(err, res))
 };
 
+module.exports.deleteById = (req, res) => {
+    const id_filter = {'_id': new ObjectID(req.params.id)};
+    Presentation.find(id_filter)
+        .then(presentations => {
+            if (thereIsNoPresentation(presentations)) {
+                errors.presentationNotFound(res);
+            } else {
+                deletePresentationById(id_filter, res);
+            }
+        })
+        .catch(err => errors.databaseError(err, res))
+};
+
+function deletePresentationById(id_filter, res) {
+    Presentation.findOneAndDelete(id_filter)
+        .then(presentation => {
+            res.status(204);
+            res.send({});
+        })
+        .catch(err => errors.databaseError(err, res))
+}
+
 function thereIsNoPresentation(presentation) {
     if ( Array.isArray(presentation))
         return presentation.length === 0;
