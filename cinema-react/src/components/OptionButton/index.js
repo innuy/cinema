@@ -5,10 +5,6 @@ import './styles.css';
 
 class OptionButton extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
 
         return (

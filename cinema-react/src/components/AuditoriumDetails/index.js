@@ -19,6 +19,14 @@ class AuditoriumDetails extends Component {
         }
     };
 
+    componentWillMount() {
+        if(this.props.auditorium){
+            this.setState({
+                auditorium: this.props.auditorium,
+            })
+        }
+    }
+
     render() {
         return (
             <div className="auditoriumDetailsContainer">
@@ -64,6 +72,7 @@ class AuditoriumDetails extends Component {
 }
 
 AuditoriumDetails.propTypes = {
+    auditorium: PropTypes.object,
     callback: PropTypes.func.isRequired,
     buttonText: PropTypes.string.isRequired,
 };

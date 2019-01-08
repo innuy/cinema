@@ -8,7 +8,6 @@ class AddFilmContainer extends Component {
 
     state = {
         id: 0,
-        film: {}
     };
 
     constructor(props){
@@ -37,7 +36,7 @@ class AddFilmContainer extends Component {
         return (
             <div>
                 <NavBar isAdmin={true}/>
-                <FilmDetails film={this.state.film} callback={this.addFilm} buttonText={"ADD"}/>
+                <FilmDetails callback={this.addFilm} buttonText={"ADD"}/>
             </div>
         );
     }

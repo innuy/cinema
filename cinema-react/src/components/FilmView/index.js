@@ -47,7 +47,6 @@ class FilmView extends Component {
 
 FilmView.propTypes = {
     films: PropTypes.array.isRequired,
-    addFilm: PropTypes.func.isRequired,
     deleteFilm: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
 };
