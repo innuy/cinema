@@ -14,5 +14,15 @@ module.exports = router => {
         handlers.create,
     );
 
+    router.get('/presentations',
+        validation.get,
+        handlers.get,
+    );
+
+    router.get('/presentations/:id',
+        validation.getById,
+        handlers.getById,
+    );
+
     return router;
 };

@@ -6,3 +6,12 @@ module.exports.databaseError = (err, res) => {
         "message": err
     });
 };
+
+module.exports.presentationNotFound = res => {
+    res.status(404);
+    res.send({
+        "statusCode": 404,
+        "error": "Not Found",
+        "message": "there is no presentation here"
+    });
+};

@@ -11,6 +11,22 @@ const create = celebrate({
     }
 });
 
+const get = celebrate({
+    query: {
+        movie: Joi.objectId(),
+        auditorium: Joi.objectId(),
+        start: Joi.date().iso(),
+        soldTickets: Joi.number(),
+    }
+});
+
+const getById = celebrate({
+    params: {
+        id: Joi.objectId(),
+    }
+});
 module.exports = {
     create,
+    get,
+    getById,
 };
