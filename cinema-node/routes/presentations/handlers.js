@@ -29,6 +29,26 @@ module.exports.getById = (req, res) => {
         .catch(err => errors.databaseError(err, res))
 };
 
+module.exports.putById = (req, res) => {
+    const id_filter = {'_id': new ObjectID(req.params.id)};
+    const setToReturnUpdatedValue = {new: true};
+    const parametersToSet = {$set: req.body};
+
+    Presentation.findOneAndUpdate(
+        id_filter,
+        parametersToSet,
+        setToReturnUpdatedValue,
+    )
+        .then(presentation => {
+            if (thereIsNoPresentation(presentation)) {
+                errors.presentationNotFound(res);
+            } else {
+                res.send();
+            }
+        })
+        .catch(err => errors.databaseError(err, res))
+};
+
 function thereIsNoPresentation(presentation) {
     if ( Array.isArray(presentation))
         return presentation.length === 0;

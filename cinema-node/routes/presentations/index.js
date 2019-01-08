@@ -24,5 +24,10 @@ module.exports = router => {
         handlers.getById,
     );
 
+    router.put('/presentations/:id',
+        validation.putById,
+        handlers.putById,
+    );
+
     return router;
 };

@@ -25,8 +25,22 @@ const getById = celebrate({
         id: Joi.objectId(),
     }
 });
+
+const putById = celebrate({
+    params: {
+        id: Joi.objectId(),
+    },
+    body: {
+        movie: Joi.objectId().required(),
+        auditorium: Joi.objectId().required(),
+        start: Joi.date().iso().required(),
+        soldTickets: Joi.number().required(),
+    }
+});
+
 module.exports = {
     create,
     get,
     getById,
+    putById,
 };
