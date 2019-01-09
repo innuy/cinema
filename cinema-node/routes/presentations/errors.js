@@ -15,3 +15,21 @@ module.exports.presentationNotFound = res => {
         "message": "there is no presentation here"
     });
 };
+
+module.exports.movieNotFound = res => {
+    res.status(412);
+    res.send({
+        "statusCode": 412,
+        "error": "Precondition Failed ",
+        "message": "the movie you try to add a presentation to doesn't exist"
+    });
+};
+
+module.exports.auditoriumNotFound = res => {
+    res.status(412);
+    res.send({
+        "statusCode": 412,
+        "error": "Precondition Failed ",
+        "message": "the auditorium where the presentation is supposed to be doesn't exist"
+    });
+};
