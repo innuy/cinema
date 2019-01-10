@@ -9,10 +9,6 @@ import './styles.css';
 
 class FilmView extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     renderFilms(){
         const result = [];
 
