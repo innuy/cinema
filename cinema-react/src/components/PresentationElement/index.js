@@ -17,6 +17,7 @@ class PresentationElement extends Component {
                 <div className="presentationElementMainText">{this.props.presentation.film}. AUDITORIUM: {this.props.presentation.auditorium}</div>
                 <div className="presentationElementSecondaryText">START TIME: {this.props.presentation.startTime}</div>
                 <div className="presentationElementSecondaryText">TICKETS: {this.props.presentation.tickets}</div>
+                {this.props.isAdmin ? null : <button onClick={this.props.reserveTicket(this.props.id)}>Reserve a Ticket</button>}
             </div>
         );
     }
@@ -24,6 +25,7 @@ class PresentationElement extends Component {
 
 PresentationElement.propTypes = {
     presentation: PropTypes.object.isRequired,
+    reserveTicket: PropTypes.func.isRequired,
     deletePresentation: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
 };

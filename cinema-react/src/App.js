@@ -35,7 +35,7 @@ class App extends Component {
                 <Route exact path='/tickets' component={null}/>
                 {/*USER SCREENS*/}
                 <Route exact path='/reservations' component={null}/>
-
+                <Route exact path='/seePresentations' component={null}/>
             </Switch>
         </div>
     );

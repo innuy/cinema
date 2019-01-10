@@ -13,7 +13,7 @@ class PresentationView extends Component {
         const result = [];
 
         for(let i = 0; i < this.props.presentations.length; i++){
-            result.push(<PresentationElement key={"presentation_"+i} presentation={this.props.presentations[i]} deletePresentation={this.props.deletePresentation} isAdmin={this.props.isAdmin}/>);
+            result.push(<PresentationElement key={"presentation_"+i} presentation={this.props.presentations[i]} reserveTicket={this.props.reserveTicket} deletePresentation={this.props.deletePresentation} isAdmin={this.props.isAdmin}/>);
         }
 
         return result
@@ -38,8 +38,9 @@ class PresentationView extends Component {
 
 PresentationView.propTypes = {
     presentations: PropTypes.array.isRequired,
-    addPresentation: PropTypes.func.isRequired,
-    deletePresentation: PropTypes.func.isRequired,
+    addPresentation: PropTypes.func,
+    reserveTicket: PropTypes.func,
+    deletePresentation: PropTypes.func,
     isAdmin: PropTypes.bool.isRequired,
 };
 
