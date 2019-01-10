@@ -11,8 +11,6 @@ class FilmView extends Component {
 
     constructor(props) {
         super(props);
-
-        this.handleAddFilm = this.handleAddFilm.bind(this);
     }
 
     renderFilms(){
@@ -25,10 +23,6 @@ class FilmView extends Component {
         return result
     }
 
-    handleAddFilm(){
-        //TODO: SHOW DATA MODAL
-    }
-
     render() {
 
         return (
@@ -38,7 +32,7 @@ class FilmView extends Component {
                     {this.renderFilms()}
                 </div>
                 {this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">
-                    <OptionButton onClick={this.handleAddFilm} text={"Add Film"}/>
+                    <OptionButton onClick={this.props.addFilm} text={"Add Film"}/>
                 </div> : null}
             </div>
         );
@@ -47,6 +41,7 @@ class FilmView extends Component {
 
 FilmView.propTypes = {
     films: PropTypes.array.isRequired,
+    addFilm: PropTypes.func.isRequired,
     deleteFilm: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
 };

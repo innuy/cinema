@@ -10,6 +10,9 @@ import './App.css';
 import AuditoriumContainer from "./containers/AuditoriumContainer";
 import AuditoriumDetailsContainer from "./containers/AuditoriumDetailsContainer";
 import AddAuditoriumContainer from "./containers/AddAuditoriumContainer";
+import AddPresentationContainer from "./containers/AddPresentationContainer";
+import PresentationDetailsContainer from "./containers/PresentationDetailsContainer";
+import PresentationContainer from "./containers/PresentationContainer";
 
 class App extends Component {
   render() {
@@ -26,7 +29,9 @@ class App extends Component {
                 <Route exact path='/auditoriums' component={AuditoriumContainer}/>
                 <Route exact path='/addAuditorium' component={AddAuditoriumContainer}/>
                 <Route exact path='/auditorium/id' component={AuditoriumDetailsContainer}/>
-                <Route exact path='/presentations' component={null}/>
+                <Route exact path='/presentations' component={PresentationContainer}/>
+                <Route exact path='/addPresentation' component={AddPresentationContainer}/>
+                <Route exact path='/presentation/id' component={PresentationDetailsContainer}/>
                 <Route exact path='/tickets' component={null}/>
                 {/*USER SCREENS*/}
                 <Route exact path='/reservations' component={null}/>

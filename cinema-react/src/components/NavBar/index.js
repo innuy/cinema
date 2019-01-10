@@ -5,7 +5,7 @@ import './styles.css';
 import NavBarElement from "./NavBarElement";
 import {navigate} from "../../utils/navigation";
 
-const ADMIN_NAV = [createNavItem("Films", "/films"), createNavItem("Auditoriums", "/auditoriums")];
+const ADMIN_NAV = [createNavItem("Films", "/films"), createNavItem("Auditoriums", "/auditoriums"), createNavItem("Presentations", "/presentations")];
 const USER_NAV = [createNavItem("Films", "/films"), createNavItem("Auditoriums", "/auditoriums")];
 
 class NavBar extends Component {

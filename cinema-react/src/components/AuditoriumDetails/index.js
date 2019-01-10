@@ -7,9 +7,6 @@ import './styles.css';
 
 class AuditoriumDetails extends Component {
 
-    constructor(props) {
-        super(props);
-    }
 
     state = {
         auditorium: {
