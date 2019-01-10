@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import AuditoriumDetails from "../../components/AuditoriumDetails";
+import PresentationDetails from "../../components/PresentationDetails";
 import NavBar from "../../components/NavBar";
 
-import {editAuditorium} from "../../API/auditoriums";
+import {editPresentation} from "../../API/presentations";
 import {Route} from "react-router-dom";
 
-class AuditoriumDetailsContainer extends Component {
+class PresentationDetailsContainer extends Component {
 
     history = null;
 
     state = {
         id: 0,
-        auditorium: {}
+        presentation: {}
     };
 
     constructor(props){
         super(props);
 
-        this.editAuditorium = this.editAuditorium.bind(this);
+        this.editPresentation = this.editPresentation.bind(this);
     }
 
     componentWillMount() {
@@ -29,8 +29,8 @@ class AuditoriumDetailsContainer extends Component {
         /* TODO: GET FILM BY ID */
     }
 
-    editAuditorium(newAuditorium){
-        editAuditorium(newAuditorium, () => {
+    editPresentation(newPresentation){
+        editPresentation(newPresentation, () => {
             //TODO: NAVIGATE BACK
         })
     }
@@ -42,10 +42,10 @@ class AuditoriumDetailsContainer extends Component {
                 this.history = history;
                 return (<div>
                             <NavBar isAdmin={true} history={this.history}/>
-                            <AuditoriumDetails auditorium={this.state.auditorium} callback={this.editAuditorium} buttonText={"EDIT"}/>
+                            <PresentationDetails presentation={this.state.presentation} callback={this.editPresentation} buttonText={"EDIT"}/>
                         </div>);}} />
         );
     }
 }
 
-export default AuditoriumDetailsContainer;
+export default PresentationDetailsContainer;

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import FilmDetails from "../../components/FilmDetails";
+import PresentationDetails from "../../components/PresentationDetails";
 import NavBar from "../../components/NavBar";
 
-import {addFilm} from '../../API/films';
+import {addPresentation} from '../../API/presentations';
 import {Route} from "react-router-dom";
 
-class AddFilmContainer extends Component {
+class AddPresentationContainer extends Component {
 
     history = null;
 
@@ -16,7 +16,7 @@ class AddFilmContainer extends Component {
     constructor(props){
         super(props);
 
-        this.addFilm = this.addFilm.bind(this);
+        this.addPresentation = this.addPresentation.bind(this);
     }
 
     componentWillMount() {
@@ -28,8 +28,8 @@ class AddFilmContainer extends Component {
         /* TODO: GET FILM BY ID */
     }
 
-    addFilm(newFilm){
-        addFilm(newFilm, () => {
+    addPresentation(newPresentation){
+        addPresentation(newPresentation, () => {
             //TODO: NAVIGATE BACK
         });
     }
@@ -40,11 +40,11 @@ class AddFilmContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <FilmDetails callback={this.addFilm} buttonText={"ADD"}/>
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <PresentationDetails callback={this.addPresentation} buttonText={"ADD"}/>
+                </div>);}} />
         );
     }
 }
 
-export default AddFilmContainer;
+export default AddPresentationContainer;

@@ -4,13 +4,14 @@ import { Route } from 'react-router-dom';
 import AuditoriumView from "../../components/AuditoriumView";
 import {getAuditoriums, deleteAuditorium} from "../../API/auditoriums";
 import NavBar from "../../components/NavBar";
+import {navigate} from "../../utils/navigation";
 
 
 class AuditoriumContainer extends Component {
 
     state = {
         auditoriums: [{},{},{}],
-        isAdmin: false,
+        isAdmin: true,
     };
 
     history = null;
@@ -20,6 +21,7 @@ class AuditoriumContainer extends Component {
 
         this.deleteAuditorium = this.deleteAuditorium.bind(this);
         this.refreshAuditoriums = this.refreshAuditoriums.bind(this);
+        this.addAuditorium = this.addAuditorium.bind(this);
     }
 
     componentWillMount() {
@@ -33,6 +35,10 @@ class AuditoriumContainer extends Component {
                 auditoriums: data,
             });
         });
+    }
+
+    addAuditorium(){
+        navigate(this.history, 'addAuditorium');
     }
 
     deleteAuditorium(id){
@@ -49,7 +55,7 @@ class AuditoriumContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <AuditoriumView auditoriums={this.state.auditoriums} deleteAuditorium={this.deleteAuditorium} isAdmin={this.state.isAdmin}/>
+                    <AuditoriumView auditoriums={this.state.auditoriums} addAuditorium={this.addAuditorium} deleteAuditorium={this.deleteAuditorium} isAdmin={this.state.isAdmin}/>
                 </div>);
             }} />
         );
