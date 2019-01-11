@@ -1,5 +1,3 @@
-const movieFunctions = require("../movies/handlers");
-const auditoriumFunctions = require("../auditoriums/handlers");
 const errors = require("./errors");
 
 const Auditorium = require('../../db/models/auditoriums');

@@ -64,7 +64,7 @@ const moviePostTest = async () => {
 
         Movie.create(movie)
             .then(movieCreated => console.log('Succesfuly created ' + movieCreated.name))
-            .catch(err => errors.databaseError(err));
+            .catch(err => errors.databaseError(undefined, err));
     });
 };
 

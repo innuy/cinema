@@ -7,19 +7,18 @@ let app;
 
 const Presentation = require("../../../db/models/presentations");
 
+const testingMovieId = '5c2f723b62607929f4c347d3';
+const testingAuditoriumId = '5c34a1ce4150f31a815d41b4';
 const testingPresentationIdToDelete = '5c2e105c8509f424122c4067';
-
 const testingPresentationWrongIdToDelete = '000000000000000000000001';
 
-const presentationGetTest = require('./getTests');
+const date = new Date("August 25, 1825 12:00:00");
 
 const testingPresentationData = {
-    name: "Toy Story",
-    image: "image link",
-    duration: "1h10m",
-    actors: ["Buzz"],
-    summary: "Great presentation",
-    director: "John Lasseter"
+    movie: testingMovieId,
+    auditorium: testingAuditoriumId,
+    start: date.toISOString(),
+    soldTickets: 0,
 };
 
 async function presentationDeleteTestbyId() {

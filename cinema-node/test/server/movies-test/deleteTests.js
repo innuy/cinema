@@ -6,13 +6,8 @@ const request = require('supertest');
 let app;
 
 const Movie = require("../../../db/models/movies");
-
 const testingMovieIdToDelete = '5c2e105c8509f424122c4067';
-
 const testingMovieWrongIdToDelete = '000000000000000000000001';
-
-const movieGetTest = require('./getTests');
-
 const testingMovieData = {
     name: "Toy Story",
     image: "image link",

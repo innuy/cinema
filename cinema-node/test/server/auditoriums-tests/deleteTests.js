@@ -6,13 +6,8 @@ const request = require('supertest');
 let app;
 
 const Auditorium = require("../../../db/models/auditoriums");
-
 const testingAuditoriumIdToDelete = '5c2e105c8509f424122c4067';
-
 const testingAuditoriumWrongIdToDelete = '000000000000000000000001';
-
-const auditoriumGetTest = require('./getTests');
-
 const testingAuditoriumData = {
     number: 2,
     seatRows: 20,

@@ -78,4 +78,3 @@ function thereIsNoMovie(movie) {
     else
         return movie === null;
 }
-
