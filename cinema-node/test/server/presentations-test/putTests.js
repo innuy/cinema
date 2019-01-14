@@ -21,24 +21,20 @@ const testingUpdatePresentationData = {
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingIncompletePresentationData = {
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingUpdatePresentationDataWithMovieWrongInformation = {
     movie: testingPresentationWrongIdToSearch,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingUpdatePresentationDataWithAuditoriumWrongInformation = {
     movie: testingMovieId,
     auditorium: testingPresentationWrongIdToSearch,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 
 const testingMovieData = {
