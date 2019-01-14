@@ -27,18 +27,19 @@ async function getAuditoriumListWithFilters() {
     await request(app)
         .get('/auditoriums')
         .query(testingAuditoriumFilterData)
-        .then(res => {
-            res.should.be.an('object');
-            res.body.should.be.an('array');
-            assert.strictEqual(res.status, 200);
-            res.body.forEach(auditorium => {
-                assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
+        .then((res) => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                res.body.should.be.an('array');
+                assert.strictEqual(res.status, 200);
+                res.body.forEach(auditorium => {
+                    assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
+                });
             });
-
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 async function getAuditoriumsListWithoutFilters() {
@@ -46,17 +47,18 @@ async function getAuditoriumsListWithoutFilters() {
         .get('/auditoriums')
         .query()
         .then(res => {
-            res.should.be.an('object');
-            res.body.should.be.an('array');
-            assert.strictEqual(res.status, 200);
-            res.body.forEach(auditorium => {
-                assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
+            setTimeout(() => {
+                res.should.be.an('object');
+                res.body.should.be.an('array');
+                assert.strictEqual(res.status, 200);
+                res.body.forEach(auditorium => {
+                    assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
+                });
             });
-
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 async function getAuditoriumsListWithWrongFilters() {
@@ -64,17 +66,18 @@ async function getAuditoriumsListWithWrongFilters() {
         .get('/auditoriums')
         .query(testingAuditoriumWrongFilterData)
         .then(res => {
-            res.should.be.an('object');
-            res.body.should.be.an('array');
-            assert.strictEqual(res.status, 200);
-            res.body.forEach(auditorium => {
-                assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
+            setTimeout(() => {
+                res.should.be.an('object');
+                res.body.should.be.an('array');
+                assert.strictEqual(res.status, 200);
+                res.body.forEach(auditorium => {
+                    assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
+                });
             });
-
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 async function getAuditoriumsById() {
@@ -82,14 +85,15 @@ async function getAuditoriumsById() {
         .get('/auditoriums/' + testingAuditoriumIdToSearch)
         .query()
         .then(res => {
-            res.should.be.an('object');
-            assert.strictEqual(res.status, 200);
-            assert.strictEqual(res.body._id, testingAuditoriumIdToSearch)
-
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 200);
+                assert.strictEqual(res.body._id, testingAuditoriumIdToSearch)
+            });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 async function getAuditoriumsWithWrongId() {
@@ -97,12 +101,14 @@ async function getAuditoriumsWithWrongId() {
         .get('/auditoriums/' + testingAuditoriumWrongId)
         .query()
         .then(res => {
-            res.should.be.an('object');
-            assert.strictEqual(res.status, 404);
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 404);
+            });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 describe("Auditoriums Get Test", function () {

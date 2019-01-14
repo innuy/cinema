@@ -30,8 +30,10 @@ async function auditoriumPutTest() {
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {
+            setTimeout(() => {
             res.body.should.be.an('object');
             res.status.should.equal(200);
+            });
         })
         .catch(err => {
             console.log(err);
@@ -43,8 +45,10 @@ async function auditoriumIncompletePutTest() {
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingIncompleteAuditoriumData)
         .then(res => {
+            setTimeout(() => {
             res.body.should.be.an('object');
             res.status.should.equal(400);
+            });
         })
         .catch(err => {
             console.log(err);
@@ -56,8 +60,10 @@ async function auditoriumWrongIdPutTest() {
         .put('/auditoriums/' + testingAuditoriumWrongIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {
+            setTimeout(() => {
             res.body.should.be.an('object');
             res.status.should.equal(404);
+            });
         })
         .catch(err => {
             console.log(err);
@@ -69,8 +75,10 @@ async function auditoriumWrongIdPutTest() {
         .put('/auditoriums/' + testingAuditoriumWrongIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {
+            setTimeout(() => {
             res.body.should.be.an('object');
             res.status.should.equal(404);
+            });
         })
         .catch(err => {
             console.log(err);

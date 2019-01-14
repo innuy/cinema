@@ -22,12 +22,14 @@ async function auditoriumPostTest() {
         .post('/auditoriums')
         .send(auditorium2)
         .then(res => {
-            res.should.be.an('object');
-            assert.strictEqual(res.status, 200);
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 200);
+            });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 async function auditoriumEmptyPostTest() {
@@ -35,23 +37,27 @@ async function auditoriumEmptyPostTest() {
         .post('/auditoriums')
         .send()
         .then(res => {
-            assert.strictEqual(res.status, 400);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 400);
+            })
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 async function auditoriumWrongNumberPostTest() {
     await request(app)
         .post('/auditoriums')
-        .send({ number : "one"})
+        .send({number: "one"})
         .then(res => {
-            assert.strictEqual(res.status, 400);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 400);
+            });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 describe("Auditorium Post Test", function () {

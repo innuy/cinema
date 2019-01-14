@@ -32,12 +32,14 @@ async function moviePostTest() {
         .post('/movies')
         .send(testingMovieData)
         .then(res => {
+            setTimeout(() => {
             res.should.be.an('object');
             assert.strictEqual(res.status, 200);
+            });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 async function movieEmptyPostTest() {
@@ -45,11 +47,13 @@ async function movieEmptyPostTest() {
         .post('/movies')
         .send()
         .then(res => {
+            setTimeout(() => {
             assert.strictEqual(res.status, 400);
+            });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 async function movieWrongNamePostTest() {
@@ -57,11 +61,13 @@ async function movieWrongNamePostTest() {
         .post('/movies')
         .send({ name : 1})
         .then(res => {
+            setTimeout(() => {
             assert.strictEqual(res.status, 400);
+            });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 describe("Movie Post Test", function () {

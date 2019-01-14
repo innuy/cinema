@@ -26,13 +26,14 @@ async function getMovieListWithFilters() {
         .get('/movies')
         .query(testingMovieFilterData)
         .then(res => {
-            res.should.be.an('object');
-            res.body.should.be.an('array');
-            assert.strictEqual(res.status, 200);
-            res.body.forEach(movie => {
-                assert.strictEqual(movie.name, testingMovieFilterData.name)
+            setTimeout(() => {
+                res.should.be.an('object');
+                res.body.should.be.an('array');
+                assert.strictEqual(res.status, 200);
+                res.body.forEach(movie => {
+                    assert.strictEqual(movie.name, testingMovieFilterData.name)
+                });
             });
-
         })
         .catch(err => {
             console.log(err);
@@ -44,13 +45,14 @@ async function getMovieListWithoutFilters() {
         .get('/movies')
         .query()
         .then(res => {
-            res.should.be.an('object');
-            res.body.should.be.an('array');
-            assert.strictEqual(res.status, 200);
-            res.body.forEach(movie => {
-                assert.strictEqual(movie.name, testingMovieFilterData.name)
+            setTimeout(() => {
+                res.should.be.an('object');
+                res.body.should.be.an('array');
+                assert.strictEqual(res.status, 200);
+                res.body.forEach(movie => {
+                    assert.strictEqual(movie.name, testingMovieFilterData.name)
+                });
             });
-
         })
         .catch(err => {
             console.log(err);
@@ -62,13 +64,14 @@ async function getMovieListWithWrongFilters() {
         .get('/movies')
         .query(testingMovieWrongFilterData)
         .then(res => {
-            res.should.be.an('object');
-            res.body.should.be.an('array');
-            assert.strictEqual(res.status, 200);
-            res.body.forEach(movie => {
-                assert.strictEqual(movie.name, testingMovieFilterData.name)
+            setTimeout(() => {
+                res.should.be.an('object');
+                res.body.should.be.an('array');
+                assert.strictEqual(res.status, 200);
+                res.body.forEach(movie => {
+                    assert.strictEqual(movie.name, testingMovieFilterData.name)
+                });
             });
-
         })
         .catch(err => {
             console.log(err);
@@ -80,10 +83,11 @@ async function getMovieById() {
         .get('/movies/' + testingMovieIdToSearch)
         .query()
         .then(res => {
-            res.should.be.an('object');
-            assert.strictEqual(res.status, 200);
-            assert.strictEqual(res.body._id, testingMovieIdToSearch)
-
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 200);
+                assert.strictEqual(res.body._id, testingMovieIdToSearch)
+            });
         })
         .catch(err => {
             console.log(err);
@@ -95,12 +99,14 @@ async function getMovieWithWrongId() {
         .get('/movies/' + testingMovieWrongId)
         .query()
         .then(res => {
-            res.should.be.an('object');
-            assert.strictEqual(res.status, 404);
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 404);
+            });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 describe("Movie Get Test", function () {
