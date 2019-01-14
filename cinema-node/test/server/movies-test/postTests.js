@@ -5,6 +5,8 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Movie = require("../../../db/models/movies");
 
 const testingMovieData2 = {

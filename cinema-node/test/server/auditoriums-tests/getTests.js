@@ -5,6 +5,8 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Auditoriums = require("../../../db/models/auditoriums");
 
 const testingAuditoriumFilterData = {

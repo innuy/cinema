@@ -5,6 +5,8 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Auditorium = require("../../../db/models/auditoriums");
 
 const testingAuditoriumIdToDelete = '5c2e105c8509f424122c4067';

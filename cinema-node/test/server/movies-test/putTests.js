@@ -6,6 +6,8 @@ const should = chai.should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Movie = require("../../../db/models/movies");
 
 const testingMovieIdToSearch = '5c2d020e4b4dee53e9fd3f9b';

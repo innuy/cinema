@@ -6,6 +6,8 @@ const should = chai.should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Auditorium = require("../../../db/models/auditoriums");
 const Seat = require("../../../db/models/seats");
 
