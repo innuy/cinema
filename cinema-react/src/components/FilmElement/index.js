@@ -9,10 +9,6 @@ import './styles.css';
 
 class FilmElement extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     parseCast(cast){
         if(cast && cast.length && cast.length > 0) {
             let res = cast[0];
@@ -33,7 +29,7 @@ class FilmElement extends Component {
 
         return (
             <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 filmElementContainer">
-                {this.props.isAdmin ? <img className="filmElementDelete" src={cross} onClick={this.props.deleteFilm(this.props.id)}/> : null}
+                {this.props.isAdmin ? <img className="filmElementDelete" src={cross} alt="Delete" onClick={this.props.deleteFilm(this.props.id)}/> : null}
                 <div className="filmElementMainText">{this.props.film.name}</div>
                 <img className="filmElementImage" src={this.props.film.image ? this.props.film.image : placeholder} alt={this.props.film.name}/>
                 <div className="filmElementSecondaryText">{this.props.film.summary}</div>

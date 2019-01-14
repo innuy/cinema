@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
 import FilmView from "../../components/FilmView";
-import {getFilms, addFilm} from "../../API/films";
+import {getFilms, deleteFilm} from "../../API/films";
 import NavBar from "../../components/NavBar";
+import {navigate} from "../../utils/navigation";
 
 
 class FilmContainer extends Component {
 
     state = {
         films: [{},{},{}],
-        isAdmin: false,
+        isAdmin: true,
     };
 
     history = null;
@@ -18,13 +19,18 @@ class FilmContainer extends Component {
     constructor(props){
         super(props);
 
-        this.addFilm = this.addFilm.bind(this);
         this.deleteFilm = this.deleteFilm.bind(this);
+        this.refreshFilms = this.refreshFilms.bind(this);
+        this.addFilm = this.addFilm.bind(this);
     }
 
     componentWillMount() {
+        this.refreshFilms();
+    }
+
+    refreshFilms(){
         getFilms((success, data) => {
-            console.log(JSON.stringify(data));
+            /*TODO: HANDLE ERROR*/
             this.setState({
                 films: data,
             });
@@ -32,15 +38,15 @@ class FilmContainer extends Component {
     }
 
     addFilm(){
-        /*
-
-         */
+        navigate(this.history, '/addFilm');
     }
 
     deleteFilm(id){
-        /*
+        deleteFilm(id, (success) => {
+            this.refreshFilms();
 
-         */
+            /* TODO: HANDLE ERROR */
+        })
     }
 
     render() {

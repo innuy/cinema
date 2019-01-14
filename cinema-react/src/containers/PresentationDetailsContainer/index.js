@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
-import FilmDetails from "../../components/FilmDetails";
+import PresentationDetails from "../../components/PresentationDetails";
 import NavBar from "../../components/NavBar";
 
-import {addFilm} from '../../API/films';
+import {editPresentation} from "../../API/presentations";
 import {Route} from "react-router-dom";
 
-class AddFilmContainer extends Component {
+class PresentationDetailsContainer extends Component {
 
     history = null;
 
     state = {
         id: 0,
+        presentation: {}
     };
 
     constructor(props){
         super(props);
 
-        this.addFilm = this.addFilm.bind(this);
+        this.editPresentation = this.editPresentation.bind(this);
     }
 
     componentWillMount() {
@@ -28,10 +29,10 @@ class AddFilmContainer extends Component {
         /* TODO: GET FILM BY ID */
     }
 
-    addFilm(newFilm){
-        addFilm(newFilm, () => {
+    editPresentation(newPresentation){
+        editPresentation(newPresentation, () => {
             //TODO: NAVIGATE BACK
-        });
+        })
     }
 
 
@@ -41,10 +42,10 @@ class AddFilmContainer extends Component {
                 this.history = history;
                 return (<div>
                             <NavBar isAdmin={true} history={this.history}/>
-                            <FilmDetails callback={this.addFilm} buttonText={"ADD"}/>
+                            <PresentationDetails presentation={this.state.presentation} callback={this.editPresentation} buttonText={"EDIT"}/>
                         </div>);}} />
         );
     }
 }
 
-export default AddFilmContainer;
+export default PresentationDetailsContainer;

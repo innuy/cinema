@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import FilmDetails from "../../components/FilmDetails";
+import AuditoriumDetails from "../../components/AuditoriumDetails";
 import NavBar from "../../components/NavBar";
 
-import {addFilm} from '../../API/films';
+import {addAuditorium} from '../../API/auditoriums';
 import {Route} from "react-router-dom";
 
-class AddFilmContainer extends Component {
+class AddAuditoriumContainer extends Component {
 
     history = null;
 
@@ -16,7 +16,7 @@ class AddFilmContainer extends Component {
     constructor(props){
         super(props);
 
-        this.addFilm = this.addFilm.bind(this);
+        this.addAuditorium = this.addAuditorium.bind(this);
     }
 
     componentWillMount() {
@@ -25,11 +25,11 @@ class AddFilmContainer extends Component {
             id: this.props.match.params.id,
         });
 
-        /* TODO: GET FILM BY ID */
+        /* TODO: GET AUDITORIUM BY ID */
     }
 
-    addFilm(newFilm){
-        addFilm(newFilm, () => {
+    addAuditorium(newAuditorium){
+        addAuditorium(newAuditorium, () => {
             //TODO: NAVIGATE BACK
         });
     }
@@ -41,10 +41,10 @@ class AddFilmContainer extends Component {
                 this.history = history;
                 return (<div>
                             <NavBar isAdmin={true} history={this.history}/>
-                            <FilmDetails callback={this.addFilm} buttonText={"ADD"}/>
+                            <AuditoriumDetails callback={this.addAuditorium} buttonText={"ADD"}/>
                         </div>);}} />
         );
     }
 }
 
-export default AddFilmContainer;
+export default AddAuditoriumContainer;

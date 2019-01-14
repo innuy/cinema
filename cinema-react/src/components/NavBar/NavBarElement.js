@@ -5,10 +5,6 @@ import './styles.css';
 
 class NavBarElement extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
 
         return (

@@ -3,9 +3,6 @@ import './styles.css';
 
 class FirstView extends Component {
 
-    constructor(props) {
-        super(props);
-    }
 
     render() {
 
