@@ -19,25 +19,21 @@ const testingPresentationData = {
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingPresentationDataWithWrongInformation = {
     movie: 'Toy Story',
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingPresentationDataWithMovieWrongInformation = {
     movie: testingWrongId,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingPresentationDataWithAuditoriumWrongInformation = {
     movie: testingMovieId,
     auditorium: testingWrongId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 
 async function presentationPostTest() {

@@ -7,7 +7,6 @@ const create = celebrate({
         movie: Joi.objectId().required(),
         auditorium: Joi.objectId().required(),
         start: Joi.date().iso().required(),
-        soldTickets: Joi.number().required(),
     }
 });
 
@@ -34,7 +33,6 @@ const putById = celebrate({
         movie: Joi.objectId().required(),
         auditorium: Joi.objectId().required(),
         start: Joi.date().iso().required(),
-        soldTickets: Joi.number().required(),
     }
 });
 
