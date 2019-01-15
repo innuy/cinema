@@ -6,6 +6,8 @@ const should = chai.should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Presentation = require("../../../db/models/presentations");
 const Movie = require("../../../db/models/movies");
 const Auditorium = require("../../../db/models/auditoriums");
@@ -21,24 +23,20 @@ const testingUpdatePresentationData = {
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingIncompletePresentationData = {
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingUpdatePresentationDataWithMovieWrongInformation = {
     movie: testingPresentationWrongIdToSearch,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingUpdatePresentationDataWithAuditoriumWrongInformation = {
     movie: testingMovieId,
     auditorium: testingPresentationWrongIdToSearch,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 
 const testingMovieData = {
@@ -58,63 +56,78 @@ const testingAuditoriumData = {
     seatColumns: 10,
 };
 
-async function presentationPutTest() {
-    await request(app)
+function presentationPutTest(done) {
+    request(app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingUpdatePresentationData)
         .then(res => {
-            res.body.should.be.an('object');
-            res.status.should.equal(200);
+            setTimeout(() => {
+                res.body.should.be.an('object');
+                res.status.should.equal(200);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function presentationIncompletePutTest() {
-    await request(app)
+function presentationIncompletePutTest(done) {
+    request(app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingIncompletePresentationData)
         .then(res => {
-            res.body.should.be.an('object');
-            res.status.should.equal(400);
+            setTimeout(() => {
+                res.body.should.be.an('object');
+                res.status.should.equal(400);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function presentationWrongIdPutTest() {
-    await request(app)
+function presentationWrongIdPutTest(done) {
+    request(app)
         .put('/presentations/' + testingPresentationWrongIdToSearch)
         .send(testingUpdatePresentationData)
         .then(res => {
-            res.body.should.be.an('object');
-            res.status.should.equal(404);
+            setTimeout(() => {
+                res.body.should.be.an('object');
+                res.status.should.equal(404);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function presentationWrongMovieIdPutTest() {
-    await request(app)
+function presentationWrongMovieIdPutTest(done) {
+    request(app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingUpdatePresentationDataWithMovieWrongInformation)
         .then(res => {
-            assert.strictEqual(res.status, 412);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 412);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function presentationWrongAuditoriumInformationPutTest() {
-    await request(app)
+function presentationWrongAuditoriumInformationPutTest(done) {
+    request(app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingUpdatePresentationDataWithAuditoriumWrongInformation)
         .then(res => {
-            assert.strictEqual(res.status, 412);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 412);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
@@ -134,19 +147,19 @@ describe("Presentation Put Test", function () {
         Presentation.findOneAndUpdate.restore();
     });
 
-    it('Successful - Update presentation',() => {
+    it('Successful - Update presentation', () => {
         sinon.stub(Presentation, 'findOneAndUpdate').resolves();
         presentationPutTest;
     });
-    it('Failed - Incomplete presentation data',() => {
+    it('Failed - Incomplete presentation data', () => {
         sinon.stub(Presentation, 'findOneAndUpdate').resolves();
         presentationIncompletePutTest;
     });
-    it('Failed - Wrong id',() => {
+    it('Failed - Wrong id', () => {
         sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
         presentationWrongIdPutTest;
     });
-    it('Failed - Db id',() => {
+    it('Failed - Db id', () => {
         sinon.stub(Presentation, 'findOneAndUpdate').throws();
         presentationPutTest;
     });
@@ -154,12 +167,12 @@ describe("Presentation Put Test", function () {
 
 describe("Presentation Put Test with incorrect Db info", function () {
 
-    it('Failed - Request with wrong movie id ', () =>{
+    it('Failed - Request with wrong movie id ', () => {
         sinon.stub(Movie, 'findOne').resolves(null);
         presentationWrongMovieIdPutTest;
         Movie.findOne.restore();
     });
-    it('Failed - Request with wrong auditorium id ', () =>{
+    it('Failed - Request with wrong auditorium id ', () => {
         sinon.stub(Movie, 'findOne').resolves(testingMovieData);
         sinon.stub(Auditorium, 'findOne').resolves(null);
         presentationWrongAuditoriumInformationPutTest;

@@ -5,14 +5,11 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Movie = require("../../../db/models/movies");
-
 const testingMovieIdToDelete = '5c2e105c8509f424122c4067';
-
 const testingMovieWrongIdToDelete = '000000000000000000000001';
-
-const movieGetTest = require('./getTests');
-
 const testingMovieData = {
     name: "Toy Story",
     image: "image link",
@@ -22,7 +19,7 @@ const testingMovieData = {
     director: "John Lasseter"
 };
 
-async function movieDeleteTestbyId() {
+async function movieDeleteTestbyId(done) {
     await request(app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
@@ -31,13 +28,14 @@ async function movieDeleteTestbyId() {
                 res.should.be.an('object');
                 assert.equal(res.status, 204);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function movieWrongIdDeleteTest() {
+async function movieWrongIdDeleteTest(done) {
     await request(app)
         .del('/movies/' + testingMovieWrongIdToDelete)
         .send()
@@ -46,6 +44,7 @@ async function movieWrongIdDeleteTest() {
                 res.should.be.an('object');
                 assert.equal(res.status, 404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);

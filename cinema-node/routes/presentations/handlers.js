@@ -1,5 +1,3 @@
-const movieFunctions = require("../movies/handlers");
-const auditoriumFunctions = require("../auditoriums/handlers");
 const errors = require("./errors");
 
 const Auditorium = require('../../db/models/auditoriums');
@@ -9,7 +7,9 @@ const Movie = require('../../db/models/movies');
 var ObjectID = require('mongodb').ObjectID;
 
 function createPresentation(req, res) {
-    Presentation.create(req.body)
+    let newPresentation = req.body;
+    newPresentation.soldTickets = 0;
+    Presentation.create(newPresentation)
         .then(presentation => {
             res.send(presentation);
         })

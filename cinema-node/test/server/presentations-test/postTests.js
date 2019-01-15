@@ -5,6 +5,8 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Presentation = require("../../../db/models/presentations");
 const Movie = require("../../../db/models/movies");
 const Auditorium = require("../../../db/models/auditoriums");
@@ -19,34 +21,33 @@ const testingPresentationData = {
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingPresentationDataWithWrongInformation = {
     movie: 'Toy Story',
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingPresentationDataWithMovieWrongInformation = {
     movie: testingWrongId,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingPresentationDataWithAuditoriumWrongInformation = {
     movie: testingMovieId,
     auditorium: testingWrongId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 
-async function presentationPostTest() {
-    await request(app)
+function presentationPostTest(done) {
+    request(app)
         .post('/presentations')
         .send(testingPresentationData)
         .then(res => {
-            res.should.be.an('object');
-            assert.strictEqual(res.status, 200);
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 200);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
@@ -71,48 +72,60 @@ const testingAuditoriumData = {
     seatColumns: 10,
 };
 
-async function presentationEmptyPostTest() {
-    await request(app)
+function presentationEmptyPostTest(done) {
+    request(app)
         .post('/presentations')
         .send()
         .then(res => {
-            assert.strictEqual(res.status, 400);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 400);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function presentationWrongInformationPostTest() {
-    await request(app)
+function presentationWrongInformationPostTest(done) {
+    request(app)
         .post('/presentations')
         .send(testingPresentationDataWithWrongInformation)
         .then(res => {
-            assert.strictEqual(res.status, 400);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 400);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function presentationWrongMovieIdPostTest() {
-    await request(app)
+function presentationWrongMovieIdPostTest(done) {
+    request(app)
         .post('/presentations')
         .send(testingPresentationDataWithMovieWrongInformation)
         .then(res => {
-            assert.strictEqual(res.status, 412);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 412);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function presentationWrongAuditoriumInformationPostTest() {
-    await request(app)
+function presentationWrongAuditoriumInformationPostTest(done) {
+    request(app)
         .post('/presentations')
         .send(testingPresentationDataWithAuditoriumWrongInformation)
         .then(res => {
-            assert.strictEqual(res.status, 412);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 412);
+                done();
+            });
         })
         .catch(err => {
             console.log(err);
@@ -144,12 +157,12 @@ describe("Presentation Post Test", function () {
 
 describe("Presentation Post Test with incorrect Db info", function () {
 
-    it('Failed - Request with wrong movie id ', () =>{
+    it('Failed - Request with wrong movie id ', () => {
         sinon.stub(Movie, 'findOne').resolves(null);
         presentationWrongMovieIdPostTest;
         Movie.findOne.restore();
     });
-    it('Failed - Request with wrong auditorium id ', () =>{
+    it('Failed - Request with wrong auditorium id ', () => {
         sinon.stub(Movie, 'findOne').resolves(testingMovieData);
         sinon.stub(Auditorium, 'findOne').resolves(null);
         presentationWrongAuditoriumInformationPostTest;

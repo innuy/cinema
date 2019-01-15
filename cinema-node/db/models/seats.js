@@ -18,5 +18,6 @@ var SeatSchema = new Schema({
 });
 
 var SeatModel = mongoose.model('Seat', SeatSchema);
-
 module.exports = SeatModel;
+
+

@@ -3,8 +3,11 @@ import FilmDetails from "../../components/FilmDetails";
 import NavBar from "../../components/NavBar";
 
 import {editFilm} from "../../API/films";
+import {Route} from "react-router-dom";
 
 class FilmDetailsContainer extends Component {
+
+    history = null;
 
     state = {
         id: 0,
@@ -35,10 +38,14 @@ class FilmDetailsContainer extends Component {
 
     render() {
         return (
-            <div>
-                <NavBar isAdmin={true}/>
-                <FilmDetails film={this.state.film} callback={this.editFilm} buttonText={"EDIT"}/>
-            </div>
+            <Route render={({history}) => {
+                this.history = history;
+                return (
+                    <div>
+                        <NavBar isAdmin={true} history={this.history}/>
+                        <FilmDetails film={this.state.film} callback={this.editFilm} buttonText={"EDIT"}/>
+                    </div>);}}
+            />
         );
     }
 }

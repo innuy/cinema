@@ -5,6 +5,8 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Movie = require("../../../db/models/movies");
 
 const testingMovieData2 = {
@@ -25,41 +27,50 @@ const testingMovieData = {
     director: "Brett Ratner"
 };
 
-async function moviePostTest() {
-    await request(app)
+function moviePostTest(done) {
+    request(app)
         .post('/movies')
         .send(testingMovieData)
         .then(res => {
+            setTimeout(() => {
             res.should.be.an('object');
             assert.strictEqual(res.status, 200);
+            });
+            done();
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
-async function movieEmptyPostTest() {
-    await request(app)
+function movieEmptyPostTest(done) {
+    request(app)
         .post('/movies')
         .send()
         .then(res => {
+            setTimeout(() => {
             assert.strictEqual(res.status, 400);
+            });
+            done();
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
-async function movieWrongNamePostTest() {
-    await request(app)
+function movieWrongNamePostTest(done) {
+    request(app)
         .post('/movies')
         .send({ name : 1})
         .then(res => {
+            setTimeout(() => {
             assert.strictEqual(res.status, 400);
+            });
+            done();
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
 describe("Movie Post Test", function () {
