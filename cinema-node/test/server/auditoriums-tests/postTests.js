@@ -16,45 +16,54 @@ const auditorium2 = {
     seatColumns: 10,
 };
 
-async function auditoriumPostTest() {
+function auditoriumPostTest(done) {
     this.timeout(5000);
-    await request(app)
+    request(app)
         .post('/auditoriums')
         .send(auditorium2)
         .then(res => {
-            res.should.be.an('object');
-            assert.strictEqual(res.status, 200);
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 200);
+            });
+            done();
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
-async function auditoriumEmptyPostTest() {
-    await request(app)
+function auditoriumEmptyPostTest(done) {
+    request(app)
         .post('/auditoriums')
         .send()
         .then(res => {
-            assert.strictEqual(res.status, 400);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 400);
+            });
+            done();
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
-async function auditoriumWrongNumberPostTest() {
-    await request(app)
+function auditoriumWrongNumberPostTest(done) {
+    request(app)
         .post('/auditoriums')
-        .send({ number : "one"})
+        .send({number: "one"})
         .then(res => {
-            assert.strictEqual(res.status, 400);
+            setTimeout(() => {
+                assert.strictEqual(res.status, 400);
+            });
+            done();
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 }
 
-describe("Auditorium Post Test", function () {
+describe("Auditorium Post Test", function (done) {
     beforeEach(() => {
         sinon.stub(Auditorium, 'create').resolves(auditorium2);
         sinon

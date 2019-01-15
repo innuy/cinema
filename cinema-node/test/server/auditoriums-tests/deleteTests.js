@@ -21,7 +21,7 @@ const testingAuditoriumData = {
     seatColumns: 10,
 };
 
-async function auditoriumDeleteTestbyId() {
+async function auditoriumDeleteTestbyId(done) {
     await request(app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
@@ -30,13 +30,14 @@ async function auditoriumDeleteTestbyId() {
                 res.should.be.an('object');
                 assert.equal(res.status, 204);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function auditoriumWrongIdDeleteTest() {
+async function auditoriumWrongIdDeleteTest(done) {
     await request(app)
         .del('/auditoriums/' + testingAuditoriumWrongIdToDelete)
         .send()
@@ -45,6 +46,7 @@ async function auditoriumWrongIdDeleteTest() {
                 res.should.be.an('object');
                 assert.equal(res.status, 404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
