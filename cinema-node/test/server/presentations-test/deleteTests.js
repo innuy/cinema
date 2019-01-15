@@ -5,6 +5,8 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
+require('../setup');
+
 const Presentation = require("../../../db/models/presentations");
 
 const testingMovieId = '5c2f723b62607929f4c347d3';
@@ -21,14 +23,15 @@ const testingPresentationData = {
     soldTickets: 0,
 };
 
-async function presentationDeleteTestbyId() {
-    await request(app)
+function presentationDeleteTestbyId(done) {
+    request(app)
         .del('/presentations/' + testingPresentationIdToDelete)
         .send()
         .then((res) => {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.equal(res.status, 204);
+            done();
             });
         })
         .catch(err => {
@@ -36,14 +39,15 @@ async function presentationDeleteTestbyId() {
         })
 }
 
-async function presentationWrongIdDeleteTest() {
-    await request(app)
+function presentationWrongIdDeleteTest(done) {
+    request(app)
         .del('/presentations/' + testingPresentationWrongIdToDelete)
         .send()
         .then((res) => {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.equal(res.status, 404);
+            done();
             });
         })
         .catch(err => {
@@ -51,7 +55,7 @@ async function presentationWrongIdDeleteTest() {
         })
 }
 
-describe("Presentation Delete by id test", async function () {
+describe("Presentation Delete by id test", function () {
     beforeEach(() => {
         app = require('../../../app');
     });
