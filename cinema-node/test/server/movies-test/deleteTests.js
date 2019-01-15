@@ -24,7 +24,7 @@ const testingMovieData = {
     director: "John Lasseter"
 };
 
-async function movieDeleteTestbyId() {
+async function movieDeleteTestbyId(done) {
     await request(app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
@@ -33,13 +33,14 @@ async function movieDeleteTestbyId() {
                 res.should.be.an('object');
                 assert.equal(res.status, 204);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function movieWrongIdDeleteTest() {
+async function movieWrongIdDeleteTest(done) {
     await request(app)
         .del('/movies/' + testingMovieWrongIdToDelete)
         .send()
@@ -48,6 +49,7 @@ async function movieWrongIdDeleteTest() {
                 res.should.be.an('object');
                 assert.equal(res.status, 404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);

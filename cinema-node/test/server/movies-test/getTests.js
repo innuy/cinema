@@ -21,7 +21,7 @@ const testingMovieIdToSearch = '5c267aa85335a14c175cb0dd';
 
 const testingMovieWrongId = '000000000000000000000001';
 
-async function getMovieListWithFilters() {
+async function getMovieListWithFilters(done) {
     await request(app)
         .get('/movies')
         .query(testingMovieFilterData)
@@ -34,13 +34,14 @@ async function getMovieListWithFilters() {
                     assert.strictEqual(movie.name, testingMovieFilterData.name)
                 });
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function getMovieListWithoutFilters() {
+async function getMovieListWithoutFilters(done) {
     await request(app)
         .get('/movies')
         .query()
@@ -53,13 +54,14 @@ async function getMovieListWithoutFilters() {
                     assert.strictEqual(movie.name, testingMovieFilterData.name)
                 });
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function getMovieListWithWrongFilters() {
+async function getMovieListWithWrongFilters(done) {
     await request(app)
         .get('/movies')
         .query(testingMovieWrongFilterData)
@@ -72,13 +74,14 @@ async function getMovieListWithWrongFilters() {
                     assert.strictEqual(movie.name, testingMovieFilterData.name)
                 });
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function getMovieById() {
+async function getMovieById(done) {
     await request(app)
         .get('/movies/' + testingMovieIdToSearch)
         .query()
@@ -88,13 +91,14 @@ async function getMovieById() {
                 assert.strictEqual(res.status, 200);
                 assert.strictEqual(res.body._id, testingMovieIdToSearch)
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function getMovieWithWrongId() {
+async function getMovieWithWrongId(done) {
     await request(app)
         .get('/movies/' + testingMovieWrongId)
         .query()
@@ -103,6 +107,7 @@ async function getMovieWithWrongId() {
                 res.should.be.an('object');
                 assert.strictEqual(res.status, 404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);

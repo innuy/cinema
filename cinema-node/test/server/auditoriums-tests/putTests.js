@@ -25,7 +25,7 @@ const testingIncompleteAuditoriumData = {
     seatRows: 20,
 };
 
-async function auditoriumPutTest() {
+async function auditoriumPutTest(done) {
     await request(app)
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingUpdateAuditoriumData)
@@ -34,13 +34,14 @@ async function auditoriumPutTest() {
             res.body.should.be.an('object');
             res.status.should.equal(200);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function auditoriumIncompletePutTest() {
+async function auditoriumIncompletePutTest(done) {
     await request(app)
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingIncompleteAuditoriumData)
@@ -49,13 +50,14 @@ async function auditoriumIncompletePutTest() {
             res.body.should.be.an('object');
             res.status.should.equal(400);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function auditoriumWrongIdPutTest() {
+async function auditoriumWrongIdPutTest(done) {
     await request(app)
         .put('/auditoriums/' + testingAuditoriumWrongIdToSearch)
         .send(testingUpdateAuditoriumData)
@@ -64,13 +66,14 @@ async function auditoriumWrongIdPutTest() {
             res.body.should.be.an('object');
             res.status.should.equal(404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function auditoriumWrongIdPutTest() {
+async function auditoriumWrongIdPutTest(done) {
     await request(app)
         .put('/auditoriums/' + testingAuditoriumWrongIdToSearch)
         .send(testingUpdateAuditoriumData)
@@ -79,6 +82,7 @@ async function auditoriumWrongIdPutTest() {
             res.body.should.be.an('object');
             res.status.should.equal(404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);

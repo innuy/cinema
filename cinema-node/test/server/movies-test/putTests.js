@@ -30,7 +30,7 @@ const testingIncompleteMovieData = {
     director: "John Lasseter"
 };
 
-async function moviePutTest() {
+async function moviePutTest(done) {
     await request(app)
         .put('/movies/' + testingMovieIdToSearch)
         .send(testingUpdateMovieData)
@@ -39,13 +39,14 @@ async function moviePutTest() {
                 res.body.should.be.an('object');
                 res.status.should.equal(200);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function movieIncompletePutTest() {
+async function movieIncompletePutTest(done) {
     await request(app)
         .put('/movies/' + testingMovieIdToSearch)
         .send(testingIncompleteMovieData)
@@ -54,13 +55,14 @@ async function movieIncompletePutTest() {
                 res.body.should.be.an('object');
                 res.status.should.equal(400);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function movieWrongIdPutTest() {
+async function movieWrongIdPutTest(done) {
     await request(app)
         .put('/movies/' + testingMovieWrongIdToSearch)
         .send(testingUpdateMovieData)
@@ -69,13 +71,14 @@ async function movieWrongIdPutTest() {
                 res.body.should.be.an('object');
                 res.status.should.equal(404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function movieWrongIdPutTest() {
+async function movieWrongIdPutTest(done) {
     await request(app)
         .put('/movies/' + testingMovieWrongIdToSearch)
         .send(testingUpdateMovieData)
@@ -84,6 +87,7 @@ async function movieWrongIdPutTest() {
                 res.body.should.be.an('object');
                 res.status.should.equal(404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);

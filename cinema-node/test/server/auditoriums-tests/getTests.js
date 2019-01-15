@@ -23,7 +23,7 @@ const testingAuditoriumIdToSearch = '5c267aa85335a14c175cb0dd';
 
 const testingAuditoriumWrongId = '000000000000000000000001';
 
-async function getAuditoriumListWithFilters() {
+async function getAuditoriumListWithFilters(done) {
     await request(app)
         .get('/auditoriums')
         .query(testingAuditoriumFilterData)
@@ -36,13 +36,14 @@ async function getAuditoriumListWithFilters() {
                     assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
                 });
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function getAuditoriumsListWithoutFilters() {
+async function getAuditoriumsListWithoutFilters(done) {
     await request(app)
         .get('/auditoriums')
         .query()
@@ -55,13 +56,14 @@ async function getAuditoriumsListWithoutFilters() {
                     assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
                 });
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function getAuditoriumsListWithWrongFilters() {
+async function getAuditoriumsListWithWrongFilters(done) {
     await request(app)
         .get('/auditoriums')
         .query(testingAuditoriumWrongFilterData)
@@ -74,13 +76,14 @@ async function getAuditoriumsListWithWrongFilters() {
                     assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
                 });
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function getAuditoriumsById() {
+async function getAuditoriumsById(done) {
     await request(app)
         .get('/auditoriums/' + testingAuditoriumIdToSearch)
         .query()
@@ -90,13 +93,14 @@ async function getAuditoriumsById() {
                 assert.strictEqual(res.status, 200);
                 assert.strictEqual(res.body._id, testingAuditoriumIdToSearch)
             });
+            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function getAuditoriumsWithWrongId() {
+async function getAuditoriumsWithWrongId(done) {
     await request(app)
         .get('/auditoriums/' + testingAuditoriumWrongId)
         .query()
@@ -105,6 +109,7 @@ async function getAuditoriumsWithWrongId() {
                 res.should.be.an('object');
                 assert.strictEqual(res.status, 404);
             });
+            done();
         })
         .catch(err => {
             console.log(err);
