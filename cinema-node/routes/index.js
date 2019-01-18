@@ -6,7 +6,7 @@ const resourceRoutes = [movies, auditoriums, presentations];
 
 module.exports = router => {
 
-  resourceRoutes.forEach(routes => routes(router));
+    resourceRoutes.forEach(routes => routes(router));
 
-  return router;
+    return router;
 };

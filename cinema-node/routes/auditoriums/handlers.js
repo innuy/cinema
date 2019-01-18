@@ -34,7 +34,6 @@ module.exports.get = (req, res) => {
 module.exports.getById = (req, res) => {
     const id = req.params.id;
     const idFilter = {'_id': new ObjectID(id)};
-
     Auditorium.find(idFilter)
         .then(auditorium => {
             if (thereIsNoAuditorium(auditorium)) {

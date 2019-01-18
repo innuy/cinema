@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var db = require('../../connectors/mongoDB');
 var Movie = require('../../db/models/movies');
 
-describe("Mongo-Mongoose connection test", function() {
+describe("Mongo-Mongoose connection test", function () {
 
     before(async function () {
 
@@ -16,11 +16,12 @@ describe("Mongo-Mongoose connection test", function() {
             })
     });
 
-    after(function() {
-        Movie.deleteOne({ name: 'a'}, function (err) {})
+    after(function () {
+        Movie.deleteOne({name: 'a'}, function (err) {
+        })
     });
 
-    it("Print Mongo uri", function() {
+    it("Print Mongo uri", function () {
         expect("Go Cinema!!!").to.equal("Go Cinema!!!");
         expect(process.env.DB_USER).to.equal('JPB');
     });

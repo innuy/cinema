@@ -6,6 +6,7 @@ const should = chai.should();
 const request = require('supertest');
 let app;
 
+const Tools = require("../../../routes/presentations/tools");
 require('../setup');
 
 const Presentation = require("../../../db/models/presentations");
@@ -134,6 +135,42 @@ function presentationWrongAuditoriumInformationPutTest(done) {
         })
 }
 
+function presentationDbErrorPutTest(done) {
+    request(app)
+        .put('/presentations/' + testingPresentationIdToSearch)
+        .send(testingUpdatePresentationData)
+        .then(res => {
+            setTimeout(() => {
+                res.body.should.be.an('object');
+                res.status.should.equal(500);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+describe("Presentation Post Test with incorrect Db info", function () {
+    beforeEach(() => {
+        sinon.stub(Tools, 'checkMovie').rejects("movie not found");
+        app = require('../../../app');
+    });
+    afterEach(() => {
+        Tools.checkMovie.restore();
+    });
+    it('Failed - Request with wrong movie id', (done) => {
+        presentationWrongMovieIdPutTest(done);
+    });
+    it('Failed - Request with wrong auditorium id ', (done) => {
+        sinon.stub(Movie, 'findOne').resolves(testingMovieData);
+        sinon.stub(Auditorium, 'findOne').resolves({});
+        presentationWrongAuditoriumInformationPutTest(done);
+        Auditorium.findOne.restore();
+        Movie.findOne.restore();
+    });
+});
+
 describe("Presentation Put Test", function () {
     beforeEach(() => {
         sinon.stub(Movie, 'findOne').resolves(testingMovieData);
@@ -147,36 +184,20 @@ describe("Presentation Put Test", function () {
         Presentation.findOneAndUpdate.restore();
     });
 
-    it('Successful - Update presentation', () => {
+    it('Successful - Update presentation', (done) => {
         sinon.stub(Presentation, 'findOneAndUpdate').resolves();
-        presentationPutTest;
+        presentationPutTest(done);
     });
-    it('Failed - Incomplete presentation data', () => {
+    it('Failed - Incomplete presentation data', (done) => {
         sinon.stub(Presentation, 'findOneAndUpdate').resolves();
-        presentationIncompletePutTest;
+        presentationIncompletePutTest(done);
     });
-    it('Failed - Wrong id', () => {
+    it('Failed - Wrong id', (done) => {
         sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
-        presentationWrongIdPutTest;
+        presentationWrongIdPutTest(done);
     });
-    it('Failed - Db id', () => {
-        sinon.stub(Presentation, 'findOneAndUpdate').throws();
-        presentationPutTest;
-    });
-});
-
-describe("Presentation Put Test with incorrect Db info", function () {
-
-    it('Failed - Request with wrong movie id ', () => {
-        sinon.stub(Movie, 'findOne').resolves(null);
-        presentationWrongMovieIdPutTest;
-        Movie.findOne.restore();
-    });
-    it('Failed - Request with wrong auditorium id ', () => {
-        sinon.stub(Movie, 'findOne').resolves(testingMovieData);
-        sinon.stub(Auditorium, 'findOne').resolves(null);
-        presentationWrongAuditoriumInformationPutTest;
-        Movie.findOne.restore();
-        Auditorium.findOne.restore();
+    it('Failed - Db error', (done) => {
+        sinon.stub(Presentation, 'findOneAndUpdate').rejects();
+        presentationDbErrorPutTest(done);
     });
 });

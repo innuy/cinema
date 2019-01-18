@@ -16,8 +16,8 @@ const testingAuditoriumData = {
     seatColumns: 10,
 };
 
-async function auditoriumDeleteTestbyId(done) {
-    await request(app)
+function auditoriumDeleteTestbyId(done) {
+    request(app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -32,8 +32,8 @@ async function auditoriumDeleteTestbyId(done) {
         })
 }
 
-async function auditoriumWrongIdDeleteTest(done) {
-    await request(app)
+function auditoriumWrongIdDeleteTest(done) {
+    request(app)
         .del('/auditoriums/' + testingAuditoriumWrongIdToDelete)
         .send()
         .then((res) => {
@@ -48,7 +48,7 @@ async function auditoriumWrongIdDeleteTest(done) {
         })
 }
 
-describe("Auditorium Delete by id test", async function () {
+describe("Auditorium Delete by id test", function () {
     beforeEach(() => {
         app = require('../../../app');
     });
@@ -61,11 +61,11 @@ describe("Auditorium Delete by id test", async function () {
     it('Successful - Delete auditorium', () => {
         sinon.stub(Auditorium, 'find').resolves([testingAuditoriumData]);
         sinon.stub(Auditorium, 'findOneAndDelete').resolves();
-        auditoriumDeleteTestbyId;
+        auditoriumDeleteTestbyId();
     });
     it('Failed - Wrong id', () => {
         sinon.stub(Auditorium, 'find').resolves(null);
         sinon.stub(Auditorium, 'findOneAndDelete').resolves(null);
-        auditoriumWrongIdDeleteTest;
+        auditoriumWrongIdDeleteTest();
     });
 });

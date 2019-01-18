@@ -33,8 +33,8 @@ function moviePostTest(done) {
         .send(testingMovieData)
         .then(res => {
             setTimeout(() => {
-            res.should.be.an('object');
-            assert.strictEqual(res.status, 200);
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 200);
             });
             done();
         })
@@ -49,7 +49,7 @@ function movieEmptyPostTest(done) {
         .send()
         .then(res => {
             setTimeout(() => {
-            assert.strictEqual(res.status, 400);
+                assert.strictEqual(res.status, 400);
             });
             done();
         })
@@ -61,10 +61,10 @@ function movieEmptyPostTest(done) {
 function movieWrongNamePostTest(done) {
     request(app)
         .post('/movies')
-        .send({ name : 1})
+        .send({name: 1})
         .then(res => {
             setTimeout(() => {
-            assert.strictEqual(res.status, 400);
+                assert.strictEqual(res.status, 400);
             });
             done();
         })

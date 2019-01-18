@@ -61,14 +61,14 @@ describe("Movie Delete by id test", async function () {
         Movie.findOneAndDelete.restore();
     });
 
-    it('Successful - Delete movie', () => {
+    it('Successful - Delete movie', (done) => {
         sinon.stub(Movie, 'find').resolves([testingMovieData]);
         sinon.stub(Movie, 'findOneAndDelete').resolves();
-        movieDeleteTestbyId;
+        movieDeleteTestbyId(done);
     });
-    it('Failed - Wrong id', () => {
+    it('Failed - Wrong id', (done) => {
         sinon.stub(Movie, 'find').resolves(null);
         sinon.stub(Movie, 'findOneAndDelete').resolves(null);
-        movieWrongIdDeleteTest;
+        movieWrongIdDeleteTest(done);
     });
 });

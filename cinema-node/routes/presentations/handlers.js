@@ -2,9 +2,10 @@ const errors = require("./errors");
 
 const Auditorium = require('../../db/models/auditoriums');
 const Presentation = require("../../db/models/presentations");
-const Movie = require('../../db/models/movies');
+
 
 var ObjectID = require('mongodb').ObjectID;
+const Tools = require('./tools');
 
 function createPresentation(req, res) {
     let newPresentation = req.body;
@@ -31,22 +32,8 @@ function checkAuditorium(auditoriumId, res) {
 
 }
 
-function checkMovie(movieId, res) {
-    return new Promise((resolve, reject) => {
-        Movie.findOne({'_id': new ObjectID(movieId)})
-            .then(movie => {
-                if (movie === null) {
-                    reject("movie not found")
-                } else {
-                    resolve("OK");
-                }
-            })
-            .catch(err => errors.databaseError(err, res));
-    });
-}
-
 module.exports.create = (req, res) => {
-    checkMovie(req.body.movie, res)
+    Tools.checkMovie(req.body.movie, res)
         .then(message => {
             checkAuditorium(req.body.auditorium, res)
                 .then(message => {
@@ -60,10 +47,12 @@ module.exports.create = (req, res) => {
                 })
         })
         .catch(err => {
-            if (err === "movie not found")
+            if (err.message === "movie not found")
                 errors.movieNotFound(res);
+            else
+                errors.databaseError(err, res);
             return (err)
-        })
+        });
 };
 
 
@@ -99,7 +88,6 @@ function updatePresentation(req, res) {
     const id_filter = {'_id': new ObjectID(req.params.id)};
     const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: req.body};
-
     Presentation.findOneAndUpdate(
         id_filter,
         parametersToSet,
@@ -117,7 +105,7 @@ function updatePresentation(req, res) {
 
 module.exports.putById = (req, res) => {
 
-    checkMovie(req.body.movie, res)
+    Tools.checkMovie(req.body.movie, res)
         .then(message => {
             checkAuditorium(req.body.auditorium, res)
                 .then(message => {
@@ -131,10 +119,12 @@ module.exports.putById = (req, res) => {
                 })
         })
         .catch(err => {
-            if (err === "movie not found")
+            if (err.name === "movie not found")
                 errors.movieNotFound(res);
+            else
+                errors.databaseError(err, res);
             return (err)
-        })
+        });
 };
 
 module.exports.deleteById = (req, res) => {
