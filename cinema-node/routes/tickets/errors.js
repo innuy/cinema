@@ -1,4 +1,3 @@
-
 module.exports.presentationAlreadyStarted = (res, presentationId) => {
     res.status(400);
     res.send({
@@ -8,7 +7,7 @@ module.exports.presentationAlreadyStarted = (res, presentationId) => {
     })
 };
 
-module.exports.databaseError = (res, err) => {
+module.exports.databaseError = (err, res) => {
     res.status(500);
     res.send({
         "statusCode": 500,
@@ -40,7 +39,7 @@ module.exports.ticketNotFound = res => {
     res.send({
         "statusCode": 404,
         "error": "Not Found",
-        "message": "there is no presentation here"
+        "message": "there is no ticket here"
     });
 };
 

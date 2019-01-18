@@ -1,9 +1,9 @@
-const { celebrate, Joi } = require('celebrate');
+const {celebrate, Joi} = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 
 
 const create = celebrate({
-    body:{
+    body: {
         presentation: Joi.objectId().required(),
         seat: Joi.objectId(),
         seatRow: Joi.number(),

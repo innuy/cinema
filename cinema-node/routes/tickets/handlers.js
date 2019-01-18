@@ -9,7 +9,6 @@ var ObjectID = require('mongodb').ObjectID;
 
 
 function updatePresentationSoldTickets(ticket, presentation, res) {
-    console.log("update presentation sold tickets");
     const id_filter = {'_id': new ObjectID(ticket.presentation)};
     const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: {soldTickets: presentation.soldTickets + 1}};
@@ -29,7 +28,6 @@ function updatePresentationSoldTickets(ticket, presentation, res) {
 }
 
 function createTicket(newTicket, presentation, res) {
-    console.log("create ticket");
     return new Promise((resolve, reject) => {
         Ticket.create(newTicket)
             .then(ticket => {
@@ -41,8 +39,6 @@ function createTicket(newTicket, presentation, res) {
 }
 
 function checkSeatIsAvailable(ticketFilter, res) {
-    console.log("check if seat is available");
-    console.log(ticketFilter);
     return new Promise((resolve, reject) => {
         Ticket.findOne(ticketFilter)
             .then(ticket => {
@@ -58,8 +54,6 @@ function checkSeatIsAvailable(ticketFilter, res) {
 }
 
 const getAuditoriumOfPresentation = (presentationId, res) => {
-    console.log("get auditorium of presentation");
-    console.log(presentationId);
     return new Promise((resolve, reject) => {
         Presentation.findOne({'_id': new ObjectID(presentationId)})
             .then(presentation => {
@@ -74,8 +68,6 @@ const getAuditoriumOfPresentation = (presentationId, res) => {
 };
 
 const getSeatId = (seatDocument, res) => {
-    console.debug("get seat id");
-    console.log(seatDocument);
     return new Promise((resolve, reject) => {
         Seat.findOne({
             row: seatDocument.row,
@@ -93,7 +85,6 @@ const getSeatId = (seatDocument, res) => {
 };
 
 function getPresentation(presentationId, res) {
-    console.log("get presentation");
     return new Promise((resolve, reject) => {
         Presentation.findOne({'_id': new ObjectID(presentationId)})
             .then(presentation => {
@@ -114,6 +105,49 @@ function notSeatIdButRowAndColumn(newTicket) {
         newTicket.seatColumn !== undefined;
 }
 
+function checkAvailabilityAndCreateTicket(newTicket, res, presentation) {
+    checkSeatIsAvailable(newTicket, res)
+        .then(message => {
+            createTicket(newTicket, presentation, res)
+                .then(ticket => {
+                    res.send(ticket);
+                })
+        })
+        .catch(err => {
+            return (err)
+        });
+}
+
+function createTicketWithSeatRowAndColumn(presentationId, res, newTicket, presentation) {
+    getAuditoriumOfPresentation(presentationId, res)
+        .then(auditoriumId => {
+            const seatToReserve = {
+                row: newTicket.seatRow,
+                column: newTicket.seatColumn,
+                auditorium: auditoriumId.toString()
+            };
+            getSeatId(seatToReserve, res)
+                .then(seatId => {
+                    newTicket = {
+                        presentation: presentationId,
+                        seat: seatId,
+                    };
+                    checkAvailabilityAndCreateTicket(newTicket, res, presentation);
+                })
+                .catch(err => {
+                    return (err)
+                });
+        })
+        .catch(err => {
+            return (err)
+        });
+    return newTicket;
+}
+
+function presentationHasAlreadyStarted(now, presentationDate) {
+    return now.getTime() >= presentationDate.getTime();
+}
+
 module.exports.create = async (req, res) => {
     let newTicket = req.body;
     let presentationId = newTicket.presentation;
@@ -122,58 +156,15 @@ module.exports.create = async (req, res) => {
         .then(presentation => {
             let now = new Date();
             let presentationDate = new Date(presentation.start);
-            if (now.getTime() >= presentationDate.getTime()) {
-                console.log(now.getTime());
-                console.log(presentationDate.getTime());
+            if (presentationHasAlreadyStarted(now, presentationDate)) {
                 errors.presentationAlreadyStarted(res, presentationId);
                 return ('presentation id=' + presentationId + ' already started');
             } else {
                 if (notSeatIdButRowAndColumn(newTicket)) {
-                    getAuditoriumOfPresentation(presentationId, res)
-                        .then(auditoriumId => {
-                            const seatToReserve = {
-                                row: newTicket.seatRow,
-                                column: newTicket.seatColumn,
-                                auditorium: auditoriumId.toString()
-                            };
-                            getSeatId(seatToReserve, res)
-                                .then(seatId => {
-                                    newTicket = {
-                                        presentation: presentationId,
-                                        seat: seatId,
-                                    };
-                                    checkSeatIsAvailable(newTicket, res)
-                                        .then(message => {
-                                            console.log("createTicket");
-                                            createTicket(newTicket, presentation, res)
-                                                .then(ticket => {
-                                                    res.send(ticket);
-                                                })
-                                        })
-                                        .catch(err => {
-                                            return (err)
-                                        });
-                                })
-                                .catch(err => {
-                                    return (err)
-                                });
-                        })
-                        .catch(err => {
-                            return (err)
-                        });
+                    newTicket = createTicketWithSeatRowAndColumn(presentationId, res, newTicket, presentation);
 
                 } else {
-                    checkSeatIsAvailable(newTicket, res)
-                        .then(message => {
-                            console.log("createTicket");
-                            createTicket(newTicket, presentation, res)
-                                .then(ticket => {
-                                    res.send(ticket);
-                                })
-                        })
-                        .catch(err => {
-                            return (err)
-                        });
+                    checkAvailabilityAndCreateTicket(newTicket, res, presentation);
                 }
             }
         })
@@ -186,34 +177,28 @@ async function getSeatIdWithRowAndColumn(ticket, res) {
     return new Promise((resolve, reject) => {
         getPresentation(ticket.presentation, res)
             .then(presentation => {
-                getAuditoriumOfPresentation(ticket.presentation, res)
-                    .then(auditoriumId => {
-                        const seatToReserve = {
-                            row: ticket.seatRow,
-                            column: ticket.seatColumn,
-                            auditorium: auditoriumId.toString()
-                        };
-                        getSeatId(seatToReserve, res)
-                            .then(seatId => {
-                                console.log("seat id :" + seatId + "+++++++++++++++++++++++++++++++++++")
-                                resolve (seatId);
-                            })
-                            .catch(err => {
-                                reject (err);
-                            });
+                const auditoriumId = presentation.auditorium;
+                const seatToReserve = {
+                    row: ticket.seatRow,
+                    column: ticket.seatColumn,
+                    auditorium: auditoriumId.toString()
+                };
+                getSeatId(seatToReserve, res)
+                    .then(seatId => {
+                        resolve(seatId);
                     })
                     .catch(err => {
-                        reject (err);
-                    });
+                        reject(err);
+                    })
             })
             .catch(err => {
-                reject (err);
+                reject(err);
             });
     });
 }
 
 module.exports.get = async (req, res) => {
-    //make the get ID from row and column and put it into the create function
+
     let ticket = req.query;
     if (notSeatIdButRowAndColumn(ticket) && ticket.presentation !== undefined) {
         const seatId = await getSeatIdWithRowAndColumn(ticket, res);
@@ -222,10 +207,8 @@ module.exports.get = async (req, res) => {
             seat: seatId,
         };
     }
-    // console.log("TICKET FILTER------------------------------------------------------------------------");
-    // console.log(ticket);
     Ticket.find(ticket)
-        .then(presentation => res.send(presentation))
+        .then(ticket => res.send(ticket))
         .catch(err => errors.databaseError(err, res))
 };
 
@@ -266,6 +249,24 @@ function updateTickets(req, res) {
                 res.send();
             }
         })
+        .catch(err => errors.databaseError(err, res))
+}
+
+function checkPresentationAndUpdateTicket(seat, ticketToUpdate, res, req) {
+    var seatAuditoriumId = seat.auditorium;
+    Presentation.findById(ticketToUpdate.presentation)
+        .then(presentation => {
+            if (thereIsNo(presentation)) {
+                return (errors.presentationNotFound(res));
+            } else {
+                let presentationAuditoriumId = presentation.auditorium;
+                if (seatAuditoriumId.toString() === presentationAuditoriumId.toString()) {
+                    updateTickets(req, res);
+                } else {
+                    return (errors.databaseError(err, res))
+                }
+            }
+        })
 }
 
 module.exports.putById = (req, res) => {
@@ -273,29 +274,25 @@ module.exports.putById = (req, res) => {
 
     Seat.findById(ticketToUpdate.seat)
         .then(seat => {
-            if (thereIsNo(seat)){
-                return(errors.seatNotFound(res));
-            }
-            else{
-                let seatAuditoriumId = seat.auditorium;
-                Presentation.findById(ticketToUpdate.presentation)
-                    .then(presentation =>{
-
-                        if (thereIsNo(seat)){
-                            return(errors.seatNotFound(res));
-                        }
-                        else {
-                            let presentationAuditoriumId = presentation.auditorium;
-                            if (seatAuditoriumId.toString() === presentationAuditoriumId.toString()) {
-                                updateTickets(req, res);
-                            }
-                        }
-                    })
+            if (thereIsNo(seat)) {
+                return (errors.seatNotFound(res));
+            } else {
+                checkPresentationAndUpdateTicket(seat, ticketToUpdate, res, req);
             }
         })
-        .catch(err => {return(errors.databaseError(err, res))})
+        .catch(err => {
+            return (errors.databaseError(err, res))
+        })
 };
 
+function deleteTicketById(id_filter, res) {
+    Ticket.findOneAndDelete(id_filter)
+        .then(ticket => {
+            res.status(204);
+            res.send({});
+        })
+        .catch(err => errors.databaseError(err, res))
+}
 
 module.exports.deleteById = (req, res) => {
     const id_filter = {'_id': new ObjectID(req.params.id)};
@@ -309,12 +306,3 @@ module.exports.deleteById = (req, res) => {
         })
         .catch(err => errors.databaseError(err, res))
 };
-
-function deleteTicketById(id_filter, res) {
-    Ticket.findOneAndDelete(id_filter)
-        .then(ticket => {
-            res.status(204);
-            res.send({});
-        })
-        .catch(err => errors.databaseError(err, res))
-}
