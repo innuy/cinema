@@ -5,8 +5,8 @@ Joi.objectId = require('joi-objectid')(Joi);
 const create = celebrate({
     body: {
         number: Joi.number().required(),
-        seatRows: Joi.number().required(),
-        seatColumns: Joi.number().required(),
+        seatRows: Joi.number().positive().integer().required(),
+        seatColumns: Joi.number().positive().integer().required(),
     }
 });
 
@@ -28,8 +28,8 @@ const putById = celebrate({
     },
     body: {
         number: Joi.number().required(),
-        seatRows: Joi.number().required(),
-        seatColumns: Joi.number().required(),
+        seatRows: Joi.number().positive().integer().required(),
+        seatColumns: Joi.number().positive().integer().required(),
     }
 });
 
