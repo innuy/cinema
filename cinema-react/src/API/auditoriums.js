@@ -17,8 +17,19 @@ function parseAuditoriums(auditoriums){
     for(let i = 0; i < auditoriums.length; i++){
         res.push({id: auditoriums[i]._id,
             number: auditoriums[i].number,
-            numberOfRows: auditoriums[i].rows,
-            numberOfColumns: auditoriums[i].columns})
+            numberOfRows: auditoriums[i].seatRows,
+            numberOfColumns: auditoriums[i].seatColumns})
+    }
+
+    return res;
+}
+
+function parseSingleAuditorium(auditorium){
+    const res = {
+        id: auditorium._id,
+        number: auditorium.number,
+        numberOfRows: auditorium.seatRows,
+        numberOfColumns: auditorium.seatColumns
     }
 
     return res;
@@ -27,18 +38,17 @@ function parseAuditoriums(auditoriums){
 export function getSingleAuditorium(id, callback){
     axios.get(urls.auditoriums + "/" + id)
         .then((response) => {
-            callback(true, response.data);
+            callback(true, parseSingleAuditorium(response.data[0]));
         }).catch((error) => {
         callback(false, "There was an error with the connection");
     });
 }
 
 export function addAuditorium(auditorium, callback){
-
     axios.post(urls.auditoriums, {
         number: auditorium.number,
-        rows: auditorium.numberOfRows,
-        columns: auditorium.numberOfColumns,
+        seatRows: auditorium.numberOfRows,
+        seatColumns: auditorium.numberOfColumns,
     })
         .then((response) => {
             callback(true);
@@ -50,13 +60,14 @@ export function addAuditorium(auditorium, callback){
 
 export function editAuditorium(auditorium, callback){
     axios.put(urls.auditoriums + "/" + auditorium.id, {
-        "number": auditorium.name,
-        "rows": auditorium.numberOfRows,
-        "columns": auditorium.numberOfColumns,
+        "number": auditorium.number,
+        "seatRows": auditorium.numberOfRows,
+        "seatColumns": auditorium.numberOfColumns,
     })
         .then((response) => {
             callback(true);
         }).catch((error) => {
+            console.log(JSON.stringify(error));
         callback(false, "There was an error with the connection");
     });
 }

@@ -1,0 +1,12 @@
+.seatElementContainer{
+    width: 8%
+}
+
+.seatElementImage{
+    width: 100%
+}
+
+.seatElementSelectedText{
+    width: 100%;
+    text-align: center;
+}

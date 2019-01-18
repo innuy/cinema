@@ -13,14 +13,25 @@ export function getPresentations(callback){
 
 function parsePresentations(presentations){
     const res = [];
-
     for(let i = 0; i < presentations.length; i++){
         res.push({id: presentations[i]._id,
-            film: presentations[i].film,
+            film: presentations[i].movie,
             auditorium: presentations[i].auditorium,
-            startTime: presentations[i].startTime,
-            tickets: presentations[i].tickets})
+            startTime: presentations[i].start,
+            tickets: presentations[i].soldTickets});
     }
+
+    return res;
+}
+
+function parseSinglePresentation(presentation){
+    const res = {
+        id: presentation._id,
+        film: presentation.movie,
+        auditorium: presentation.auditorium,
+        startTime: presentation.start,
+        tickets: presentation.soldTickets
+    };
 
     return res;
 }
@@ -28,7 +39,7 @@ function parsePresentations(presentations){
 export function getSinglePresentation(id, callback){
     axios.get(urls.presentations + "/" + id)
         .then((response) => {
-            callback(true, response.data);
+            callback(true, parseSinglePresentation(response.data[0]));
         }).catch((error) => {
         callback(false, "There was an error with the connection");
     });
@@ -37,26 +48,28 @@ export function getSinglePresentation(id, callback){
 export function addPresentation(presentation, callback){
 
     axios.post(urls.presentations, {
-        film: presentation.film,
+        movie: presentation.film,
         auditorium: presentation.auditorium,
-        startTime: presentation.startTime,
+        start: presentation.startTime,
     })
         .then((response) => {
             callback(true);
         }).catch((error) => {
+            console.log(JSON.stringify(error));
         callback(false, "There was an error with the connection");
     });
 }
 
 export function editPresentation(presentation, callback){
     axios.put(urls.presentations + "/" + presentation.id, {
-        "film": presentation.film,
+        "movie": presentation.film,
         "auditorium": presentation.auditorium,
-        "startTime": presentation.startTime,
+        "start": presentation.startTime,
     })
         .then((response) => {
             callback(true);
         }).catch((error) => {
+            console.log(JSON.stringify(error));
         callback(false, "There was an error with the connection");
     });
 }

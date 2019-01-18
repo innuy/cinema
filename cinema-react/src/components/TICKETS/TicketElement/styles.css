@@ -1,0 +1,24 @@
+.ticketElementContainer{
+
+}
+
+.ticketElementDelete{
+    width: 10%;
+    margin-left: 83%;
+    margin-top: 2%;
+}
+
+.ticketElementMainText{
+    font-size: 14px;
+    color: var(--subText);
+}
+
+.ticketElementSecondaryText{
+    font-size: 10px;
+    color: var(--text);
+}
+
+.ticketElementImage{
+    width: 70%;
+    margin-left: 15%;
+}
