@@ -1,0 +1,212 @@
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
+import OptionButton from "../../GENERAL/OptionButton";
+
+import './styles.css';
+import CastElement from "../CastElement/index";
+
+class FilmDetails extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.renderCast = this.renderCast.bind(this);
+        this.editCastCallback = this.editCastCallback.bind(this);
+        this.fileChangedHandler = this.fileChangedHandler.bind(this);
+        this.saveFilmData = this.saveFilmData.bind(this);
+    }
+
+    state = {
+        film: {
+            id: "",
+            name: "",
+            summary: "",
+            director: "",
+            cast: [],
+            duration: "",
+        },
+        imageFile: null,
+        imageError: false,
+        errors: {
+            name: false,
+            summary: false,
+            director: false,
+            cast: false,
+            duration: false,
+        }
+    };
+
+    componentWillReceiveProps(newProps) {
+
+        if(newProps.film){
+            this.setState({
+                film: newProps.film
+            });
+        }
+    }
+
+    renderCast(){
+        const res = [
+            <div className="filmDetailsTitleContainer row">
+                <div className="filmDetailsTitle col-8">Cast:</div>
+                <button className="filmDetailsTitleButton col-3 offset-1" onClick={() => {
+                    const film = this.state.film;
+                    film.cast.push("");
+                    this.setState({
+                        film
+                    });
+                }}>Add member</button>
+            </div>];
+
+        if(this.state.film.cast) {
+            for (let i = 0; i < this.state.film.cast.length; i++) {
+                res.push(<CastElement key={"castInput_" + i} index={i} text={this.state.film.cast[i]}
+                                      editCallback={this.editCastCallback}/>);
+            }
+        }
+
+        return res;
+    }
+
+    editCastCallback(index, newText){
+
+        const film = this.state.film;
+        if(film.cast.length > index) {
+            film.cast[index] = newText;
+            this.setState({
+                film
+            });
+        }
+    }
+
+    fileChangedHandler(event){
+        const file = event.target.files[0];
+        if(file.type.startsWith("image/")) {
+            this.setState({
+                imageFile: file,
+                imageError: false,
+            });
+        }
+        else{
+            this.setState({
+                imageFile: null,
+                imageError: true,
+            });
+        }
+    }
+
+    saveFilmData(){
+
+        const errors = {
+            name: false,
+            summary: false,
+            director: false,
+            duration: false,
+            cast: false,
+        };
+
+        if(!this.state.film.name){
+            errors.name = true;
+        }
+        if(!this.state.film.summary){
+            errors.summary = true;
+        }
+        if(!this.state.film.director){
+            errors.director = true;
+        }
+        if(!this.state.film.duration){
+            errors.duration = true;
+        }
+        if(!this.state.film.cast || this.state.film.cast.length <= 0){
+            errors.cast = true;
+        }
+
+        this.setState({
+            errors,
+        }, () => {
+            if(!this.filmHasErrors()) {
+                this.props.callback(this.state.film);
+            }
+        });
+
+    }
+
+    filmHasErrors(){
+        return this.state.errors.name && this.state.errors.summary && this.state.errors.director && this.state.errors.duration && this.state.errors.cast
+    }
+
+    render() {
+        return (
+            <div>
+                <div className="filmDetailsSeparator"/>
+                <div className="filmDetailsSeparator"/>
+                <div className="filmDetailsContainer">
+                    <div className="filmDetailsPageTitle">FILM INFORMATION</div>
+                    <div className="filmDetailsSeparator"/>
+                    <div className="filmDetailsTitle">Title:</div>
+                    <input className="filmInput" value={this.state.film.name} onChange={(event) => {
+                        const film = this.state.film;
+                        film.name = event.target.value;
+                        this.setState({
+                           film
+                        });
+                    }}/>
+                    {this.state.errors.name ? <div className="filmDetailsErrorMessage">There is an error in the name</div> : null}
+                    <div className="filmDetailsSeparator"/>
+                    <div className="filmDetailsTitle">Image:</div>
+                    <input type="file" onChange={this.fileChangedHandler} />
+                    {this.state.imageError ? <div>The file you selected is not of the correct type</div> : null}
+                    <div className="filmDetailsSeparator"/>
+                    <div className="filmDetailsTitle">Summary:</div>
+                    <input className="filmInput" value={this.state.film.summary} onChange={(event) => {
+                        const film = this.state.film;
+                        film.summary = event.target.value;
+                        this.setState({
+                            film
+                        });
+                    }}/>
+                    {this.state.errors.summary ? <div className="filmDetailsErrorMessage">There is an error in the summary</div> : null}
+                    <div className="filmDetailsSeparator"/>
+                    <div className="filmDetailsTitle">Director:</div>
+                    <input className="filmInput" value={this.state.film.director} onChange={(event) => {
+                        const film = this.state.film;
+                        film.director = event.target.value;
+                        this.setState({
+                            film
+                        });
+                    }}/>
+                    {this.state.errors.director ? <div className="filmDetailsErrorMessage">There is an error in the director</div> : null}
+                    <div className="filmDetailsSeparator"/>
+                    {this.renderCast()}
+                    {this.state.errors.cast ? <div className="filmDetailsErrorMessage">There is an error in the cast</div> : null}
+                    <div className="filmDetailsSeparator"/>
+                    <div className="filmDetailsTitle">Duration:</div>
+                    <input className="filmInput" value={this.state.film.duration} onChange={(event) => {
+                        const film = this.state.film;
+                        film.duration = event.target.value;
+                        this.setState({
+                            film
+                        });
+                    }}/>
+                    {this.state.errors.duration ? <div className="filmDetailsErrorMessage">There is an error in the duration</div> : null}
+                    <div className="filmDetailsSeparator"/>
+                    <div className="filmDetailsSeparator"/>
+                    <div className="filmDetailsSeparator"/>
+                    <div className="filmDetailsSeparator"/>
+                    <OptionButton onClick={this.saveFilmData} text={this.props.buttonText}/>
+                </div>
+                <div className="filmDetailsSeparator"/>
+                <div className="filmDetailsSeparator"/>
+            </div>
+        );
+    }
+}
+
+FilmDetails.propTypes = {
+    film: PropTypes.object,
+    callback: PropTypes.func.isRequired,
+    buttonText: PropTypes.string.isRequired,
+};
+
+export default FilmDetails;

@@ -11,6 +11,20 @@ export function getTickets(callback){
     });
 }
 
+export function addTicket(presentationId, userId, callback){
+
+    axios.post(urls.films, {
+        presentationId,
+        userId,
+    })
+        .then((response) => {
+            callback(true);
+        }).catch((error) => {
+        console.log(JSON.stringify(error));
+        callback(false, "There was an error with the connection");
+    });
+}
+
 function parseTickets(tickets){
     const res = [];
 
@@ -31,10 +45,21 @@ export function getSingleTicket(id, callback){
     });
 }
 
-export function reserveTicket(presentationId, callback){
+export function getMyTickets(callback){
+    axios.get(urls.tickets)
+        .then((response) => {
+            callback(true, response.data);
+        }).catch((error) => {
+        callback(false, "There was an error with the connection");
+    });
+}
+
+export function reserveTicket(presentationId, row, column, callback){
 
     axios.post(urls.tickets, {
-        /*TODO: SEND presentationId DATA*/
+        "presentation": presentationId,
+        "seatRow": row,
+        "seatColumn": column
     })
         .then((response) => {
             callback(true);
