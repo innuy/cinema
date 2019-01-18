@@ -34,7 +34,7 @@ function createTicket(newTicket, presentation, res) {
                 updatePresentationSoldTickets(newTicket, presentation, res);
                 resolve(ticket);
             })
-            .catch(err => reject(errors.databaseError(res, err)));
+            .catch(err => reject(errors.databaseError(err, res)));
     });
 }
 
@@ -49,7 +49,7 @@ function checkSeatIsAvailable(ticketFilter, res) {
                     reject("seat is unavailable");
                 }
             })
-            .catch(err => reject(errors.databaseError(res, err)));
+            .catch(err => reject(errors.databaseError(err, res)));
     });
 }
 
@@ -63,7 +63,7 @@ const getAuditoriumOfPresentation = (presentationId, res) => {
                     resolve(presentation.auditorium);
                 }
             })
-            .catch(err => reject(errors.databaseError(res, err)));
+            .catch(err => reject(errors.databaseError(err, res)));
     });
 };
 
@@ -75,12 +75,12 @@ const getSeatId = (seatDocument, res) => {
             auditorium: new ObjectID(seatDocument.auditorium)
         }).then(seat => {
             if (seat === null) {
-                reject(errors.seatNotFound());
+                reject(errors.seatNotFound(res));
             } else {
                 resolve(seat.id);
             }
         })
-            .catch(err => reject(errors.databaseError(res, err)));
+            .catch(err => reject(errors.databaseError(err, res)));
     });
 };
 
@@ -95,7 +95,7 @@ function getPresentation(presentationId, res) {
                     resolve(presentation);
                 }
             })
-            .catch(err => reject(errors.databaseError(res, err)));
+            .catch(err => reject(errors.databaseError(err, res)));
     });
 }
 
