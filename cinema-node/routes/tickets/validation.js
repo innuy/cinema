@@ -6,8 +6,8 @@ const create = celebrate({
     body: {
         presentation: Joi.objectId().required(),
         seat: Joi.objectId(),
-        seatRow: Joi.number(),
-        seatColumn: Joi.number(),
+        seatRow: Joi.number().positive().integer(),
+        seatColumn: Joi.number().positive().integer(),
     }
 });
 
@@ -15,8 +15,8 @@ const get = celebrate({
     query: {
         presentation: Joi.objectId(),
         seat: Joi.objectId(),
-        seatRow: Joi.number(),
-        seatColumn: Joi.number(),
+        seatRow: Joi.number().positive().integer(),
+        seatColumn: Joi.number().positive().integer(),
     }
 });
 
