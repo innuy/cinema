@@ -10,13 +10,13 @@ import './styles.css';
 class PresentationView extends Component {
 
     renderPresentations(){
-        const result = [];
+        const elementList = [];
 
         for(let i = 0; i < this.props.presentations.length; i++){
-            result.push(<PresentationElement key={"presentation_"+i} presentation={this.props.presentations[i]} reserveTicket={this.props.reserveTicket} deletePresentation={this.props.deletePresentation} isAdmin={this.props.isAdmin}/>);
+            elementList.push(<PresentationElement key={"presentation_"+i} presentation={this.props.presentations[i]} reserveTicket={this.props.reserveTicket} deletePresentation={this.props.deletePresentation} isAdmin={this.props.isAdmin}/>);
         }
 
-        return result
+        return elementList;
     }
 
 

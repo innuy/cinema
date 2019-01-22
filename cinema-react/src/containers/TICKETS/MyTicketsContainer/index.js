@@ -9,7 +9,7 @@ import MyTickets from '../../../components/TICKETS/MyTickets';
 class MyTicketsContainer extends Component {
 
     state = {
-        tickets: [{},{},{}],
+        tickets: [],
         isAdmin: false,
     };
 
