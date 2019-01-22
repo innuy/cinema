@@ -1,6 +1,11 @@
-.presentationViewContainer{
+.presentationViewContainer {
     flex-direction: row;
     background-color: var(--secondBackground);
+
+}
+
+.presentationRow{
+    margin-top: 10pt;
 }
 
 .presentationViewTitle{

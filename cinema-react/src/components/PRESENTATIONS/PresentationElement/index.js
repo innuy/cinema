@@ -18,7 +18,7 @@ class PresentationElement extends Component {
                 <div className="presentationElementMainText">AUDITORIUM: {this.props.presentation.auditorium}</div>
                 <div className="presentationElementSecondaryText">START TIME: {this.props.presentation.startTime}</div>
                 <div className="presentationElementSecondaryText">TICKETS: {this.props.presentation.tickets}</div>
-                {this.props.isAdmin ? null : <button onClick={() => {this.props.reserveTicket(this.props.id)}}>Reserve a Ticket</button>}
+                {this.props.isAdmin ? null : <button onClick={() => {this.props.reserveTicket(this.props.presentation.id)}}>Reserve a Ticket</button>}
             </div>
         );
     }

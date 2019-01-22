@@ -17,7 +17,7 @@ class MyTickets extends Component {
         const result = [];
 
         for(let i = 0; i < this.props.tickets.length; i++){
-            result.push(<TicketElement key={"ticket_"+i} film={this.props.tickets[i]}/>);
+            result.push(<TicketElement key={"ticket_"+i} ticket={this.props.tickets[i]} isAdmin={false}/>);
         }
 
         return result

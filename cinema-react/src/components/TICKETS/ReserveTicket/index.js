@@ -51,7 +51,7 @@ class ReserveTicket extends Component {
         return (
             <div>
                 {this.renderSeats()}
-                <button onClick={() => {this.props.finalSelection(this.state.row, this.state.column)}}>Confirm</button>
+                <button onClick={() => {this.props.finalSelection(this.state.row+1, this.state.column+1)}}>Confirm</button>
             </div>
         );
     }
