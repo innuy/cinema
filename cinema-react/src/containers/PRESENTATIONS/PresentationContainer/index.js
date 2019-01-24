@@ -47,8 +47,8 @@ class PresentationContainer extends Component {
     }
 
     deletePresentation(id){
-        deletePresentation(id, () => {
-            this.refreshPresentations();
+        deletePresentation(id, (success) => {
+                this.refreshPresentations();
 
             /* TODO: HANDLE ERROR */
         })
