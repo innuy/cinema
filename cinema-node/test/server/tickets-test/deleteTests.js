@@ -8,6 +8,7 @@ let app;
 require('../setup');
 
 const Ticket = require("../../../db/models/tickets");
+const Presentation = require("../../../db/models/presentations");
 
 const testingTicketId = '5c3606876e57543fe8a5787c';
 const testingMovieId = '5c2f723b62607929f4c347d3';
@@ -23,6 +24,23 @@ const testingTicketData = {
     auditorium: testingAuditoriumId,
     start: futureDate.toISOString(),
     soldTickets: 0,
+};
+
+const presentationModel = {
+    _id: "5c37ac34638afe1e734f9d63",
+    movie: "5c2f723b62607929f4c347d3",
+    auditorium: "5c37ac1e638afe1e734f9cfe",
+    start: "2019-02-20T13:52:22.000Z",
+    soldTickets: 4,
+    __v: 0
+};
+const presentationModelOneLessTicketSold = {
+    _id: "5c37ac34638afe1e734f9d63",
+    movie: "5c2f723b62607929f4c347d3",
+    auditorium: "5c37ac1e638afe1e734f9cfe",
+    start: "2019-02-20T13:52:22.000Z",
+    soldTickets: 3,
+    __v: 0
 };
 
 function ticketDeleteTestbyId(done) {
@@ -41,7 +59,23 @@ function ticketDeleteTestbyId(done) {
         })
 }
 
-function ticketWrongIdDeleteTest(done) {
+function ticketWrongPresentationIdDeleteTest(done) {
+    request(app)
+        .del('/tickets/' + testingTicketIdToDelete)
+        .send()
+        .then((res) => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.equal(res.status, 412);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+function ticketWrongTicketIdDeleteTest(done) {
     request(app)
         .del('/tickets/' + testingTicketWrongIdToDelete)
         .send()
@@ -63,18 +97,31 @@ describe("Ticket Delete by id test", function () {
     });
 
     afterEach(() => {
-        Ticket.find.restore();
+        Ticket.findById.restore();
+        Presentation.findById.restore();
         Ticket.findOneAndDelete.restore();
+        Presentation.findOneAndUpdate.restore();
     });
 
     it('Successful - Delete ticket', (done) => {
-        sinon.stub(Ticket, 'find').resolves([testingTicketData]);
+        sinon.stub(Ticket, 'findById').resolves(testingTicketData);
+        sinon.stub(Presentation, 'findById').resolves(presentationModel);
         sinon.stub(Ticket, 'findOneAndDelete').resolves();
+        sinon.stub(Presentation, 'findOneAndUpdate').resolves(presentationModelOneLessTicketSold);
         ticketDeleteTestbyId(done);
     });
-    it('Failed - Wrong id', (done) => {
-        sinon.stub(Ticket, 'find').resolves(null);
+    it('Failed - Wrong presentation id', (done) => {
+        sinon.stub(Ticket, 'findById').resolves(testingTicketData);
+        sinon.stub(Presentation, 'findById').resolves(null);
         sinon.stub(Ticket, 'findOneAndDelete').resolves(null);
-        ticketWrongIdDeleteTest(done);
+        sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
+        ticketWrongPresentationIdDeleteTest(done);
+    });
+    it('Failed - Wrong ticket id', (done) => {
+        sinon.stub(Ticket, 'findById').resolves(null);
+        sinon.stub(Presentation, 'findById').resolves(null);
+        sinon.stub(Ticket, 'findOneAndDelete').resolves(null);
+        sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
+        ticketWrongTicketIdDeleteTest(done);
     });
 });

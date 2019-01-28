@@ -34,7 +34,10 @@ function createTicket(newTicket, presentation, res) {
                 updatePresentationSoldTickets(newTicket, presentation, res);
                 resolve(ticket);
             })
-            .catch(err => reject(errors.databaseError(err, res)));
+            .catch(err => {
+                errors.databaseError(err, res);
+                reject(err)
+            });
     });
 }
 
@@ -49,7 +52,10 @@ function checkSeatIsAvailable(ticketFilter, res) {
                     reject("seat is unavailable");
                 }
             })
-            .catch(err => reject(errors.databaseError(err, res)));
+            .catch(err => {
+                errors.databaseError(err, res);
+                reject(err)
+            });
     });
 }
 
@@ -57,13 +63,16 @@ const getAuditoriumOfPresentation = (presentationId, res) => {
     return new Promise((resolve, reject) => {
         Presentation.findOne({'_id': new ObjectID(presentationId)})
             .then(presentation => {
-                if (presentation === null) {
+                if (thereIsNo(presentation)) {
                     reject(errors.presentationNotFound(res));
                 } else {
                     resolve(presentation.auditorium);
                 }
             })
-            .catch(err => reject(errors.databaseError(err, res)));
+            .catch(err => {
+                errors.databaseError(err, res);
+                reject(err)
+            });
     });
 };
 
@@ -80,13 +89,16 @@ const getSeatId = (seatDocument, res) => {
                 resolve(seat.id);
             }
         })
-            .catch(err => reject(errors.databaseError(err, res)));
+            .catch(err => {
+                errors.databaseError(err, res);
+                reject(err)
+            });
     });
 };
 
-function getPresentation(presentationId, res) {
+function getPresentationById(presentationId, res) {
     return new Promise((resolve, reject) => {
-        Presentation.findOne({'_id': new ObjectID(presentationId)})
+        Presentation.findById(presentationId)
             .then(presentation => {
                 if (presentation === null) {
                     errors.presentationNotFound(res);
@@ -95,7 +107,10 @@ function getPresentation(presentationId, res) {
                     resolve(presentation);
                 }
             })
-            .catch(err => reject(errors.databaseError(err, res)));
+            .catch(err => {
+                errors.databaseError(err, res);
+                reject(err)
+            });
     });
 }
 
@@ -152,7 +167,7 @@ module.exports.create = async (req, res) => {
     let newTicket = req.body;
     let presentationId = newTicket.presentation;
 
-    getPresentation(presentationId, res)
+    getPresentationById(presentationId, res)
         .then(presentation => {
             let now = new Date();
             let presentationDate = new Date(presentation.start);
@@ -175,7 +190,7 @@ module.exports.create = async (req, res) => {
 
 async function getSeatIdWithRowAndColumn(ticket, res) {
     return new Promise((resolve, reject) => {
-        getPresentation(ticket.presentation, res)
+        getPresentationById(ticket.presentation, res)
             .then(presentation => {
                 const auditoriumId = presentation.auditorium;
                 const seatToReserve = {
@@ -209,7 +224,8 @@ module.exports.get = async (req, res) => {
     }
     Ticket.find(ticket)
         .then(ticket => res.send(ticket))
-        .catch(err => errors.databaseError(err, res))
+        .catch(err =>
+            errors.databaseError(err, res))
 };
 
 function thereIsNo(obj) {
@@ -285,24 +301,82 @@ module.exports.putById = (req, res) => {
         })
 };
 
-function deleteTicketById(id_filter, res) {
-    Ticket.findOneAndDelete(id_filter)
-        .then(ticket => {
-            res.status(204);
-            res.send({});
+function deleteTicketById(ticketId, res) {
+    return new Promise((resolve, reject) => {
+        const id_filter = {'_id': new ObjectID(ticketId)};
+        Ticket.findOneAndDelete(id_filter).then(ticket => {
+            resolve(204);
         })
-        .catch(err => errors.databaseError(err, res))
+            .catch(err => {
+                errors.databaseError(err, res);
+                reject(err)
+            });
+    })
+}
+
+const getTicketById = (ticketId, res) => {
+    return new Promise((resolve, reject) => {
+        Ticket.findById(ticketId).then(ticket => {
+            if (ticket === null) {
+                errors.ticketNotFound(res);
+                reject("ticket not found");
+            } else {
+                resolve(ticket);
+            }
+        })
+            .catch(err => {
+                errors.databaseError(err, res);
+                reject(err)
+            });
+    });
+};
+
+function subtractPresentationSoldTickets(ticket, presentation, res) {
+    const id_filter = {'_id': new ObjectID(ticket.presentation)};
+    const setToReturnUpdatedValue = {new: true};
+    const parametersToSet = {$set: {soldTickets: presentation.soldTickets - 1}};
+    return new Promise((resolve, reject) => {
+        Presentation.findOneAndUpdate(
+            id_filter,
+            parametersToSet,
+            setToReturnUpdatedValue,
+        )
+            .then(presentation => {
+                if (presentation === null) {
+                    errors.presentationNotFound(res);
+                    reject("presentation not found");
+                } else {
+                    resolve(presentation);
+                }
+            })
+            .catch(err => {
+                errors.databaseError(err, res);
+                reject(err)
+            });
+    });
 }
 
 module.exports.deleteById = (req, res) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
-    Ticket.find(id_filter)
-        .then(tickets => {
-            if (thereIsNo(tickets)) {
-                errors.ticketNotFound(res);
-            } else {
-                deleteTicketById(id_filter, res);
-            }
+    getTicketById(req.params.id, res).then(ticket => {
+        getPresentationById(ticket.presentation, res).then(presentation => {
+            deleteTicketById(ticket._id, res).then(successCode => {
+                subtractPresentationSoldTickets(ticket, presentation, res).then(newPresentation => {
+                    res.status(204);
+                    res.send();
+                })
+                    .catch(err => {
+                        return (err)
+                    });
+            })
+                .catch(err => {
+                    return (err)
+                });
         })
-        .catch(err => errors.databaseError(err, res))
+            .catch(err => {
+                return (err)
+            });
+    })
+        .catch(err => {
+            return (err)
+        });
 };
