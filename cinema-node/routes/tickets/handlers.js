@@ -222,8 +222,14 @@ module.exports.get = async (req, res) => {
             seat: seatId,
         };
     }
+    // Presentation.find().then(presentations => {
     Ticket.find(ticket)
-        .then(ticket => res.send(ticket))
+        .populate({ path: 'presentation', populate: { path: 'movie'}})
+        .populate({ path: 'presentation', populate: { path: 'auditorium'}})
+        .populate('seat')
+        .then(tickets => {
+            res.send(tickets)
+        })
         .catch(err =>
             errors.databaseError(err, res))
 };
@@ -236,9 +242,10 @@ function thereIsNo(obj) {
 }
 
 module.exports.getById = (req, res) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
-
-    Ticket.find(id_filter)
+    Ticket.findById(req.params.id)
+        .populate({ path: 'presentation', populate: { path: 'movie'}})
+        .populate({ path: 'presentation', populate: { path: 'auditorium'}})
+        .populate('seat')
         .then(ticket => {
             if (thereIsNo(ticket)) {
                 errors.ticketNotFound(res);

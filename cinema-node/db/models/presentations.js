@@ -6,10 +6,12 @@ var PresentationSchema = new Schema({
     movie: {
         type: ObjectId,
         required: true,
+        ref: 'Movie',
     },
     auditorium: {
         type: ObjectId,
         required: true,
+        ref: 'Auditorium',
     },
     start: {
         type: Date,

@@ -14,6 +14,7 @@ var SeatSchema = new Schema({
     auditorium: {
         type: ObjectId,
         required: true,
+        ref: 'Auditorium',
     },
 });
 

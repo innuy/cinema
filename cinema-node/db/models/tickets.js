@@ -6,10 +6,12 @@ var TicketSchema = new Schema({
     presentation: {
         type: ObjectId,
         required: true,
+        ref: 'Presentation'
     },
     seat: {
         type: ObjectId,
         required: true,
+        ref: 'Seat',
     },
 });
 
