@@ -1,6 +1,8 @@
 // External modules
 var express = require('express');
+const logger = require('morgan');
 const bodyParser = require('body-parser');
+
 const {errors} = require('celebrate');
 var cors = require('cors');
 
@@ -19,6 +21,8 @@ var port = 8000;
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+app.use(logger('dev'));
 
 db.connectMongo().then(() => {
     console.log(db.isConnected());

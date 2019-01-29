@@ -21,6 +21,6 @@ module.exports.auditoriumChangingSize = res => {
     res.send({
         "statusCode": 403,
         "error": "Not Found",
-        "message": "the auditorium size is locked"//for the time being because of the seat references in the tickets
+        "message": "the auditorium size is locked"
     });
 };

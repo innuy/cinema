@@ -5,15 +5,20 @@ const should = require("chai").should();
 const request = require('supertest');
 let app;
 
+const Tools = require("../../../routes/presentations/tools");
 require('../setup');
 
 const Presentation = require("../../../db/models/presentations");
 const Movie = require("../../../db/models/movies");
 const Auditorium = require("../../../db/models/auditoriums");
 
-const testingMovieId = '5c2f723b62607929f4c347d3';
+
+const presentationHandlers = require("../../../routes/presentations/handlers");
+
+
+const testingMovieId = '5c3cca061b450f3ed1e2dfde';
 const testingAuditoriumId = '5c34a1ce4150f31a815d41b4';
-const testingWrongId = '000000000000000000000001';
+const testingWrongId = '5c34a1ce4150f31a815d41b0';
 
 const date = new Date("August 25, 1825 12:00:00");
 
@@ -38,22 +43,6 @@ const testingPresentationDataWithAuditoriumWrongInformation = {
     start: date.toISOString(),
 };
 
-function presentationPostTest(done) {
-    request(app)
-        .post('/presentations')
-        .send(testingPresentationData)
-        .then(res => {
-            setTimeout(() => {
-                res.should.be.an('object');
-                assert.strictEqual(res.status, 200);
-                done();
-            });
-        })
-        .catch(err => {
-            console.log(err);
-        })
-}
-
 const testingMovieData = {
     _id: testingMovieId,
     name: "Toy Story",
@@ -71,6 +60,22 @@ const testingAuditoriumData = {
     seatRows: 20,
     seatColumns: 10,
 };
+
+function presentationPostTest(done) {
+    request(app)
+        .post('/presentations')
+        .send(testingPresentationData)
+        .then(res => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.strictEqual(res.status, 200);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
 
 function presentationEmptyPostTest(done) {
     request(app)
@@ -132,6 +137,26 @@ function presentationWrongAuditoriumInformationPostTest(done) {
         })
 }
 
+describe("Presentation Post Test with incorrect Db info", function () {
+    beforeEach(() => {
+        sinon.stub(Tools, 'checkMovie').rejects(Error("movie not found"));
+        app = require('../../../app');
+    });
+    afterEach(() => {
+        Tools.checkMovie.restore();
+    });
+    it('Failed - Request with wrong movie id', (done) => {
+        presentationWrongMovieIdPostTest(done);
+    });
+    it('Failed - Request with wrong auditorium id ', (done) => {
+        sinon.stub(Movie, 'findOne').resolves(testingMovieData);
+        sinon.stub(Auditorium, 'findOne').resolves({});
+        presentationWrongAuditoriumInformationPostTest(done);
+        Auditorium.findOne.restore();
+        Movie.findOne.restore();
+    });
+});
+
 describe("Presentation Post Test", function () {
     beforeEach(() => {
         sinon.stub(Movie, 'findOne').resolves(testingMovieData);
@@ -153,20 +178,6 @@ describe("Presentation Post Test", function () {
     it('Successful - Create presentation', presentationPostTest);
     it('Failed - Empty request', presentationEmptyPostTest);
     it('Failed - Request with wrong name ', presentationWrongInformationPostTest);
+
 });
 
-describe("Presentation Post Test with incorrect Db info", function () {
-
-    it('Failed - Request with wrong movie id ', () => {
-        sinon.stub(Movie, 'findOne').resolves(null);
-        presentationWrongMovieIdPostTest;
-        Movie.findOne.restore();
-    });
-    it('Failed - Request with wrong auditorium id ', () => {
-        sinon.stub(Movie, 'findOne').resolves(testingMovieData);
-        sinon.stub(Auditorium, 'findOne').resolves(null);
-        presentationWrongAuditoriumInformationPostTest;
-        Movie.findOne.restore();
-        Auditorium.findOne.restore();
-    });
-});

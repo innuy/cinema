@@ -1,9 +1,9 @@
-const { celebrate, Joi } = require('celebrate');
+const {celebrate, Joi} = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 
 
 const create = celebrate({
-    body:{
+    body: {
         movie: Joi.objectId().required(),
         auditorium: Joi.objectId().required(),
         start: Joi.date().iso().required(),
@@ -15,7 +15,7 @@ const get = celebrate({
         movie: Joi.objectId(),
         auditorium: Joi.objectId(),
         start: Joi.date().iso(),
-        soldTickets: Joi.number(),
+        soldTickets: Joi.number().positive().integer(),
     }
 });
 

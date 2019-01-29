@@ -59,7 +59,7 @@ const moviePostTest = async () => {
         theDarkKnight,
         twelveAngryMen,
     ];
-    console.log('hola');
+    console.log('Add movies:');
     top5IMDbMovies.forEach(async movie => {
 
         Movie.create(movie)

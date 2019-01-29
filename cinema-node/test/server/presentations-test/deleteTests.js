@@ -31,7 +31,7 @@ function presentationDeleteTestbyId(done) {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.equal(res.status, 204);
-            done();
+                done();
             });
         })
         .catch(err => {
@@ -47,7 +47,7 @@ function presentationWrongIdDeleteTest(done) {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.equal(res.status, 404);
-            done();
+                done();
             });
         })
         .catch(err => {
@@ -65,14 +65,14 @@ describe("Presentation Delete by id test", function () {
         Presentation.findOneAndDelete.restore();
     });
 
-    it('Successful - Delete presentation', () => {
+    it('Successful - Delete presentation', (done) => {
         sinon.stub(Presentation, 'find').resolves([testingPresentationData]);
         sinon.stub(Presentation, 'findOneAndDelete').resolves();
-        presentationDeleteTestbyId;
+        presentationDeleteTestbyId(done);
     });
-    it('Failed - Wrong id', () => {
+    it('Failed - Wrong id', (done) => {
         sinon.stub(Presentation, 'find').resolves(null);
         sinon.stub(Presentation, 'findOneAndDelete').resolves(null);
-        presentationWrongIdDeleteTest;
+        presentationWrongIdDeleteTest(done);
     });
 });

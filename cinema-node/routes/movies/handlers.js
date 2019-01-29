@@ -1,4 +1,3 @@
-
 const errors = require("./errors");
 const Movie = require('../../db/models/movies');
 var ObjectID = require('mongodb').ObjectID;
@@ -73,7 +72,7 @@ function deleteMovieById(id_filter, res) {
 }
 
 function thereIsNoMovie(movie) {
-    if ( Array.isArray(movie))
+    if (Array.isArray(movie))
         return movie.length === 0;
     else
         return movie === null;
