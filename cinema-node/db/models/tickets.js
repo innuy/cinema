@@ -13,6 +13,10 @@ var TicketSchema = new Schema({
         required: true,
         ref: 'Seat',
     },
+    sold: {
+        type: Boolean,
+        required: true,
+    },
 });
 
 var TicketModel = mongoose.model('Ticket', TicketSchema);

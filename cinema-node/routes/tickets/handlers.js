@@ -7,6 +7,108 @@ const Auditorium = require("../../db/models/auditoriums");
 
 var ObjectID = require('mongodb').ObjectID;
 
+module.exports.create = async (req, res) => {
+    let newTicket = req.body;
+    newTicket.sold = false;
+    let presentationId = newTicket.presentation;
+
+    getPresentationById(presentationId, res)
+        .then(presentation => {
+            const presentationDate = new Date(presentation.start);
+            if (presentationHasAlreadyStarted(now, presentationDate)) {
+                errors.presentationAlreadyStarted(res, presentationId);
+                return ('presentation id=' + presentationId + ' already started');
+            } else {
+                if (notSeatIdButRowAndColumn(newTicket)) {
+                    newTicket = createTicketWithSeatRowAndColumn(presentationId, res, newTicket, presentation);
+
+                } else {
+                    checkAvailabilityAndCreateTicket(newTicket, res, presentation);
+                }
+            }
+        })
+        .catch(err => {
+            return (err)
+        });
+};
+
+module.exports.get = async (req, res) => {
+
+    let ticket = req.query;
+    if (notSeatIdButRowAndColumn(ticket) && ticket.presentation !== undefined) {
+        const seatId = await getSeatIdWithRowAndColumn(ticket, res);
+        ticket = {
+            presentation: ticket.presentation,
+            seat: seatId,
+        };
+    }
+    // Presentation.find().then(presentations => {
+    Ticket.find(ticket)
+        .populate({ path: 'presentation', populate: { path: 'movie'}})
+        .populate({ path: 'presentation', populate: { path: 'auditorium'}})
+        .populate('seat')
+        .then(tickets => {
+            res.send(tickets)
+        })
+        .catch(err =>
+            errors.databaseError(err, res))
+};
+
+module.exports.getById = (req, res) => {
+    Ticket.findById(req.params.id)
+        .populate({ path: 'presentation', populate: { path: 'movie'}})
+        .populate({ path: 'presentation', populate: { path: 'auditorium'}})
+        .populate('seat')
+        .then(ticket => {
+            if (thereIsNo(ticket)) {
+                errors.ticketNotFound(res);
+            } else {
+                res.send(ticket);
+            }
+        })
+        .catch(err => errors.databaseError(err, res))
+};
+
+module.exports.putById = (req, res) => {
+    let ticketToUpdate = req.body;
+
+    Seat.findById(ticketToUpdate.seat)
+        .then(seat => {
+            if (thereIsNo(seat)) {
+                return (errors.seatNotFound(res));
+            } else {
+                checkPresentationAndUpdateTicket(seat, ticketToUpdate, res, req);
+            }
+        })
+        .catch(err => {
+            return (errors.databaseError(err, res))
+        })
+};
+
+module.exports.deleteById = (req, res) => {
+    getTicketById(req.params.id, res).then(ticket => {
+        getPresentationById(ticket.presentation, res).then(presentation => {
+            deleteTicketById(ticket._id, res).then(successCode => {
+                subtractPresentationSoldTickets(ticket, presentation, res).then(newPresentation => {
+                    res.status(204);
+                    res.send();
+                })
+                    .catch(err => {
+                        return (err)
+                    });
+            })
+                .catch(err => {
+                    return (err)
+                });
+        })
+            .catch(err => {
+                return (err)
+            });
+    })
+        .catch(err => {
+            return (err)
+        });
+};
 
 function updatePresentationSoldTickets(ticket, presentation, res) {
     const id_filter = {'_id': new ObjectID(ticket.presentation)};
@@ -159,34 +261,10 @@ function createTicketWithSeatRowAndColumn(presentationId, res, newTicket, presen
     return newTicket;
 }
 
-function presentationHasAlreadyStarted(now, presentationDate) {
+function presentationHasAlreadyStarted(presentationDate) {
+    const now = new Date();
     return now.getTime() >= presentationDate.getTime();
 }
-
-module.exports.create = async (req, res) => {
-    let newTicket = req.body;
-    let presentationId = newTicket.presentation;
-
-    getPresentationById(presentationId, res)
-        .then(presentation => {
-            let now = new Date();
-            let presentationDate = new Date(presentation.start);
-            if (presentationHasAlreadyStarted(now, presentationDate)) {
-                errors.presentationAlreadyStarted(res, presentationId);
-                return ('presentation id=' + presentationId + ' already started');
-            } else {
-                if (notSeatIdButRowAndColumn(newTicket)) {
-                    newTicket = createTicketWithSeatRowAndColumn(presentationId, res, newTicket, presentation);
-
-                } else {
-                    checkAvailabilityAndCreateTicket(newTicket, res, presentation);
-                }
-            }
-        })
-        .catch(err => {
-            return (err)
-        });
-};
 
 async function getSeatIdWithRowAndColumn(ticket, res) {
     return new Promise((resolve, reject) => {
@@ -212,49 +290,12 @@ async function getSeatIdWithRowAndColumn(ticket, res) {
     });
 }
 
-module.exports.get = async (req, res) => {
-
-    let ticket = req.query;
-    if (notSeatIdButRowAndColumn(ticket) && ticket.presentation !== undefined) {
-        const seatId = await getSeatIdWithRowAndColumn(ticket, res);
-        ticket = {
-            presentation: ticket.presentation,
-            seat: seatId,
-        };
-    }
-    // Presentation.find().then(presentations => {
-    Ticket.find(ticket)
-        .populate({ path: 'presentation', populate: { path: 'movie'}})
-        .populate({ path: 'presentation', populate: { path: 'auditorium'}})
-        .populate('seat')
-        .then(tickets => {
-            res.send(tickets)
-        })
-        .catch(err =>
-            errors.databaseError(err, res))
-};
-
 function thereIsNo(obj) {
     if (Array.isArray(obj))
         return obj.length === 0;
     else
         return obj === null;
 }
-
-module.exports.getById = (req, res) => {
-    Ticket.findById(req.params.id)
-        .populate({ path: 'presentation', populate: { path: 'movie'}})
-        .populate({ path: 'presentation', populate: { path: 'auditorium'}})
-        .populate('seat')
-        .then(ticket => {
-            if (thereIsNo(ticket)) {
-                errors.ticketNotFound(res);
-            } else {
-                res.send(ticket);
-            }
-        })
-        .catch(err => errors.databaseError(err, res))
-};
 
 function updateTickets(req, res) {
     const id_filter = {'_id': new ObjectID(req.params.id)};
@@ -291,22 +332,6 @@ function checkPresentationAndUpdateTicket(seat, ticketToUpdate, res, req) {
             }
         })
 }
-
-module.exports.putById = (req, res) => {
-    let ticketToUpdate = req.body;
-
-    Seat.findById(ticketToUpdate.seat)
-        .then(seat => {
-            if (thereIsNo(seat)) {
-                return (errors.seatNotFound(res));
-            } else {
-                checkPresentationAndUpdateTicket(seat, ticketToUpdate, res, req);
-            }
-        })
-        .catch(err => {
-            return (errors.databaseError(err, res))
-        })
-};
 
 function deleteTicketById(ticketId, res) {
     return new Promise((resolve, reject) => {
@@ -362,28 +387,3 @@ function subtractPresentationSoldTickets(ticket, presentation, res) {
             });
     });
 }
-
-module.exports.deleteById = (req, res) => {
-    getTicketById(req.params.id, res).then(ticket => {
-        getPresentationById(ticket.presentation, res).then(presentation => {
-            deleteTicketById(ticket._id, res).then(successCode => {
-                subtractPresentationSoldTickets(ticket, presentation, res).then(newPresentation => {
-                    res.status(204);
-                    res.send();
-                })
-                    .catch(err => {
-                        return (err)
-                    });
-            })
-                .catch(err => {
-                    return (err)
-                });
-        })
-            .catch(err => {
-                return (err)
-            });
-    })
-        .catch(err => {
-            return (err)
-        });
-};
