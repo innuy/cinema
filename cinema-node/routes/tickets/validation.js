@@ -33,6 +33,7 @@ const putById = celebrate({
     body: {
         presentation: Joi.objectId().required(),
         seat: Joi.objectId().required(),
+        sold: Joi.boolean().required(),
     }
 });
 
