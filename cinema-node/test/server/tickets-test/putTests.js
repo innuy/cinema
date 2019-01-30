@@ -49,7 +49,6 @@ const testingPresentationData = {
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: futureDate.toISOString(),
-    soldTickets: 0,
 };
 
 function ticketWithAlreadyStartedTicketPostTest(done) {

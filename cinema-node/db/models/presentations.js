@@ -17,10 +17,6 @@ var PresentationSchema = new Schema({
         type: Date,
         required: true,
     },
-    soldTickets: {
-        type: Number,
-        required: true,
-    },
 });
 
 var PresentationModel = mongoose.model('Presentation', PresentationSchema);
