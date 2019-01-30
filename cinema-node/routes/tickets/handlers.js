@@ -86,13 +86,8 @@ module.exports.deleteById = (req, res) => {
     getTicketById(req.params.id, res).then(ticket => {
         getPresentationById(ticket.presentation, res).then(presentation => {
             deleteTicketById(ticket._id, res).then(successCode => {
-                subtractPresentationSoldTickets(ticket, presentation, res).then(newPresentation => {
-                    res.status(204);
-                    res.send();
-                })
-                    .catch(err => {
-                        return (err)
-                    });
+                res.status(204);
+                res.send();
             })
                 .catch(err => {
                     return (err)
@@ -322,31 +317,6 @@ const getTicketById = (ticketId, res) => {
                 resolve(ticket);
             }
         })
-            .catch(err => {
-                errors.databaseError(err, res);
-                reject(err)
-            });
-    });
-};
-
-const subtractPresentationSoldTickets = (ticket, presentation, res) => {
-    const id_filter = {'_id': new ObjectID(ticket.presentation)};
-    const setToReturnUpdatedValue = {new: true};
-    const parametersToSet = {$set: {soldTickets: presentation.soldTickets - 1}};
-    return new Promise((resolve, reject) => {
-        Presentation.findOneAndUpdate(
-            id_filter,
-            parametersToSet,
-            setToReturnUpdatedValue,
-        )
-            .then(presentation => {
-                if (presentation === null) {
-                    errors.presentationNotFound(res);
-                    reject("presentation not found");
-                } else {
-                    resolve(presentation);
-                }
-            })
             .catch(err => {
                 errors.databaseError(err, res);
                 reject(err)
