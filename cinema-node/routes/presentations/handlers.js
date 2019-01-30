@@ -7,31 +7,6 @@ const Presentation = require("../../db/models/presentations");
 var ObjectID = require('mongodb').ObjectID;
 const Tools = require('./tools');
 
-function createPresentation(req, res) {
-    let newPresentation = req.body;
-    newPresentation.soldTickets = 0;
-    Presentation.create(newPresentation)
-        .then(presentation => {
-            res.send(presentation);
-        })
-        .catch(err => errors.databaseError(err, res));
-}
-
-function checkAuditorium(auditoriumId, res) {
-    return new Promise((resolve, reject) => {
-        Auditorium.findOne({'_id': new ObjectID(auditoriumId)})
-            .then(auditorium => {
-                if (auditorium === null) {
-                    reject("auditorium not found")
-                } else {
-                    resolve("OK");
-                }
-            })
-            .catch(err => errors.databaseError(err, res));
-    });
-
-}
-
 module.exports.create = (req, res) => {
     Tools.checkMovie(req.body.movie, res)
         .then(message => {
@@ -55,19 +30,45 @@ module.exports.create = (req, res) => {
         });
 };
 
-
 module.exports.get = (req, res) => {
-    Presentation.find(req.query)
+    const filter = getFilterFromQuery(req);
+    Presentation.aggregate([
+        {$match: filter},
+        {
+            $lookup: {
+                from: "tickets",
+                localField: "_id",
+                foreignField: "presentation",
+                as: "ticketsSoldArray"
+            }
+        },
+        {
+            $addFields: {
+                soldTickets: {
+                    $size: {
+                        $filter: {
+                            input: "$ticketsSoldArray",
+                            as: "ticket",
+                            cond: {$eq: ["$$ticket.sold", true]}
+                        }
+                    }
+                },
+                reservedTickets: {
+                    $size: {
+                        $filter: {
+                            input: "$ticketsSoldArray",
+                            as: "ticket",
+                            cond: {$eq: ["$$ticket.sold", false]}
+                        }
+                    }
+                },
+            }
+        },
+        {$project: {ticketsSoldArray: 0}}
+    ])
         .then(presentation => res.send(presentation))
-        .catch(err => errors.databaseError(err, res))
+        .catch(err => errors.databaseError(err, res));
 };
-
-function thereIsNoPresentation(presentation) {
-    if (Array.isArray(presentation))
-        return presentation.length === 0;
-    else
-        return presentation === null;
-}
 
 module.exports.getById = (req, res) => {
     const id = req.params.id;
@@ -83,25 +84,6 @@ module.exports.getById = (req, res) => {
         })
         .catch(err => errors.databaseError(err, res))
 };
-
-function updatePresentation(req, res) {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
-    const setToReturnUpdatedValue = {new: true};
-    const parametersToSet = {$set: req.body};
-    Presentation.findOneAndUpdate(
-        id_filter,
-        parametersToSet,
-        setToReturnUpdatedValue,
-    )
-        .then(presentation => {
-            if (thereIsNoPresentation(presentation)) {
-                errors.presentationNotFound(res);
-            } else {
-                res.send();
-            }
-        })
-        .catch(err => errors.databaseError(err, res));
-}
 
 module.exports.putById = (req, res) => {
 
@@ -139,6 +121,66 @@ module.exports.deleteById = (req, res) => {
         })
         .catch(err => errors.databaseError(err, res))
 };
+
+function createPresentation(req, res) {
+    let newPresentation = req.body;
+    Presentation.create(newPresentation)
+        .then(presentation => {
+            res.send(presentation);
+        })
+        .catch(err => errors.databaseError(err, res));
+}
+
+function checkAuditorium(auditoriumId, res) {
+    return new Promise((resolve, reject) => {
+        Auditorium.findOne({'_id': new ObjectID(auditoriumId)})
+            .then(auditorium => {
+                if (auditorium === null) {
+                    reject("auditorium not found")
+                } else {
+                    resolve("OK");
+                }
+            })
+            .catch(err => errors.databaseError(err, res));
+    });
+
+}
+
+function getFilterFromQuery(req) {
+    if (req.query.movie !== undefined) {
+        req.query.movie = ObjectID(req.query.movie);
+    }
+    if (req.query.auditorium !== undefined) {
+        req.query.auditorium = ObjectID(req.query.auditorium);
+    }
+    return req.query;
+}
+
+function thereIsNoPresentation(presentation) {
+    if (Array.isArray(presentation))
+        return presentation.length === 0;
+    else
+        return presentation === null;
+}
+
+function updatePresentation(req, res) {
+    const id_filter = {'_id': new ObjectID(req.params.id)};
+    const setToReturnUpdatedValue = {new: true};
+    const parametersToSet = {$set: req.body};
+    Presentation.findOneAndUpdate(
+        id_filter,
+        parametersToSet,
+        setToReturnUpdatedValue,
+    )
+        .then(presentation => {
+            if (thereIsNoPresentation(presentation)) {
+                errors.presentationNotFound(res);
+            } else {
+                res.send();
+            }
+        })
+        .catch(err => errors.databaseError(err, res));
+}
 
 function deletePresentationById(id_filter, res) {
     Presentation.findOneAndDelete(id_filter)

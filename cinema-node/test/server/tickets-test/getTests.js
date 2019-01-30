@@ -32,7 +32,6 @@ const presentationModel = {
     "movie": "5c2f723b62607929f4c347d3",
     "auditorium": "5c37ac1e638afe1e734f9cfe",
     "start": "2019-02-20T13:52:22.000Z",
-    "soldTickets": 4,
     "__v": 0
 };
 

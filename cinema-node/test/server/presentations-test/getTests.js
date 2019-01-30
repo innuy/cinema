@@ -25,13 +25,11 @@ const testingPresentationAnswerData = {
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 const testingPresentationWrongFilterData = {
     movie: 'Toy Story',
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 
 function getPresentationListWithFilters(done) {

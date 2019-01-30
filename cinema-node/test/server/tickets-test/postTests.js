@@ -43,14 +43,12 @@ const testingPresentationData = {
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: futureDate.toISOString(),
-    soldTickets: 0,
 };
 const testingPresentationDataOldDate = {
     _id: testingPresentationId,
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: oldDate.toISOString(),
-    soldTickets: 0,
 };
 
 const testingSeatData = {
