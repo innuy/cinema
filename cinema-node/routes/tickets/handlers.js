@@ -72,18 +72,29 @@ module.exports.getById = (req, res) => {
 };
 module.exports.putById = (req, res) => {
     let ticketToUpdate = req.body;
+    let ticketId = req.params.id;
 
     Seat.findById(ticketToUpdate.seat)
         .then(seat => {
             if (thereIsNo(seat)) {
-                return (errors.seatNotFound(res));
+                throw(errors.seatNotFound);
             } else {
-                checkPresentationAndUpdateTicket(seat, ticketToUpdate, res, req);
+                return checkPresentationAndUpdateTicket(seat, ticketToUpdate);
             }
         })
-        .catch(err => {
-            return (errors.databaseError(err, res))
+        .then(message => {
+            return updateTickets(ticketId, ticketToUpdate);
         })
+        .then(ticket => {
+            res.send();
+        })
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
+        });
 };
 
 module.exports.deleteById = (req, res) => {
@@ -247,17 +258,27 @@ const getSeatIdWithRowAndColumn = ticket => new Promise((resolve, reject) => {
         });
 });
 
-const thereIsNo = obj => {
-    if (Array.isArray(obj))
-        return obj.length === 0;
-    else
-        return obj === null;
-};
+const checkPresentationAndUpdateTicket = (seat, ticketToUpdate) => new Promise((resolve, reject) => {
+    var seatAuditoriumId = seat.auditorium;
+    Presentation.findById(ticketToUpdate.presentation)
+        .then(presentation => {
+            if (thereIsNo(presentation)) {
+                reject(errors.presentationNotFound);
+            } else {
+                let presentationAuditoriumId = presentation.auditorium;
+                if (seatAuditoriumId.toString() === presentationAuditoriumId.toString()) {
+                    resolve("Presentation found");
+                } else {
+                    reject("Database consistency error")
+                }
+            }
+        })
+});
 
-const updateTickets = (req, res) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
+const updateTickets = (ticketId, newTicket) => new Promise((resolve, reject) => {
+    const id_filter = {'_id': new ObjectID(ticketId)};
     const setToReturnUpdatedValue = {new: true};
-    const parametersToSet = {$set: req.body};
+    const parametersToSet = {$set: newTicket};
     Ticket.findOneAndUpdate(
         id_filter,
         parametersToSet,
@@ -265,29 +286,21 @@ const updateTickets = (req, res) => {
     )
         .then(ticket => {
             if (thereIsNo(ticket)) {
-                errors.ticketNotFound(res);
+                reject(errors.ticketNotFound);
             } else {
-                res.send();
+                resolve(ticket);
             }
         })
-        .catch(err => errors.databaseError(err, res))
-};
+        .catch(err => {
+            reject(err);
+        })
+});
 
-const checkPresentationAndUpdateTicket = (seat, ticketToUpdate, res, req) => {
-    var seatAuditoriumId = seat.auditorium;
-    Presentation.findById(ticketToUpdate.presentation)
-        .then(presentation => {
-            if (thereIsNo(presentation)) {
-                return (errors.presentationNotFound(res));
-            } else {
-                let presentationAuditoriumId = presentation.auditorium;
-                if (seatAuditoriumId.toString() === presentationAuditoriumId.toString()) {
-                    updateTickets(req, res);
-                } else {
-                    return (errors.databaseError(err, res))
-                }
-            }
-        })
+const thereIsNo = obj => {
+    if (Array.isArray(obj))
+        return obj.length === 0;
+    else
+        return obj === null;
 };
 
 const deleteTicketById = (ticketId, res) => new Promise((resolve, reject) => {
