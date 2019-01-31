@@ -10,7 +10,7 @@ import {navigate} from "../../../utils/navigation";
 class TicketContainer extends Component {
 
     state = {
-        tickets: [{presentation: {startTime: 0, film: {}, auditorium: {}}}],
+        tickets: [],
         isAdmin: true,
     };
 
@@ -22,6 +22,7 @@ class TicketContainer extends Component {
         this.deleteTicket = this.deleteTicket.bind(this);
         this.refreshTickets = this.refreshTickets.bind(this);
         this.addTicket = this.addTicket.bind(this);
+        this.navigateToDetails = this.navigateToDetails.bind(this);
     }
 
     componentWillMount() {
@@ -48,10 +49,19 @@ class TicketContainer extends Component {
 
     deleteTicket(id){
         deleteTicket(id, (success) => {
-            this.refreshTickets();
+            if(success) {
+                this.refreshTickets();
 
-            /* TODO: HANDLE ERROR */
+            }
+            else{
+                /* TODO: HANDLE ERROR */
+            }
+
         })
+    }
+
+    navigateToDetails(id){
+        navigate(this.history, 'tickets/'+id);
     }
 
     render() {
@@ -60,7 +70,8 @@ class TicketContainer extends Component {
                 this.history = history;
                 return (<div>
                             <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                            <TicketView tickets={this.state.tickets} addTicket={this.addTicket} deleteTicket={this.deleteTicket} isAdmin={this.state.isAdmin}/>
+                            <TicketView tickets={this.state.tickets} addTicket={this.addTicket} navigateToDetails={this.navigateToDetails}
+                                        deleteTicket={this.deleteTicket} isAdmin={this.state.isAdmin}/>
                         </div>);
             }} />
         );

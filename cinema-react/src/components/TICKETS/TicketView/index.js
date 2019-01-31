@@ -8,15 +8,23 @@ import './styles.css';
 
 class TicketView extends Component {
 
+    constructor(props){
+        super(props);
+
+        this.renderTickets = this.renderTickets.bind(this);
+    }
+
     renderTickets(){
         const result = [];
 
         for(let i = 0; i < this.props.tickets.length; i++){
-            result.push(<TicketElement key={"ticket_"+i} ticket={this.props.tickets[i]} deleteTicket={this.props.deleteTicket} isAdmin={this.props.isAdmin}/>);
+            result.push(<TicketElement key={"ticket_"+i} ticket={this.props.tickets[i]} navigateToDetails={this.props.navigateToDetails}
+                                       deleteTicket={this.props.deleteTicket} isAdmin={this.props.isAdmin}/>);
         }
 
         return result
     }
+
 
 
     render() {
@@ -40,6 +48,7 @@ TicketView.propTypes = {
     addTicket: PropTypes.func,
     deleteTicket: PropTypes.func,
     isAdmin: PropTypes.bool.isRequired,
+    navigateToDetails: PropTypes.func.isRequired,
 };
 
 export default TicketView;

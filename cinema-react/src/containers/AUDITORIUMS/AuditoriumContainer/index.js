@@ -48,10 +48,13 @@ class AuditoriumContainer extends Component {
     }
 
     deleteAuditorium(id){
-        deleteAuditorium(id, () => {
-            this.refreshAuditoriums();
-
-            /*TODO: HANDLE ERROR FOR DELETION*/
+        deleteAuditorium(id, (success) => {
+            if(success) {
+                this.refreshAuditoriums();
+            }
+            else{
+                /*TODO: HANDLE ERROR FOR DELETION*/
+            }
         })
     }
 

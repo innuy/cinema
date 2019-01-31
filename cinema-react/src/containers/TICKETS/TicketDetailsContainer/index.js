@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TicketDetails from "../../../components/TICKETS/TicketDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
-import {editTicket} from "../../../API/tickets";
+import {editTicket, getSingleTicket} from "../../../API/tickets";
 import {getPresentations} from "../../../API/presentations";
 import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
@@ -13,7 +13,11 @@ class TicketDetailsContainer extends Component {
 
     state = {
         id: 0,
-        ticket: {presentation: {startTime: null, film: {}, auditorium: {}}},
+        ticket: {
+            film: {},
+            startTime: null,
+            auditorium: {}
+        },
         presentations: [],
     };
 
@@ -27,7 +31,20 @@ class TicketDetailsContainer extends Component {
 
         this.setState({
             id: this.props.match.params.id,
+        }, () => {
+            getSingleTicket(this.state.id, (success, data) => {
+                if(success){
+                    this.setState({
+                        ticket: data,
+                    });
+                }
+                else{
+                    //TODO: HANDLE ERROR
+                }
+            });
         });
+
+
 
         getPresentations((success, data) => {
             if(success){

@@ -29,8 +29,28 @@ function parseTickets(tickets){
     const res = [];
 
     for(let i = 0; i < tickets.length; i++){
-        /*TODO: PARSE TICKET */
-        res.push({})
+        if(tickets[i] && tickets[i].presentation && tickets[i].presentation.movie && tickets[i].presentation.auditorium && tickets[i].seat) {
+            res.push({
+                id: tickets[i]._id,
+                presentation:{
+                    id: tickets[i].presentation._id,
+                },
+                film: {
+                    name: tickets[i].presentation.movie.name,
+                    id: tickets[i].presentation.movie._id
+                },
+                auditorium: {
+                    id: tickets[i].presentation.auditorium._id,
+                    number: tickets[i].presentation.auditorium.number,
+                },
+                seat: {
+                    id: tickets[i].seat._id,
+                    row: tickets[i].seat.row,
+                    column: tickets[i].seat.column,
+                },
+                startTime: tickets[i].presentation.start,
+            });
+        }
     }
 
     return res;
@@ -39,7 +59,7 @@ function parseTickets(tickets){
 export function getSingleTicket(id, callback){
     axios.get(urls.tickets + "/" + id)
         .then((response) => {
-            callback(true, response.data);
+            callback(true, parseTickets([response.data])[0]);
         }).catch((error) => {
         callback(false, "There was an error with the connection");
     });
@@ -48,7 +68,7 @@ export function getSingleTicket(id, callback){
 export function getMyTickets(callback){
     axios.get(urls.tickets)
         .then((response) => {
-            callback(true, response.data);
+            callback(true, parseTickets(response.data));
         }).catch((error) => {
         callback(false, "There was an error with the connection");
     });
@@ -69,14 +89,15 @@ export function reserveTicket(presentationId, row, column, callback){
 }
 
 export function editTicket(ticket, callback){
+    console.log(ticket);
     axios.put(urls.tickets + "/" + ticket.id, {
-        "film": ticket.film,
-        "auditorium": ticket.auditorium,
-        "startTime": ticket.startTime,
+        "presentation": ticket.presentation,
+        "seat": ticket.seat.id
     })
         .then((response) => {
             callback(true);
         }).catch((error) => {
+            console.log(error);
         callback(false, "There was an error with the connection");
     });
 }

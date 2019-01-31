@@ -10,7 +10,7 @@ import {navigate} from "../../../utils/navigation";
 class PresentationContainer extends Component {
 
     state = {
-        presentations: [{},{},{}],
+        presentations: [],
         isAdmin: true,
     };
 
@@ -22,6 +22,7 @@ class PresentationContainer extends Component {
         this.deletePresentation = this.deletePresentation.bind(this);
         this.refreshPresentations = this.refreshPresentations.bind(this);
         this.addPresentation = this.addPresentation.bind(this);
+        this.navigateToDetails = this.navigateToDetails.bind(this);
     }
 
     componentWillMount() {
@@ -47,11 +48,18 @@ class PresentationContainer extends Component {
     }
 
     deletePresentation(id){
-        deletePresentation(id, () => {
-            this.refreshPresentations();
-
-            /* TODO: HANDLE ERROR */
+        deletePresentation(id, (success) => {
+            if(success) {
+                this.refreshPresentations();
+            }
+            else{
+                /* TODO: HANDLE ERROR */
+            }
         })
+    }
+
+    navigateToDetails(id){
+        navigate(this.history, '/presentation/'+id)
     }
 
     render() {
@@ -60,7 +68,7 @@ class PresentationContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <PresentationView presentations={this.state.presentations} addPresentation={this.addPresentation} deletePresentation={this.deletePresentation} isAdmin={this.state.isAdmin}/>
+                    <PresentationView navigateToDetails={this.navigateToDetails} presentations={this.state.presentations} addPresentation={this.addPresentation} deletePresentation={this.deletePresentation} isAdmin={this.state.isAdmin}/>
                 </div>);
             }} />
         );

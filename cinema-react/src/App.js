@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import FirstProcess from "./containers/FirstProcess";
 import FilmContainer from "./containers/FILMS/FilmContainer";
 import FilmDetailsContainer from "./containers/FILMS/FilmDetailsContainer";
 import AddFilmContainer from "./containers/FILMS/AddFilmContainer";
@@ -19,15 +18,16 @@ import TicketDetailsContainer from "./containers/TICKETS/TicketDetailsContainer"
 import './App.css';
 import MyTicketsContainer from "./containers/TICKETS/MyTicketsContainer";
 import ReserveTicketContainer from "./containers/TICKETS/ReserveTicketContainer";
+import LoginContainer from "./containers/AUTH/LoginContainer";
+import SignUpContainer from "./containers/AUTH/SignupContainer";
 
 class App extends Component {
   render() {
     return (
         <div>
             <Switch>
-                <Route exact path='/' component={FirstProcess}/>
-                <Route exact path='/login' component={null}/>
-                <Route exact path='/signup' component={null}/>
+                <Route exact path='/' component={LoginContainer}/>
+                <Route exact path='/signup' component={SignUpContainer}/>
                 {/*ADMIN SCREENS*/}
                 <Route exact path='/films' component={FilmContainer}/>
                 <Route exact path='/addFilm' component={AddFilmContainer}/>
