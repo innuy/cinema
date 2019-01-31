@@ -108,9 +108,16 @@ function getTicketWithSeatRowAndColumnFilters(done) {
 
 describe("Ticket Get Test", function () {
     beforeEach(() => {
-        sinon.stub(Ticket, 'find').resolves([ticketModel]);
+        sinon.stub(Ticket, 'find').returns({
+            populate: sinon.stub().callsFake(function fakeFn() {
+                return new Promise((resolve,reject)=>{
+                    resolve([ticketModel])
+                })
+            })
+        });
         sinon.stub(Presentation, 'findOne').resolves(presentationModel);
         sinon.stub(Seat, 'findOne').resolves(seatModel);
+
         app = require('../../../app');
     });
 
