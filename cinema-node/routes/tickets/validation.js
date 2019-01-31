@@ -17,6 +17,7 @@ const get = celebrate({
         seat: Joi.objectId(),
         seatRow: Joi.number().positive().integer(),
         seatColumn: Joi.number().positive().integer(),
+        sold: Joi.boolean(),
     }
 });
 
