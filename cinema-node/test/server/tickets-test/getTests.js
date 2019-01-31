@@ -10,6 +10,7 @@ require('../setup');
 
 let app;
 
+const testTicketId = '5c50987c85102002895ea4a4';
 
 const ticketModel = {
     presentation: '5c37ac34638afe1e734f9d63',
@@ -106,6 +107,40 @@ function getTicketWithSeatRowAndColumnFilters(done) {
         })
 }
 
+function getTicketWithFiltersWithId(done) {
+
+    request(app)
+        .get('/tickets/' + testTicketId)
+        .then(res => {
+            setTimeout(() => {
+                assert.strictEqual(res.status, 200);
+                res.should.be.an('object');
+                res.body.should.be.an('object');
+
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+}
+
+function getTicketWithWrongId(done) {
+
+    request(app)
+        .get('/tickets/' + testTicketId)
+        .then(res => {
+            setTimeout(() => {
+                assert.strictEqual(res.status, 404);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
 describe("Ticket Get Test", function () {
     beforeEach(() => {
         sinon.stub(Ticket, 'find').returns({
@@ -136,4 +171,37 @@ describe("Ticket Get Test", function () {
         getTicketWithSeatRowAndColumnFilters(done);
     });
 
+});
+
+describe("Ticket Get by Id Test", function () {
+
+    beforeEach(() => {
+        app = require('../../../app');
+    });
+
+    afterEach(function () {
+        Ticket.findById.restore();
+        // sinon.restore();
+    });
+
+    it('Failed - Wrong id', (done) => {
+        sinon.stub(Ticket, 'findById').returns({
+            populate: sinon.stub().callsFake(function fakeFn() {
+                return new Promise((resolve,reject)=>{
+                    resolve(null);
+                })
+            })
+        });
+        getTicketWithWrongId(done);
+    });
+    it('Successful - Get ticket by id', (done) => {
+        sinon.stub(Ticket, 'findById').returns({
+            populate: sinon.stub().callsFake(function fakeFn() {
+                return new Promise((resolve,reject)=>{
+                    resolve(ticketModel);
+                })
+            })
+        });
+        getTicketWithFiltersWithId(done);
+    });
 });

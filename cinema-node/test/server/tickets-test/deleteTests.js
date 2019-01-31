@@ -97,28 +97,24 @@ describe("Ticket Delete by id test", function () {
         Ticket.findById.restore();
         Presentation.findById.restore();
         Ticket.findOneAndDelete.restore();
-        Presentation.findOneAndUpdate.restore();
     });
 
     it('Successful - Delete ticket', (done) => {
         sinon.stub(Ticket, 'findById').resolves(testingTicketData);
         sinon.stub(Presentation, 'findById').resolves(presentationModel);
         sinon.stub(Ticket, 'findOneAndDelete').resolves();
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves(presentationModelOneLessTicketSold);
         ticketDeleteTestbyId(done);
     });
     it('Failed - Wrong presentation id', (done) => {
         sinon.stub(Ticket, 'findById').resolves(testingTicketData);
         sinon.stub(Presentation, 'findById').resolves(null);
         sinon.stub(Ticket, 'findOneAndDelete').resolves(null);
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
         ticketWrongPresentationIdDeleteTest(done);
     });
     it('Failed - Wrong ticket id', (done) => {
         sinon.stub(Ticket, 'findById').resolves(null);
         sinon.stub(Presentation, 'findById').resolves(null);
         sinon.stub(Ticket, 'findOneAndDelete').resolves(null);
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
         ticketWrongTicketIdDeleteTest(done);
     });
 });
