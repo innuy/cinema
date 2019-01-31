@@ -6,6 +6,10 @@ const Ticket = require("../../db/models/tickets");
 const Auditorium = require("../../db/models/auditoriums");
 
 var ObjectID = require('mongodb').ObjectID;
+const populateGetQuery = [
+    {path: 'presentation', populate: {path: 'movie'}},
+    {path: 'presentation', populate: {path: 'auditorium'}},
+    'seat'];
 
 module.exports.create = async (req, res) => {
     let newTicket = req.body;
@@ -43,9 +47,7 @@ module.exports.get = async (req, res) => {
     }
 
     Ticket.find(ticket)
-        .populate({path: 'presentation', populate: {path: 'movie'}})
-        .populate({path: 'presentation', populate: {path: 'auditorium'}})
-        .populate('seat')
+        .populate(populateGetQuery)
         .then(tickets => {
             res.send(tickets)
         })
@@ -54,9 +56,7 @@ module.exports.get = async (req, res) => {
 };
 module.exports.getById = (req, res) => {
     Ticket.findById(req.params.id)
-        .populate({path: 'presentation', populate: {path: 'movie'}})
-        .populate({path: 'presentation', populate: {path: 'auditorium'}})
-        .populate('seat')
+        .populate(populateGetQuery)
         .then(ticket => {
             if (thereIsNo(ticket)) {
                 errors.ticketNotFound(res);
