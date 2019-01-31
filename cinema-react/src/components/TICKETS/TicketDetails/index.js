@@ -83,6 +83,9 @@ class TicketDetails extends Component {
                     <div className="ticketDetailsTitle">Start time:</div>
                     <div className="ticketInput">{this.state.ticket.startTime}</div>
                     <div className="ticketDetailsSeparator"/>
+                    <div className="ticketDetailsTitle">Seat:</div>
+                    <div className="ticketInput">{"Row: " + this.state.ticket.seat.row + " - Column: " + this.state.ticket.seat.column}</div>
+                    <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
