@@ -15,37 +15,41 @@ module.exports.create = async (req, res) => {
     let newTicket = req.body;
     let presentationId = newTicket.presentation;
 
-    getPresentationById(presentationId, res)
+    getPresentationById(presentationId)
         .then(presentation => {
             const presentationDate = new Date(presentation.start);
 
             if (presentationHasAlreadyStarted(presentationDate)) {
-                errors.presentationAlreadyStarted(res, presentationId);
-                return ('presentation id=' + presentationId + ' already started');
+                throw(errors.presentationAlreadyStarted);
+
             } else {
                 if (notSeatIdButRowAndColumn(newTicket)) {
-                    createTicketWithSeatRowAndColumn(presentationId, res, newTicket);
+                    return createTicketWithSeatRowAndColumn(presentationId, newTicket);
                 } else {
-                    checkAvailabilityAndCreateTicket(newTicket, res);
+                    return checkAvailabilityAndCreateTicket(newTicket);
                 }
             }
         })
+        .then(ticket => {
+            res.send(ticket);
+        })
         .catch(err => {
-            return (err)
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
         });
 };
-
 module.exports.get = async (req, res) => {
-
     let ticket = req.query;
     if (notSeatIdButRowAndColumn(ticket) && ticket.presentation !== undefined) {
-        const seatId = await getSeatIdWithRowAndColumn(ticket, res);
+        const seatId = await getSeatIdWithRowAndColumn(ticket);
         ticket = {
             presentation: ticket.presentation,
             seat: seatId,
         };
     }
-
     Ticket.find(ticket)
         .populate(populateGetQuery)
         .then(tickets => {
@@ -102,18 +106,16 @@ module.exports.deleteById = (req, res) => {
         });
 };
 
-const getPresentationById = (presentationId, res) => new Promise((resolve, reject) => {
+const getPresentationById = presentationId => new Promise((resolve, reject) => {
     Presentation.findById(presentationId)
         .then(presentation => {
             if (presentation === null) {
-                errors.presentationNotFound(res);
-                reject("presentation not found")
+                reject(errors.presentationNotFound);
             } else {
                 resolve(presentation);
             }
         })
         .catch(err => {
-            errors.databaseError(err, res);
             reject(err)
         });
 });
@@ -127,15 +129,15 @@ const notSeatIdButRowAndColumn = newTicket => newTicket.seat === undefined &&
     newTicket.seatRow !== undefined &&
     newTicket.seatColumn !== undefined;
 
-const createTicketWithSeatRowAndColumn = (presentationId, res, newTicket) => {
-    getAuditoriumOfPresentation(presentationId, res)
+const createTicketWithSeatRowAndColumn = (presentationId, newTicket) => new Promise((resolve, reject) => {
+    getAuditoriumOfPresentation(presentationId)
         .then(auditoriumId => {
             const seatToReserve = {
                 row: newTicket.seatRow,
                 column: newTicket.seatColumn,
-                auditorium: auditoriumId.toString()
+                auditorium: new ObjectID(auditoriumId.toString())
             };
-            return getSeatId(seatToReserve, res)
+            return(getSeatId(seatToReserve));
         })
         .then(seatId => {
             newTicket = {
@@ -143,81 +145,74 @@ const createTicketWithSeatRowAndColumn = (presentationId, res, newTicket) => {
                 seat: seatId,
                 sold: false,
             };
-            checkAvailabilityAndCreateTicket(newTicket, res);
+            resolve(checkAvailabilityAndCreateTicket(newTicket));
         })
         .catch(err => {
-            return (err)
+            reject (err);
         });
-    return newTicket;
-};
+    // return newTicket;
+});
 
-const getAuditoriumOfPresentation = (presentationId, res) => {
+const getAuditoriumOfPresentation = presentationId => {
     return new Promise((resolve, reject) => {
         Presentation.findOne({'_id': new ObjectID(presentationId)})
             .then(presentation => {
                 if (thereIsNo(presentation)) {
-                    reject(errors.presentationNotFound(res));
+                    reject(errors.presentationNotFound);
                 } else {
                     resolve(presentation.auditorium);
                 }
             })
             .catch(err => {
-                errors.databaseError(err, res);
                 reject(err)
             });
     });
 };
 
-const getSeatId = (seatDocument, res) => {
+const getSeatId = seatDocument => {
     return new Promise((resolve, reject) => {
-        Seat.findOne({
-            row: seatDocument.row,
-            column: seatDocument.column,
-            auditorium: new ObjectID(seatDocument.auditorium)
-        }).then(seat => {
-            if (seat === null) {
-                reject(errors.seatNotFound(res));
-            } else {
-                resolve(seat.id);
-            }
-        })
+        Seat.findOne(seatDocument)
+            .then(seat => {
+                if (seat === null) {
+                    reject(errors.seatNotFound);
+                } else {
+                    resolve(seat.id);
+                }
+            })
             .catch(err => {
-                errors.databaseError(err, res);
                 reject(err)
             });
     });
 };
 
-const checkAvailabilityAndCreateTicket = (newTicket, res) => {
-    checkSeatIsAvailable(newTicket, res)
+const checkAvailabilityAndCreateTicket = newTicket => new Promise((resolve, reject) => {
+    checkSeatIsAvailable(newTicket)
         .then(message => {
-            createTicket(newTicket, res)
-                .then(ticket => {
-                    res.send(ticket);
-                })
+            return createTicket(newTicket);
+        })
+        .then(ticket => {
+            resolve(ticket);
         })
         .catch(err => {
-            return (err)
+            reject(err)
         });
-};
+});
 
-const checkSeatIsAvailable = (ticketFilter, res) => new Promise((resolve, reject) => {
+const checkSeatIsAvailable = ticketFilter => new Promise((resolve, reject) => {
     Ticket.findOne(ticketFilter)
         .then(ticket => {
             if (ticket === null) {
                 resolve("OK")
             } else {
-                errors.unavailableSeat(res);
-                reject("seat is unavailable");
+                reject(errors.unavailableSeat);
             }
         })
         .catch(err => {
-            errors.databaseError(err, res);
             reject(err)
         });
 });
 
-const createTicket = (newTicket, res) => {
+const createTicket = newTicket => {
     newTicket.sold = false;
     return new Promise((resolve, reject) => {
         Ticket.create(newTicket)
@@ -225,22 +220,21 @@ const createTicket = (newTicket, res) => {
                 resolve(ticket);
             })
             .catch(err => {
-                errors.databaseError(err, res);
                 reject(err)
             });
     });
 };
 
-const getSeatIdWithRowAndColumn = (ticket, res) => new Promise((resolve, reject) => {
-    getPresentationById(ticket.presentation, res)
+const getSeatIdWithRowAndColumn = ticket => new Promise((resolve, reject) => {
+    getPresentationById(ticket.presentation)
         .then(presentation => {
             const auditoriumId = presentation.auditorium;
             const seatToReserve = {
                 row: ticket.seatRow,
                 column: ticket.seatColumn,
-                auditorium: auditoriumId.toString()
+                auditorium: new ObjectID(auditoriumId.toString())
             };
-            getSeatId(seatToReserve, res)
+            getSeatId(seatToReserve)
                 .then(seatId => {
                     resolve(seatId);
                 })

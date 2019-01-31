@@ -1,9 +1,9 @@
-module.exports.presentationAlreadyStarted = (res, presentationId) => {
+module.exports.presentationAlreadyStarted = res => {
     res.status(400);
     res.send({
         "statusCode": 400,
         "error": "Database error",
-        "message": "the presentation id=[" + presentationId + "] had started"
+        "message": "the presentation had started"
     })
 };
 
