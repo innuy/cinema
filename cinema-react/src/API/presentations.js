@@ -14,24 +14,34 @@ export function getPresentations(callback){
 function parsePresentations(presentations){
     const res = [];
     for(let i = 0; i < presentations.length; i++){
-        res.push({id: presentations[i]._id,
-            film: presentations[i].movie,
-            auditorium: presentations[i].auditorium,
-            startTime: presentations[i].start,
-            tickets: presentations[i].soldTickets});
+
+        if(presentations[i] && presentations[i].movie && presentations[i].auditorium) {
+            res.push({
+                id: presentations[i]._id,
+                film: presentations[i].movie,
+                auditorium: presentations[i].auditorium,
+                startTime: presentations[i].start,
+                tickets: presentations[i].soldTickets
+            });
+        }
     }
 
     return res;
 }
 
 function parseSinglePresentation(presentation){
-    const res = {
-        id: presentation._id,
-        film: presentation.movie,
-        auditorium: presentation.auditorium,
-        startTime: presentation.start,
-        tickets: presentation.soldTickets
-    };
+
+    let res = {};
+
+    if(presentation && presentation.movie && presentation.auditorium) {
+        res = {
+            id: presentation._id,
+            film: presentation.movie,
+            auditorium: presentation.auditorium,
+            startTime: presentation.start,
+            tickets: presentation.soldTickets
+        };
+    }
 
     return res;
 }

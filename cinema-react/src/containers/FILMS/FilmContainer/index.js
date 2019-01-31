@@ -48,9 +48,12 @@ class FilmContainer extends Component {
 
     deleteFilm(id){
         deleteFilm(id, (success) => {
-            this.refreshFilms();
-
-            /* TODO: HANDLE ERROR */
+            if(success) {
+                this.refreshFilms();
+            }
+            else{
+                /* TODO: HANDLE ERROR */
+            }
         })
     }
 

@@ -1,24 +1,30 @@
 import React, { Component } from 'react';
 import SignupView from '../../../components/AUTH/SignupView/index';
 
-import {signup} from "../../../API/auth";
+import {signUp} from "../../../API/auth";
 import {Route} from "react-router-dom";
+import {navigate} from "../../../utils/navigation";
 
-class SignupContainer extends Component {
+class SignUpContainer extends Component {
 
     history = null;
 
     constructor(props) {
         super(props);
 
-        this.signup = this.signup.bind(this);
+        this.signUp = this.signUp.bind(this);
+        this.navigateToLogin = this.navigateToLogin.bind(this);
     }
 
 
-    signup(username, password){
-        signup(username,password,(data) => {
+    signUp(username, password){
+        signUp(username,password,(data) => {
             //TODO: NAVIGATE TO PAGE
         })
+    }
+
+    navigateToLogin(){
+        navigate(this.history, '/');
     }
 
     render() {
@@ -26,10 +32,10 @@ class SignupContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (
-                    <SignupView signup={this.signup}/>
+                    <SignupView signUp={this.signUp} navigateToLogin={this.navigateToLogin}/>
                 )}}/>
         );
     }
 }
 
-export default SignupContainer;
+export default SignUpContainer;

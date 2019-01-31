@@ -10,7 +10,7 @@ import {navigate} from "../../../utils/navigation";
 class SeePresentationContainer extends Component {
 
     state = {
-        presentations: [{},{},{}],
+        presentations: [],
         isAdmin: false,
     };
 

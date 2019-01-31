@@ -12,7 +12,7 @@ export function login(username, password, callback){
     });
 }
 
-export function signup(username, password, callback){
+export function signUp(username, password, callback){
     axios.post(urls.signUp)
         .then((response) => {
             callback(true);

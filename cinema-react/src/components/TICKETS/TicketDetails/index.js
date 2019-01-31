@@ -10,11 +10,11 @@ class TicketDetails extends Component {
 
     state = {
         ticket: {
-            presentation: {
-                film: null,
-                startTime: null,
-                auditorium: null
-            }
+            film: {},
+            startTime: null,
+            auditorium: {},
+            presentation: null,
+            seat: {}
         },
     };
 
@@ -25,10 +25,10 @@ class TicketDetails extends Component {
     }
 
 
-    componentWillReceiveProps() {
-        if(this.props.ticket){
+    componentWillReceiveProps(newProps) {
+        if(newProps.ticket){
             this.setState({
-                ticket: this.props.ticket,
+                ticket: newProps.ticket,
             })
         }
     }
@@ -36,7 +36,12 @@ class TicketDetails extends Component {
     updateInformation(index){
 
         const ticket = this.state.ticket;
-        ticket.presentation = this.props.presentations[index];
+        ticket.film = this.props.presentations[index].film;
+        ticket.auditorium = this.props.presentations[index].auditorium;
+        ticket.startTime = this.props.presentations[index].startTime;
+        ticket.presentation = this.props.presentations[index].id;
+
+        console.log(ticket);
 
         this.setState({
             ticket
@@ -46,14 +51,16 @@ class TicketDetails extends Component {
     renderPresentations(){
         const res = [];
 
-        for(let i = 0; i < this.props.presentations; i++){
-            res.push(<option value={this.props.presentations[i]._id}>{this.props.presentations[i].film.name - this.props.presentations[i].auditorium.name - this.props.presentations[i].startTime}</option>);
+
+        for(let i = 0; i < this.props.presentations.length; i++){
+            res.push(<option key={"presentation_"+i} value={i}>{"Film: " + this.props.presentations[i].film.name +" - Auditorium:"+ this.props.presentations[i].auditorium.number +" - At:"+ this.props.presentations[i].startTime}</option>);
         }
 
         return res;
     }
 
     render() {
+
         return (
             <div>
                 <div className="ticketDetailsSeparator"/>
@@ -68,13 +75,13 @@ class TicketDetails extends Component {
                     </select>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsTitle">Film:</div>
-                    <div className="ticketInput">{this.state.ticket.presentation.film.name}</div>
+                    <div className="ticketInput">{this.state.ticket.film.name}</div>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsTitle">Auditorium:</div>
-                    <div className="ticketInput">{this.state.ticket.presentation.auditorium.name}</div>
+                    <div className="ticketInput">{this.state.ticket.auditorium.number}</div>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsTitle">Start time:</div>
-                    <div className="ticketInput">{this.state.ticket.presentation.startTime}</div>
+                    <div className="ticketInput">{this.state.ticket.startTime}</div>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>

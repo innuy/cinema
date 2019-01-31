@@ -19,7 +19,7 @@ import './App.css';
 import MyTicketsContainer from "./containers/TICKETS/MyTicketsContainer";
 import ReserveTicketContainer from "./containers/TICKETS/ReserveTicketContainer";
 import LoginContainer from "./containers/AUTH/LoginContainer";
-import SignupContainer from "./containers/AUTH/SignupContainer";
+import SignUpContainer from "./containers/AUTH/SignupContainer";
 
 class App extends Component {
   render() {
@@ -27,7 +27,7 @@ class App extends Component {
         <div>
             <Switch>
                 <Route exact path='/' component={LoginContainer}/>
-                <Route exact path='/signup' component={SignupContainer}/>
+                <Route exact path='/signup' component={SignUpContainer}/>
                 {/*ADMIN SCREENS*/}
                 <Route exact path='/films' component={FilmContainer}/>
                 <Route exact path='/addFilm' component={AddFilmContainer}/>

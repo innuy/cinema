@@ -41,6 +41,7 @@ class LoginView extends Component {
                     <div className="loginDetailsSeparator"/>
                     <OptionButton onClick={this.props.login} text={"Login"}/>
                     <div className="loginDetailsSeparator"/>
+                    <div className="loginChangeScreenButton" onClick={this.props.navigateToSignup}>Don't have an account? Sign up!</div>
                 </div>
                 <div className="loginDetailsSeparator"/>
                 <div className="loginDetailsSeparator"/>
@@ -52,6 +53,7 @@ class LoginView extends Component {
 
 LoginView.propTypes = {
     login: PropTypes.func.isRequired,
+    navigateToSignup: PropTypes.func.isRequired,
 };
 
 

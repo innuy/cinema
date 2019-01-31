@@ -1,11 +1,11 @@
-.signupDetailsContainer{
+.signUpDetailsContainer{
     width: 40%;
     margin-left: 30%;
     margin-top: 20pt;
     background-color: var(--background);
 }
 
-.signupDetailsPageTitle{
+.signUpDetailsPageTitle{
     color: var(--headerText);
     font-size: 20px;
     width: 100%;
@@ -13,30 +13,37 @@
     font-weight: bolder;
 }
 
-.signupDetailsErrorMessage{
+.signUpDetailsErrorMessage{
     color: var(--dangerText);
 }
 
-.signupDetailsTitleContainer{
+.signUpDetailsTitleContainer{
     width: 100%;
 }
 
-.signupDetailsTitle{
+.signUpDetailsTitle{
     color: var(--subText);
     font-weight: bold;
 }
 
-.signupDetailsTitleButton{
+.signUpDetailsTitleButton{
     width: 10%;
     float: right;
 }
 
-.signupInput{
+.signUpInput{
     width: 100%;
     color: var(--text);
 }
 
-.signupDetailsSeparator{
+.signUpChangeScreenButton{
+    width: 100%;
+    color: blue;
+    font-size: 10px;
+    text-align: center;
+}
+
+.signUpDetailsSeparator{
     height: 15px;
     width: 100%;
 }

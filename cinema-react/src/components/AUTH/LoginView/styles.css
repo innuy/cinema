@@ -36,6 +36,13 @@
     color: var(--text);
 }
 
+.loginChangeScreenButton{
+    width: 100%;
+    color: blue;
+    font-size: 10px;
+    text-align: center;
+}
+
 .loginDetailsSeparator{
     height: 15px;
     width: 100%;

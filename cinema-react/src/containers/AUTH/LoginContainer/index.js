@@ -3,6 +3,7 @@ import LoginView from "../../../components/AUTH/LoginView";
 
 import {login} from "../../../API/auth";
 import {Route} from "react-router-dom";
+import {navigate} from "../../../utils/navigation";
 
 class LoginContainer extends Component {
 
@@ -12,6 +13,7 @@ class LoginContainer extends Component {
         super(props);
 
         this.login = this.login.bind(this);
+        this.navigateToSignup = this.navigateToSignup.bind(this);
     }
 
 
@@ -21,12 +23,16 @@ class LoginContainer extends Component {
         })
     }
 
+    navigateToSignup(){
+        navigate(this.history, '/signUp');
+    }
+
     render() {
         return (
             <Route render={({history}) => {
                 this.history = history;
                 return (
-                    <LoginView login={this.login}/>
+                    <LoginView login={this.login} navigateToSignup={this.navigateToSignup}/>
                 )}}/>
         );
     }
