@@ -73,8 +73,41 @@ module.exports.get = (req, res) => {
 module.exports.getById = (req, res) => {
     const id = req.params.id;
     const id_filter = {'_id': new ObjectID(id)};
-
-    Presentation.find(id_filter)
+    
+    Presentation.aggregate([
+        {$match: id_filter},
+        {
+            $lookup: {
+                from: "tickets",
+                localField: "_id",
+                foreignField: "presentation",
+                as: "ticketsSoldArray"
+            }
+        },
+        {
+            $addFields: {
+                soldTickets: {
+                    $size: {
+                        $filter: {
+                            input: "$ticketsSoldArray",
+                            as: "ticket",
+                            cond: {$eq: ["$$ticket.sold", true]}
+                        }
+                    }
+                },
+                reservedTickets: {
+                    $size: {
+                        $filter: {
+                            input: "$ticketsSoldArray",
+                            as: "ticket",
+                            cond: {$eq: ["$$ticket.sold", false]}
+                        }
+                    }
+                },
+            }
+        },
+        {$project: {ticketsSoldArray: 0}}
+    ])
         .then(presentation => {
             if (thereIsNoPresentation(presentation)) {
                 errors.presentationNotFound(res);
