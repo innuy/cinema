@@ -181,7 +181,6 @@ describe("Ticket Get by Id Test", function () {
 
     afterEach(function () {
         Ticket.findById.restore();
-        // sinon.restore();
     });
 
     it('Failed - Wrong id', (done) => {
