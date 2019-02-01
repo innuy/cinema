@@ -1,5 +1,5 @@
 const sinon = require('sinon');
-let db
+let db;
 
 beforeEach(() => {
     db = require('../../connectors/mongoDB');

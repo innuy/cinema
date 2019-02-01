@@ -28,14 +28,17 @@ let testingTicketWrongId = '000000000000000000000001';
 const testingTicketData = {
     presentation: testingTicketId,
     seat: testingSeatId,
+    sold: true,
 };
 const testingTicketDataWithTicketWrongInformation = {
     presentation: testingWrongId,
     seat: testingSeatId,
+    sold: true,
 };
 const testingTicketDataWithSeatWrongInformation = {
     presentation: testingTicketId,
     seat: testingWrongId,
+    sold: true,
 };
 const testingSeatData = {
     _id: testingSeatId,

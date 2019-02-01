@@ -31,9 +31,55 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.get = (req, res) => {
+    const soldTicketsSubQuery = {
+        $size: {
+            $filter: {
+                input: "$ticketsSoldArray",
+                as: "ticket",
+                cond: {$eq: ["$$ticket.sold", true]}
+            }
+        }
+    };
+
+
+    const reservedTicketsSubQuery = {
+        $size: {
+            $filter: {
+                input: "$ticketsSoldArray",
+                as: "ticket",
+                cond: {$eq: ["$$ticket.sold", false]}
+            }
+        }
+    };
     const filter = getFilterFromQuery(req);
     Presentation.aggregate([
         {$match: filter},
+        {
+            $lookup: {
+                from: "tickets",
+                localField: "_id",
+                foreignField: "presentation",
+                as: "ticketsSoldArray"
+            }
+        },
+        {
+            $addFields: {
+                soldTickets: soldTicketsSubQuery,
+                reservedTickets: reservedTicketsSubQuery,
+            }
+        },
+        {$project: {ticketsSoldArray: 0}}
+    ])
+        .then(presentation => res.send(presentation))
+        .catch(err => errors.databaseError(err, res));
+};
+
+module.exports.getById = (req, res) => {
+    const id = req.params.id;
+    const id_filter = {'_id': new ObjectID(id)};
+    
+    Presentation.aggregate([
+        {$match: id_filter},
         {
             $lookup: {
                 from: "tickets",
@@ -66,15 +112,6 @@ module.exports.get = (req, res) => {
         },
         {$project: {ticketsSoldArray: 0}}
     ])
-        .then(presentation => res.send(presentation))
-        .catch(err => errors.databaseError(err, res));
-};
-
-module.exports.getById = (req, res) => {
-    const id = req.params.id;
-    const id_filter = {'_id': new ObjectID(id)};
-
-    Presentation.find(id_filter)
         .then(presentation => {
             if (thereIsNoPresentation(presentation)) {
                 errors.presentationNotFound(res);

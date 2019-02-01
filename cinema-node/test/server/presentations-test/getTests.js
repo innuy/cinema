@@ -95,7 +95,7 @@ function getPresentationsById(done) {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.strictEqual(res.status, 200);
-                assert.strictEqual(res.body._id, testingPresentationIdToSearch)
+                assert.strictEqual(res.body._id, testingPresentationIdToSearch);
                 done();
             });
         })
@@ -126,31 +126,31 @@ describe("Presentations Get Test", function () {
     });
 
     afterEach(() => {
-        Presentations.find.restore();
+        Presentations.aggregate.restore();
     });
 
     it('Successful - Get list with filters', (done) => {
-        sinon.stub(Presentations, 'find').resolves([testingPresentationAnswerData]);
+        sinon.stub(Presentations, 'aggregate').resolves([testingPresentationAnswerData]);
         getPresentationListWithFilters(done);
     });
 
     it('Successful - Get list without filters', (done) => {
-        sinon.stub(Presentations, 'find').resolves([testingPresentationAnswerData]);
+        sinon.stub(Presentations, 'aggregate').resolves([testingPresentationAnswerData]);
         getPresentationsListWithoutFilters(done);
     });
 
     it('Failed - Wrong filters', (done) => {
-        sinon.stub(Presentations, 'find').resolves(null);
+        sinon.stub(Presentations, 'aggregate').resolves(null);
         getPresentationsListWithWrongFilters(done);
     });
 
     it('Successful - Get one by id', (done) => {
-        sinon.stub(Presentations, 'find').resolves(testingPresentationAnswerData);
+        sinon.stub(Presentations, 'aggregate').resolves(testingPresentationAnswerData);
         getPresentationsById(done);
     });
 
     it('Failed - Wrong id', (done) => {
-        sinon.stub(Presentations, 'find').resolves(null);
+        sinon.stub(Presentations, 'aggregate').resolves(null);
         getPresentationsWithWrongId(done);
     });
 });

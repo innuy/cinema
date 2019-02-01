@@ -56,6 +56,22 @@ function ticketDeleteTestbyId(done) {
         })
 }
 
+function ticketDeleteTestbyIdDatabaseError(done) {
+    request(app)
+        .del('/tickets/' + testingTicketIdToDelete)
+        .send()
+        .then((res) => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.equal(res.status, 500);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
 function ticketWrongPresentationIdDeleteTest(done) {
     request(app)
         .del('/tickets/' + testingTicketIdToDelete)
@@ -97,28 +113,30 @@ describe("Ticket Delete by id test", function () {
         Ticket.findById.restore();
         Presentation.findById.restore();
         Ticket.findOneAndDelete.restore();
-        Presentation.findOneAndUpdate.restore();
     });
 
     it('Successful - Delete ticket', (done) => {
         sinon.stub(Ticket, 'findById').resolves(testingTicketData);
         sinon.stub(Presentation, 'findById').resolves(presentationModel);
         sinon.stub(Ticket, 'findOneAndDelete').resolves();
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves(presentationModelOneLessTicketSold);
         ticketDeleteTestbyId(done);
+    });
+    it('Failed -Database error', (done) => {
+        sinon.stub(Ticket, 'findById').resolves(testingTicketData);
+        sinon.stub(Presentation, 'findById').rejects(presentationModel);
+        sinon.stub(Ticket, 'findOneAndDelete').resolves();
+        ticketDeleteTestbyIdDatabaseError(done);
     });
     it('Failed - Wrong presentation id', (done) => {
         sinon.stub(Ticket, 'findById').resolves(testingTicketData);
         sinon.stub(Presentation, 'findById').resolves(null);
         sinon.stub(Ticket, 'findOneAndDelete').resolves(null);
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
         ticketWrongPresentationIdDeleteTest(done);
     });
     it('Failed - Wrong ticket id', (done) => {
         sinon.stub(Ticket, 'findById').resolves(null);
         sinon.stub(Presentation, 'findById').resolves(null);
         sinon.stub(Ticket, 'findOneAndDelete').resolves(null);
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
         ticketWrongTicketIdDeleteTest(done);
     });
 });
