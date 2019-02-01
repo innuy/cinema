@@ -15,7 +15,6 @@ const get = celebrate({
         movie: Joi.objectId(),
         auditorium: Joi.objectId(),
         start: Joi.date().iso(),
-        soldTickets: Joi.number().positive().integer(),
     }
 });
 

@@ -20,7 +20,6 @@ const testingPresentationData = {
     movie: testingMovieId,
     auditorium: testingAuditoriumId,
     start: date.toISOString(),
-    soldTickets: 0,
 };
 
 function presentationDeleteTestbyId(done) {
