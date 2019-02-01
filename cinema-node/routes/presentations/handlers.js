@@ -31,6 +31,26 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.get = (req, res) => {
+    const soldTicketsSubQuery = {
+        $size: {
+            $filter: {
+                input: "$ticketsSoldArray",
+                as: "ticket",
+                cond: {$eq: ["$$ticket.sold", true]}
+            }
+        }
+    };
+
+
+    const reservedTicketsSubQuery = {
+        $size: {
+            $filter: {
+                input: "$ticketsSoldArray",
+                as: "ticket",
+                cond: {$eq: ["$$ticket.sold", false]}
+            }
+        }
+    };
     const filter = getFilterFromQuery(req);
     Presentation.aggregate([
         {$match: filter},
@@ -44,24 +64,8 @@ module.exports.get = (req, res) => {
         },
         {
             $addFields: {
-                soldTickets: {
-                    $size: {
-                        $filter: {
-                            input: "$ticketsSoldArray",
-                            as: "ticket",
-                            cond: {$eq: ["$$ticket.sold", true]}
-                        }
-                    }
-                },
-                reservedTickets: {
-                    $size: {
-                        $filter: {
-                            input: "$ticketsSoldArray",
-                            as: "ticket",
-                            cond: {$eq: ["$$ticket.sold", false]}
-                        }
-                    }
-                },
+                soldTickets: soldTicketsSubQuery,
+                reservedTickets: reservedTicketsSubQuery,
             }
         },
         {$project: {ticketsSoldArray: 0}}

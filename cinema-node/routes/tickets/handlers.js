@@ -167,7 +167,6 @@ const createTicketWithSeatRowAndColumn = (presentationId, newTicket) => new Prom
         .catch(err => {
             reject(err);
         });
-    // return newTicket;
 });
 
 const getAuditoriumOfPresentation = presentationId => {
