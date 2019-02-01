@@ -9,7 +9,8 @@ var ObjectID = require('mongodb').ObjectID;
 const populateGetQuery = [
     {path: 'presentation', populate: {path: 'movie'}},
     {path: 'presentation', populate: {path: 'auditorium'}},
-    'seat'];
+    'seat'
+];
 
 module.exports.create = async (req, res) => {
     let newTicket = req.body;
@@ -18,10 +19,8 @@ module.exports.create = async (req, res) => {
     getPresentationById(presentationId)
         .then(presentation => {
             const presentationDate = new Date(presentation.start);
-
             if (presentationHasAlreadyStarted(presentationDate)) {
                 throw(errors.presentationAlreadyStarted);
-
             } else {
                 if (notSeatIdButRowAndColumn(newTicket)) {
                     return createTicketWithSeatRowAndColumn(presentationId, newTicket);
@@ -41,6 +40,7 @@ module.exports.create = async (req, res) => {
             }
         });
 };
+
 module.exports.get = async (req, res) => {
     let ticket = req.query;
     if (notSeatIdButRowAndColumn(ticket) && ticket.presentation !== undefined) {
@@ -58,6 +58,7 @@ module.exports.get = async (req, res) => {
         .catch(err =>
             errors.databaseError(err, res))
 };
+
 module.exports.getById = (req, res) => {
     Ticket.findById(req.params.id)
         .populate(populateGetQuery)
@@ -70,6 +71,7 @@ module.exports.getById = (req, res) => {
         })
         .catch(err => errors.databaseError(err, res))
 };
+
 module.exports.putById = (req, res) => {
     let ticketToUpdate = req.body;
     let ticketId = req.params.id;
@@ -98,24 +100,28 @@ module.exports.putById = (req, res) => {
 };
 
 module.exports.deleteById = (req, res) => {
-    getTicketById(req.params.id, res).then(ticket => {
-        getPresentationById(ticket.presentation, res).then(presentation => {
-            deleteTicketById(ticket._id, res).then(successCode => {
-                res.status(204);
-                res.send();
-            })
-                .catch(err => {
-                    return (err)
-                });
+    getTicketById(req.params.id)
+        .then(async ticket => {
+            let presentation = await getPresentationById(ticket.presentation);
+            if ((presentation instanceof Function) || (presentation instanceof Error)) {
+                throw presentation;
+            } else {
+                return deleteTicketById(ticket._id);
+            }
         })
-            .catch(err => {
-                return (err)
-            });
-    })
+        .then(ticket => {
+            res.status(204);
+            res.send();
+        })
         .catch(err => {
-            return (err)
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
         });
 };
+
 
 const getPresentationById = presentationId => new Promise((resolve, reject) => {
     Presentation.findById(presentationId)
@@ -148,7 +154,7 @@ const createTicketWithSeatRowAndColumn = (presentationId, newTicket) => new Prom
                 column: newTicket.seatColumn,
                 auditorium: new ObjectID(auditoriumId.toString())
             };
-            return(getSeatId(seatToReserve));
+            return (getSeatId(seatToReserve));
         })
         .then(seatId => {
             newTicket = {
@@ -159,7 +165,7 @@ const createTicketWithSeatRowAndColumn = (presentationId, newTicket) => new Prom
             resolve(checkAvailabilityAndCreateTicket(newTicket));
         })
         .catch(err => {
-            reject (err);
+            reject(err);
         });
     // return newTicket;
 });
@@ -303,30 +309,27 @@ const thereIsNo = obj => {
         return obj === null;
 };
 
-const deleteTicketById = (ticketId, res) => new Promise((resolve, reject) => {
-    const id_filter = {'_id': new ObjectID(ticketId)};
-    Ticket.findOneAndDelete(id_filter).then(ticket => {
-        resolve();
-    })
-        .catch(err => {
-            errors.databaseError(err, res);
-            reject(err)
-        });
-});
-
-const getTicketById = (ticketId, res) => {
+const getTicketById = ticketId => {
     return new Promise((resolve, reject) => {
         Ticket.findById(ticketId).then(ticket => {
             if (ticket === null) {
-                errors.ticketNotFound(res);
-                reject("ticket not found");
+                reject(errors.ticketNotFound);
             } else {
                 resolve(ticket);
             }
         })
             .catch(err => {
-                errors.databaseError(err, res);
                 reject(err)
             });
     });
 };
+
+const deleteTicketById = ticketId => new Promise((resolve, reject) => {
+    const id_filter = {'_id': new ObjectID(ticketId)};
+    Ticket.findOneAndDelete(id_filter).then(ticket => {
+        resolve(ticket);
+    })
+        .catch(err => {
+            reject(err)
+        });
+});

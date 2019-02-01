@@ -56,6 +56,22 @@ function ticketDeleteTestbyId(done) {
         })
 }
 
+function ticketDeleteTestbyIdDatabaseError(done) {
+    request(app)
+        .del('/tickets/' + testingTicketIdToDelete)
+        .send()
+        .then((res) => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.equal(res.status, 500);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
 function ticketWrongPresentationIdDeleteTest(done) {
     request(app)
         .del('/tickets/' + testingTicketIdToDelete)
@@ -104,6 +120,12 @@ describe("Ticket Delete by id test", function () {
         sinon.stub(Presentation, 'findById').resolves(presentationModel);
         sinon.stub(Ticket, 'findOneAndDelete').resolves();
         ticketDeleteTestbyId(done);
+    });
+    it('Failed -Database error', (done) => {
+        sinon.stub(Ticket, 'findById').resolves(testingTicketData);
+        sinon.stub(Presentation, 'findById').rejects(presentationModel);
+        sinon.stub(Ticket, 'findOneAndDelete').resolves();
+        ticketDeleteTestbyIdDatabaseError(done);
     });
     it('Failed - Wrong presentation id', (done) => {
         sinon.stub(Ticket, 'findById').resolves(testingTicketData);
