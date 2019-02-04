@@ -7,6 +7,35 @@ const Presentation = require("../../db/models/presentations");
 var ObjectID = require('mongodb').ObjectID;
 const Tools = require('./tools');
 
+const soldTicketsSubQuery = {
+    $size: {
+        $filter: {
+            input: "$ticketsSoldArray",
+            as: "ticket",
+            cond: {$eq: ["$$ticket.sold", true]}
+        }
+    }
+};
+
+const reservedTicketsSubQuery = {
+    $size: {
+        $filter: {
+            input: "$ticketsSoldArray",
+            as: "ticket",
+            cond: {$eq: ["$$ticket.sold", false]}
+        }
+    }
+};
+
+const getAuditoriumDetailsSubQuery = {
+    $lookup: {
+        from: "auditoria",
+        localField: "auditorium",
+        foreignField: "_id",
+        as: "auditorium"
+    }
+};
+
 module.exports.create = (req, res) => {
     Tools.checkMovie(req.body.movie, res)
         .then(message => {
@@ -31,26 +60,6 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.get = (req, res) => {
-    const soldTicketsSubQuery = {
-        $size: {
-            $filter: {
-                input: "$ticketsSoldArray",
-                as: "ticket",
-                cond: {$eq: ["$$ticket.sold", true]}
-            }
-        }
-    };
-
-
-    const reservedTicketsSubQuery = {
-        $size: {
-            $filter: {
-                input: "$ticketsSoldArray",
-                as: "ticket",
-                cond: {$eq: ["$$ticket.sold", false]}
-            }
-        }
-    };
     const filter = getFilterFromQuery(req);
     Presentation.aggregate([
         {$match: filter},
@@ -77,7 +86,7 @@ module.exports.get = (req, res) => {
 module.exports.getById = (req, res) => {
     const id = req.params.id;
     const id_filter = {'_id': new ObjectID(id)};
-    
+
     Presentation.aggregate([
         {$match: id_filter},
         {
@@ -90,27 +99,12 @@ module.exports.getById = (req, res) => {
         },
         {
             $addFields: {
-                soldTickets: {
-                    $size: {
-                        $filter: {
-                            input: "$ticketsSoldArray",
-                            as: "ticket",
-                            cond: {$eq: ["$$ticket.sold", true]}
-                        }
-                    }
-                },
-                reservedTickets: {
-                    $size: {
-                        $filter: {
-                            input: "$ticketsSoldArray",
-                            as: "ticket",
-                            cond: {$eq: ["$$ticket.sold", false]}
-                        }
-                    }
-                },
+                soldTickets: soldTicketsSubQuery,
+                reservedTickets: reservedTicketsSubQuery,
             }
         },
-        {$project: {ticketsSoldArray: 0}}
+        {$project: {ticketsSoldArray: 0}},
+        getAuditoriumDetailsSubQuery
     ])
         .then(presentation => {
             if (thereIsNoPresentation(presentation)) {
