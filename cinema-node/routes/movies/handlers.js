@@ -50,30 +50,48 @@ module.exports.putById = (req, res) => {
 };
 
 module.exports.deleteById = (req, res) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
-    Movie.find(id_filter)
-        .then(movies => {
-            if (thereIsNoMovie(movies)) {
-                errors.movieNotFound(res);
-            } else {
-                deleteMovieById(id_filter, res);
-            }
+    movieId = req.params.id;
+    ifMovieExists(movieId)
+        .then(movie => {
+            return deleteMovieById(movieId);
         })
-        .catch(err => errors.databaseError(err, res))
-};
-
-function deleteMovieById(id_filter, res) {
-    Movie.findOneAndDelete(id_filter)
         .then(movie => {
             res.status(204);
             res.send({});
         })
-        .catch(err => errors.databaseError(err, res))
-}
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
+        });
+};
 
-function thereIsNoMovie(movie) {
+const ifMovieExists = movieId => new Promise((resolve, reject) => {
+    const id_filter = {'_id': new ObjectID(movieId)};
+    Movie.find(id_filter)
+        .then(movies => {
+            if (thereIsNoMovie(movies)) {
+                reject(errors.movieNotFound);
+            } else {
+                resolve(movies);
+            }
+        });
+});
+
+const deleteMovieById = movieId => new Promise((resolve, reject) => {
+    const id_filter = {'_id': new ObjectID(movieId)};
+    Movie.findOneAndDelete(id_filter)
+        .then(movie => {
+            resolve(movie);
+        })
+        .catch(err => reject(err))
+});
+
+const thereIsNoMovie = movie => {
     if (Array.isArray(movie))
         return movie.length === 0;
     else
         return movie === null;
-}
+};
