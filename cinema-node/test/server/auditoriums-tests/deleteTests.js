@@ -54,17 +54,17 @@ describe("Auditorium Delete by id test", function () {
     });
 
     afterEach(() => {
-        Auditorium.find.restore();
+        Auditorium.findOne.restore();
         Auditorium.findOneAndDelete.restore();
     });
 
     it('Successful - Delete auditorium', () => {
-        sinon.stub(Auditorium, 'find').resolves([testingAuditoriumData]);
+        sinon.stub(Auditorium, 'findOne').resolves([testingAuditoriumData]);
         sinon.stub(Auditorium, 'findOneAndDelete').resolves();
         auditoriumDeleteTestbyId();
     });
     it('Failed - Wrong id', () => {
-        sinon.stub(Auditorium, 'find').resolves(null);
+        sinon.stub(Auditorium, 'findOne').resolves(null);
         sinon.stub(Auditorium, 'findOneAndDelete').resolves(null);
         auditoriumWrongIdDeleteTest();
     });
