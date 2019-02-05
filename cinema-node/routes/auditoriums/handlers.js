@@ -6,7 +6,7 @@ var ObjectID = require('mongodb').ObjectID;
 module.exports.create = (req, res) => {
     Auditorium.create(req.body)
         .then(async auditorium => {
-            const seats = await createSeats(auditorium, req);
+            const seats = await createSeats(auditorium);
             res.send(auditorium)
         })
         .catch(err => {
@@ -26,8 +26,8 @@ module.exports.get = (req, res) => {
 
 module.exports.getById = (req, res) => {
     const id = req.params.id;
-    const idFilter = {'_id': new ObjectID(id)};
-    Auditorium.findById(req.params.id)
+
+    Auditorium.findById(id)
         .then(auditorium => {
             if (thereIsNoAuditorium(auditorium)) {
                 errors.auditoriumNotFound(res);
@@ -81,13 +81,13 @@ module.exports.deleteById = (req, res) => {
         });
 };
 
-const createSeats = (auditorium, req) => new Promise((resolve, reject) => {
+const createSeats = auditorium => new Promise((resolve, reject) => {
     const startingInOne = 1;
     let seat = {auditorium: auditorium._id};
     const seatArray = [];
 
-    for (let row = 0; row < req.body.seatRows; row++) {
-        for (let column = 0; column < req.body.seatColumns; column++) {
+    for (let row = 0; row < auditorium.seatRows; row++) {
+        for (let column = 0; column < auditorium.seatColumns; column++) {
             seat.row = row + startingInOne;
             seat.column = column + startingInOne;
             Seat.create(seat)
@@ -145,7 +145,7 @@ const updateAuditoriumDocument = (id, newAuditorium) => new Promise((resolve, re
 });
 
 const deleteAuditoriumById = id => new Promise((resolve, reject) => {
-    const idFilter = {'_id': new ObjectID(req.params.id)};
+    const idFilter = {'_id': new ObjectID(id)};
     Seat.deleteMany({auditorium: id})
         .catch(err => reject(err));
 
@@ -153,5 +153,5 @@ const deleteAuditoriumById = id => new Promise((resolve, reject) => {
         .then(dbresponse => {
             resolve(dbresponse);
         })
-        .catch(err => errors.databaseError(err, res));
+        .catch(err => reject(err));
 });

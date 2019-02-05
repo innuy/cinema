@@ -39,7 +39,7 @@ module.exports.create = (req, res) => {
             return checkAuditorium(req.body.auditorium);
         })
         .then(auditorium => {
-            return createPresentation(req.body, res);
+            return createPresentation(req.body);
         })
         .then(presentation => {
             res.send(presentation);
@@ -71,7 +71,8 @@ module.exports.get = (req, res) => {
                 reservedTickets: reservedTicketsSubQuery,
             }
         },
-        {$project: {ticketsSoldArray: 0}}
+        {$project: {ticketsSoldArray: 0}},
+        getAuditoriumDetailsSubQuery
     ])
         .then(presentation => res.send(presentation))
         .catch(err => errors.databaseError(err, res));
@@ -116,7 +117,7 @@ module.exports.putById = (req, res) => {
             return checkAuditorium(req.body.auditorium)
         })
         .then(auditorium => {
-            return updatePresentation(req, res);
+            return updatePresentation(req);
         })
         .then(presentation => {
             res.send();
@@ -134,7 +135,7 @@ module.exports.deleteById = (req, res) => {
     const id_filter = {'_id': new ObjectID(req.params.id)};
     checkPresentation(req.params.id)
         .then(presentation => {
-            return deletePresentationById(id_filter, res);
+            return deletePresentationById(id_filter);
         })
         .then(presentation =>{
             res.status(204);
@@ -162,7 +163,7 @@ const checkAuditorium = auditoriumId => new Promise((resolve, reject) => {
         .catch(err => reject(err));
 });
 
-const createPresentation = (newPresentation, res) => new Promise((resolve, reject) => {
+const createPresentation = newPresentation => new Promise((resolve, reject) => {
     Presentation.create(newPresentation)
         .then(presentation => {
             resolve(presentation);
@@ -187,7 +188,7 @@ const thereIsNoPresentation = presentation => {
         return presentation === null;
 };
 
-const updatePresentation = (req, res) => new Promise((resolve, reject) => {
+const updatePresentation = req => new Promise((resolve, reject) => {
     const id_filter = {'_id': new ObjectID(req.params.id)};
     const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: req.body};
@@ -201,7 +202,6 @@ const updatePresentation = (req, res) => new Promise((resolve, reject) => {
                 reject(errors.presentationNotFound);
             } else {
                 resolve(presentation);
-                res.send();
             }
         })
         .catch(err => reject(err));
@@ -219,7 +219,7 @@ const checkPresentation = id => new Promise((resolve, reject) => {
         .catch(err => reject(err))
 });
 
-const deletePresentationById = (id_filter, res) => new Promise((resolve, reject) => {
+const deletePresentationById = id_filter => new Promise((resolve, reject) => {
     Presentation.findOneAndDelete(id_filter)
         .then(presentation => {
             resolve(presentation);
