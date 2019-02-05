@@ -60,30 +60,60 @@ module.exports.getById = (req, res) => {
 };
 
 module.exports.putById = (req, res) => {
-    const idFilter = {'_id': new ObjectID(req.params.id)};
+    const id = req.params.id;
+    const newAuditorium = req.body;
 
-    Auditorium.findOne(idFilter)
-        .then(auditorium => {
-            if (thereIsNoAuditorium(auditorium)) {
-                errors.auditoriumNotFound(res);
-            } else if (auditoriumSizeUpdated(auditorium, req)) {
-                errors.auditoriumChangingSize(res);
-            } else {
-                updateAuditoriumDocument(req, res);
-            }
+    checkAuditorium(id, newAuditorium)
+        .then(currentAuditorium => {
+            return updateAuditoriumDocument(id, newAuditorium);
         })
-        .catch(err => errors.databaseError(err, res))
+        .then(newAuditorium => {
+            res.send();
+        })
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
+        });
 };
 
-function auditoriumSizeUpdated(auditorium, req) {
-    return (auditorium.seatRows != req.body.seatRows) ||
-        (auditorium.seatColumns != req.body.seatColumns);
+function checkAuditorium(id, newAuditorium) {
+    return new Promise((resolve, reject) => {
+        const idFilter = {'_id': new ObjectID(id)};
+        Auditorium.findOne(idFilter)
+            .then(currentAuditorium => {
+                if (thereIsNoAuditorium(currentAuditorium)) {
+                    reject(errors.auditoriumNotFound);
+                } else {
+                    if (auditoriumSizeUpdated(currentAuditorium, newAuditorium)) {
+                        reject(errors.auditoriumChangingSize);
+                    } else {
+                        resolve(currentAuditorium);
+                    }
+                }
+            })
+            .catch(err => reject(err));
+    });
 }
 
-function updateAuditoriumDocument(req, res) {
-    const idFilter = {'_id': new ObjectID(req.params.id)};
+function thereIsNoAuditorium(auditorium) {
+    if (Array.isArray(auditorium))
+        return auditorium.length === 0;
+    else
+        return auditorium === null;
+}
+
+function auditoriumSizeUpdated(auditorium, newAuditorium) {
+    return (auditorium.seatRows !== newAuditorium.seatRows) ||
+        (auditorium.seatColumns !== newAuditorium.seatColumns);
+}
+
+const updateAuditoriumDocument = (id, newAuditorium) => new Promise((resolve, reject) => {
+    const idFilter = {'_id': new ObjectID(id)};
     const setToReturnUpdatedValue = {new: true};
-    const parametersToSet = {$set: req.body};
+    const parametersToSet = {$set: newAuditorium};
     Auditorium.findOneAndUpdate(
         idFilter,
         parametersToSet,
@@ -91,13 +121,13 @@ function updateAuditoriumDocument(req, res) {
     )
         .then(auditorium => {
             if (thereIsNoAuditorium(auditorium)) {
-                errors.auditoriumNotFound(res);
+                reject(errors.auditoriumNotFound);
             } else {
-                res.send();
+                resolve(auditorium);
             }
         })
-        .catch(err => errors.databaseError(err, res))
-}
+        .catch(err => reject(err))
+});
 
 module.exports.deleteById = (req, res) => {
     const idFilter = {'_id': new ObjectID(req.params.id)};
@@ -112,24 +142,14 @@ module.exports.deleteById = (req, res) => {
         .catch(err => errors.databaseError(err, res))
 };
 
-
 function deleteAuditoriumById(idFilter, res) {
     Seat.deleteMany({auditorium: idFilter._id})
-        .catch(err => errors.databaseError(err, res))
+        .catch(err => errors.databaseError(err, res));
 
     Auditorium.findOneAndDelete(idFilter)
         .then(dbresponse => {
             res.status(204);
             res.send({});
         })
-        .catch(err => errors.databaseError(err, res))
-
+        .catch(err => errors.databaseError(err, res));
 }
-
-function thereIsNoAuditorium(movie) {
-    if (Array.isArray(movie))
-        return movie.length === 0;
-    else
-        return movie === null;
-}
-
