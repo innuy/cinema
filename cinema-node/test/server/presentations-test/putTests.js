@@ -13,6 +13,8 @@ const Presentation = require("../../../db/models/presentations");
 const Movie = require("../../../db/models/movies");
 const Auditorium = require("../../../db/models/auditoriums");
 
+const errors = require("../../../routes/presentations/errors");
+
 const date = new Date("August 25, 1825 12:00:00");
 
 const testingMovieId = '5c2f723b62607929f4c347d3';
@@ -153,7 +155,7 @@ function presentationDbErrorPutTest(done) {
 
 describe("Presentation Post Test with incorrect Db info", function () {
     beforeEach(() => {
-        sinon.stub(Tools, 'checkMovie').rejects("movie not found");
+        sinon.stub(Tools, 'checkMovie').rejects(errors.movieNotFound);
         app = require('../../../app');
     });
     afterEach(() => {
