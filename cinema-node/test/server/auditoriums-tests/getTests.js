@@ -94,7 +94,7 @@ function getAuditoriumsById(done) {
         });
 }
 
-function getAuditoriumsWithWrongId(done) {
+function getAuditoriumsByIdWithWrongId(done) {
     request(app)
         .get('/auditoriums/' + testingAuditoriumWrongId)
         .query()
@@ -133,14 +133,24 @@ describe("Auditoriums Get Test", function () {
         sinon.stub(Auditoriums, 'find').resolves(null);
         getAuditoriumsListWithWrongFilters(done);
     });
+});
+
+describe("Auditoriums Get by Id Test", function () {
+    beforeEach(() => {
+        app = require('../../../app');
+    });
+
+    afterEach(() => {
+        Auditoriums.findById.restore();
+    });
 
     it('Successful - Get one by id', (done) => {
-        sinon.stub(Auditoriums, 'find').resolves(testingAuditoriumFilterData);
+        sinon.stub(Auditoriums, 'findById').resolves(testingAuditoriumFilterData);
         getAuditoriumsById(done);
     });
 
-    it('Failed - Wrong id', (done) => {
-        sinon.stub(Auditoriums, 'find').resolves(null);
-        getAuditoriumsWithWrongId(done);
+    it('Failed - Get one with wrong id', (done) => {
+        sinon.stub(Auditoriums, 'findById').resolves(null);
+        getAuditoriumsByIdWithWrongId(done);
     });
 });

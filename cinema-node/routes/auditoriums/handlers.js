@@ -5,25 +5,39 @@ var ObjectID = require('mongodb').ObjectID;
 
 module.exports.create = (req, res) => {
     Auditorium.create(req.body)
-        .then(auditorium => {
-            createSeats(auditorium, req);
+        .then(async auditorium => {
+            const seats = await createSeats(auditorium, req);
             res.send(auditorium)
         })
-        .catch(err => errors.databaseError(err, res))
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
+        });
 };
 
-function createSeats(auditorium, req) {
+const createSeats = (auditorium, req) => new Promise((resolve, reject) => {
     const startingInOne = 1;
     let seat = {auditorium: auditorium._id};
+    const seatArray = [];
 
     for (let row = 0; row < req.body.seatRows; row++) {
         for (let column = 0; column < req.body.seatColumns; column++) {
             seat.row = row + startingInOne;
             seat.column = column + startingInOne;
-            Seat.create(seat);
+            Seat.create(seat)
+                .then(seat => {
+                    seatArray.push(seat);
+                })
+                .catch(err => {
+                    reject(err);    //TODO delete already created seats
+                });
         }
     }
-}
+    resolve(seatArray);
+});
 
 module.exports.get = (req, res) => {
     Auditorium.find(req.query)
@@ -34,7 +48,7 @@ module.exports.get = (req, res) => {
 module.exports.getById = (req, res) => {
     const id = req.params.id;
     const idFilter = {'_id': new ObjectID(id)};
-    Auditorium.find(idFilter)
+    Auditorium.findById(req.params.id)
         .then(auditorium => {
             if (thereIsNoAuditorium(auditorium)) {
                 errors.auditoriumNotFound(res);
