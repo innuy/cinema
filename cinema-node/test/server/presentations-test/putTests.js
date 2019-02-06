@@ -113,7 +113,7 @@ function presentationWrongMovieIdPutTest(done) {
         .send(testingUpdatePresentationDataWithMovieWrongInformation)
         .then(res => {
             setTimeout(() => {
-                assert.strictEqual(res.status, 412);
+                res.status.should.equal(412);
                 done();
             });
         })
@@ -128,7 +128,7 @@ function presentationWrongAuditoriumInformationPutTest(done) {
         .send(testingUpdatePresentationDataWithAuditoriumWrongInformation)
         .then(res => {
             setTimeout(() => {
-                assert.strictEqual(res.status, 412);
+                res.status.should.equal(412);
                 done();
             });
         })

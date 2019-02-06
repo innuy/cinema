@@ -92,7 +92,7 @@ function auditoriumSeatCreationIncompleteTest(done) {
 }
 
 
-describe("Auditorium Post Test", function (done) {
+describe("Auditorium Post Test", function () {
     beforeEach(() => {
 
         app = require('../../../app');
@@ -128,7 +128,7 @@ describe("Auditorium Post Test", function (done) {
     });
 });
 
-describe("Auditorium Post Test", function (done) {
+describe("Auditorium Post Test", function () {
     beforeEach(() => {
         sinon
             .stub(Auditorium, 'create')
