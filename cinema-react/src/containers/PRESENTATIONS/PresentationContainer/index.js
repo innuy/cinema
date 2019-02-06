@@ -5,6 +5,8 @@ import PresentationView from "../../../components/PRESENTATIONS/PresentationView
 import {getPresentations, deletePresentation} from "../../../API/presentations";
 import NavBar from "../../../components/GENERAL/NavBar";
 import {navigate} from "../../../utils/navigation";
+import {getAuditoriums} from "../../../API/auditoriums";
+import {getFilms} from "../../../API/films";
 
 
 class PresentationContainer extends Component {
@@ -12,6 +14,9 @@ class PresentationContainer extends Component {
     state = {
         presentations: [],
         isAdmin: true,
+
+        films: [],
+        auditoriums: [],
     };
 
     history = null;
@@ -35,6 +40,28 @@ class PresentationContainer extends Component {
             if(success) {
                 this.setState({
                     presentations: data,
+                });
+            }
+            else{
+                /*TODO: HANDLE ERROR*/
+            }
+        });
+
+        getAuditoriums((success, data) => {
+            if(success) {
+                this.setState({
+                    auditoriums: data,
+                });
+            }
+            else{
+                /*TODO: HANDLE ERROR*/
+            }
+        });
+
+        getFilms((success, data) => {
+            if(success) {
+                this.setState({
+                    films: data,
                 });
             }
             else{
@@ -68,7 +95,9 @@ class PresentationContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <PresentationView navigateToDetails={this.navigateToDetails} presentations={this.state.presentations} addPresentation={this.addPresentation} deletePresentation={this.deletePresentation} isAdmin={this.state.isAdmin}/>
+                    <PresentationView navigateToDetails={this.navigateToDetails} presentations={this.state.presentations}
+                                      addPresentation={this.addPresentation} deletePresentation={this.deletePresentation}
+                                      films={this.state.films} auditoriums={this.state.auditoriums} isAdmin={this.state.isAdmin}/>
                 </div>);
             }} />
         );

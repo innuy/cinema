@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import './styles.css';
 import SeatElement from "../SeatElement";
 
+
+
 class ReserveTicket extends Component {
 
 
@@ -21,20 +23,40 @@ class ReserveTicket extends Component {
 
 
     renderSeats(){
+
         const res = [];
 
         let selected = false;
+        let taken = false;
 
-        for(let i = 0; i < this.props.presentation.rows; i++){
+        let seats = [];
+
+        for(let i = 0; i < this.props.tickets; i++){
+            seats.push({
+                row: this.props.tickets[i].row,
+                column: this.props.tickets[i].column,
+            });
+        }
+
+        for(let i = 0; i < this.props.auditorium.numberOfRows; i++){
             let row = [];
-            for(let j = 0; j < this.props.presentation.columns; j++){
+            for(let j = 0; j < this.props.auditorium.numberOfColumns; j++){
                 selected = false;
+                taken = false;
                 if(this.state.row === i && this.state.column === j){
                     selected = true;
                 }
-                row.push(<SeatElement key={'seat_'+i+'_'+j} row={i} column={j} selectionCallback={this.selectionCallback} selected={selected}/>)
+
+                for(let k = 0; k < this.props.tickets.length; k++){
+                    if(i+1 === this.props.tickets[k].seat.row && j+1 === this.props.tickets[k].seat.column){
+                        taken = true;
+                    }
+                }
+
+                row.push(<SeatElement key={'seat_'+i+'_'+j} row={i} column={j} taken={taken}
+                                      selectionCallback={this.selectionCallback} selected={selected}/>)
             }
-            res.push(<div className="row" key={'seat_row_'+i}>{row}</div>);
+            res.push(<div className="row rowFullWidth reserveTicketSeatRow" key={'seat_row_'+i}>{row}</div>);
         }
 
         return res;
@@ -50,15 +72,20 @@ class ReserveTicket extends Component {
     render() {
         return (
             <div>
+                <div className="reserveTicketSeatContainer col-10 offset-1">
                 {this.renderSeats()}
-                <button onClick={() => {this.props.finalSelection(this.state.row+1, this.state.column+1)}}>Confirm</button>
+                </div>
+                <div className="row rowFullWidth reserveTicketButtonContainer">
+                    <button className="reserveTicketButton" onClick={() => {this.props.finalSelection(this.state.row+1, this.state.column+1)}}>Confirm</button>
+                </div>
             </div>
         );
     }
 }
 
 ReserveTicket.propTypes = {
-    presentation: PropTypes.object.isRequired,
+    tickets: PropTypes.array.isRequired,
+    auditorium: PropTypes.object.isRequired,
     finalSelection: PropTypes.func.isRequired,
 };
 

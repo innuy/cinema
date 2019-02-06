@@ -42,12 +42,15 @@ function parseTickets(tickets){
                 auditorium: {
                     id: tickets[i].presentation.auditorium._id,
                     number: tickets[i].presentation.auditorium.number,
+                    numberOfRows: tickets[i].presentation.auditorium.seatRows,
+                    numberOfColumns: tickets[i].presentation.auditorium.seatColumns,
                 },
                 seat: {
                     id: tickets[i].seat._id,
                     row: tickets[i].seat.row,
                     column: tickets[i].seat.column,
                 },
+                sold: tickets[i].sold,
                 startTime: tickets[i].presentation.start,
             });
         }
@@ -60,6 +63,17 @@ export function getSingleTicket(id, callback){
     axios.get(urls.tickets + "/" + id)
         .then((response) => {
             callback(true, parseTickets([response.data])[0]);
+        }).catch((error) => {
+        callback(false, "There was an error with the connection");
+    });
+}
+
+
+export function getTicketsOfPresentation(presentationId, callback){
+    axios.get(urls.tickets + "/?presentation=" + presentationId)
+        .then((response) => {
+            console.log("succ: " + JSON.stringify(response.data));
+            callback(true, parseTickets(response.data));
         }).catch((error) => {
         callback(false, "There was an error with the connection");
     });

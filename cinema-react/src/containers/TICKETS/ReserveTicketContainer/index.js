@@ -4,17 +4,18 @@ import { Route } from 'react-router-dom';
 import NavBar from "../../../components/GENERAL/NavBar";
 import ReserveTicket from "../../../components/TICKETS/ReserveTicket";
 import {getSinglePresentation} from "../../../API/presentations";
-import {reserveTicket} from "../../../API/tickets";
+import {getTicketsOfPresentation, reserveTicket} from "../../../API/tickets";
 import {navigateBack} from "../../../utils/navigation";
+import {getSingleAuditorium} from "../../../API/auditoriums";
 
 
 class ReserveTicketContainer extends Component {
 
     state = {
-        presentationId: null,
-        presentation: {
-            rows: 7,
-            columns: 7,
+        tickets: [],
+        auditorium: {
+            rows: 0,
+            columns: 0
         }
     };
 
@@ -37,11 +38,33 @@ class ReserveTicketContainer extends Component {
     }
 
     getPresentationInfo(){
-        getSinglePresentation(this.state.presentationId, (presentation) => {
-            /*this.setState({
-               presentation
-            });*/
-        })
+        getTicketsOfPresentation(this.state.presentationId, (success, tickets) => {
+            if(success) {
+                if(tickets.length > 0) {
+                    this.setState({
+                        tickets,
+                        auditorium: tickets[0].auditorium,
+                    });
+                }
+                else{
+                    getSinglePresentation(this.state.presentationId, (success, data) => {
+                        if(success){
+                            this.setState({
+                               auditorium: data.auditoriumData,
+                            });
+                        }
+                        else{
+                            //TODO: HANDLE ERROR
+                        }
+                    });
+                }
+            }
+            else{
+                //TODO: HANDLE ERROR
+            }
+        });
+
+
     }
 
     makeReservation(row, column){
@@ -63,7 +86,7 @@ class ReserveTicketContainer extends Component {
                 this.history = history;
                 return (<div>
                             <NavBar isAdmin={false} history={this.history}/>
-                            <ReserveTicket presentation={this.state.presentation} finalSelection={this.makeReservation}/>
+                            <ReserveTicket tickets={this.state.tickets} auditorium={this.state.auditorium} finalSelection={this.makeReservation}/>
                         </div>);
             }} />
         );

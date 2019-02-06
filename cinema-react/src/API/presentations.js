@@ -21,7 +21,13 @@ function parsePresentations(presentations){
                 film: presentations[i].movie,
                 auditorium: presentations[i].auditorium,
                 startTime: presentations[i].start,
-                tickets: presentations[i].soldTickets
+                tickets: presentations[i].soldTickets,
+                auditoriumData: {
+                    id: presentations[i].auditorium[0]._id,
+                    number: presentations[i].auditorium[0].number,
+                    numberOfRows: presentations[i].auditorium[0].seatRows,
+                    numberOfColumns: presentations[i].auditorium[0].seatColumns,
+                }
             });
         }
     }
@@ -37,9 +43,15 @@ function parseSinglePresentation(presentation){
         res = {
             id: presentation._id,
             film: presentation.movie,
-            auditorium: presentation.auditorium,
+            auditorium: presentation.auditorium[0]._id,
             startTime: presentation.start,
-            tickets: presentation.soldTickets
+            tickets: presentation.soldTickets,
+            auditoriumData: {
+                id: presentation.auditorium[0]._id,
+                number: presentation.auditorium[0].number,
+                numberOfRows: presentation.auditorium[0].seatRows,
+                numberOfColumns: presentation.auditorium[0].seatColumns,
+            }
         };
     }
 

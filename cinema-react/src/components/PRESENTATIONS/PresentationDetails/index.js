@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import OptionButton from "../../GENERAL/OptionButton";
 
 import './styles.css';
+import {getAuditoriums} from "../../../API/auditoriums";
 
 class PresentationDetails extends Component {
 
@@ -33,17 +34,20 @@ class PresentationDetails extends Component {
 
     componentWillReceiveProps(newProps) {
         if(newProps.presentation){
+            const standardPresentation = newProps.presentation;
+            standardPresentation.startTime = this.parseDateValue(standardPresentation.startTime);
             this.setState({
-                presentation: newProps.presentation,
+                presentation: standardPresentation,
             });
+
         }
     }
 
     renderFilms(){
         const res = [];
 
-        for(let i = 0; i < this.props.films; i++){
-            res.push(<option value={this.props.films[i].id}>{this.props.films[i].name}</option>);
+        for(let i = 0; i < this.props.films.length; i++){
+            res.push(<option key={"film_"+i} value={this.props.films[i].id} selected={this.props.films[i].id === this.state.presentation.film}>{this.props.films[i].name}</option>);
         }
 
         return res;
@@ -52,8 +56,8 @@ class PresentationDetails extends Component {
     renderAuditoriums() {
         const res = [];
 
-        for(let i = 0; i < this.props.auditoriums; i++){
-            res.push(<option value={this.props.auditoriums[i].id}>{this.props.auditoriums[i].number}</option>);
+        for(let i = 0; i < this.props.auditoriums.length; i++){
+            res.push(<option key={"auditorium_"+i} value={this.props.auditoriums[i].id} selected={this.props.auditoriums[i].id === this.state.presentation.auditorium}>{this.props.auditoriums[i].number}</option>);
         }
 
         return res;
@@ -91,7 +95,20 @@ class PresentationDetails extends Component {
         return this.state.errors.auditorium && this.state.errors.film && this.state.errors.startTime
     }
 
+    parseDateValue(startTime){
+        const date = new Date(startTime);
+
+        let month = date.getMonth() > 9 ? date.getMonth() : "0" + date.getMonth();
+        let day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+        let hours = date.getUTCHours() > 9 ? date.getUTCHours() : "0" + date.getUTCHours();
+        let minutes = date.getUTCMinutes() > 9 ? date.getUTCMinutes() : "0" + date.getUTCMinutes();
+
+        return date.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes;
+    }
+
     render() {
+
+
         return (
             <div>
                 <div className="presentationDetailsSeparator"/>
@@ -124,6 +141,7 @@ class PresentationDetails extends Component {
                     <div className="presentationDetailsSeparator"/>
                     <div className="presentationDetailsTitle">Start time:</div>
                     <input className="presentationInput" type="datetime-local" value={this.state.presentation.startTime} onChange={(event) => {
+                        console.log(event.target.value);
                         const presentation = this.state.presentation;
                         presentation.startTime = event.target.value;
                         this.setState({

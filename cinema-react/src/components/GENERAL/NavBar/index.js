@@ -38,7 +38,7 @@ class NavBar extends Component {
     render() {
 
         return (
-            <div className="col-12 navBarContainer row">
+            <div className="col-12 navBarContainer rowFullWidth row">
                 {this.renderElements()}
             </div>
         );

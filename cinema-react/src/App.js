@@ -20,6 +20,7 @@ import MyTicketsContainer from "./containers/TICKETS/MyTicketsContainer";
 import ReserveTicketContainer from "./containers/TICKETS/ReserveTicketContainer";
 import LoginContainer from "./containers/AUTH/LoginContainer";
 import SignUpContainer from "./containers/AUTH/SignupContainer";
+import ConfirmReservationContainer from "./containers/TICKETS/ConfirmReservationContainer";
 
 class App extends Component {
   render() {
@@ -41,6 +42,7 @@ class App extends Component {
                 <Route exact path='/tickets' component={TicketContainer}/>
                 <Route exact path='/addTicket' component={AddTicketContainer}/>
                 <Route exact path='/tickets/:id' component={TicketDetailsContainer}/>
+                <Route exact path='/confirmReservation' component={ConfirmReservationContainer}/>
                 {/*USER SCREENS*/}
                 <Route exact path='/seePresentations' component={SeePresentationContainer}/>
                 <Route exact path='/myTickets' component={MyTicketsContainer}/>

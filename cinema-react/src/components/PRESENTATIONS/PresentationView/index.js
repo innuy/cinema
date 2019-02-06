@@ -13,7 +13,9 @@ class PresentationView extends Component {
         const elementList = [];
 
         for(let i = 0; i < this.props.presentations.length; i++){
-            elementList.push(<PresentationElement key={"presentation_"+i} navigateToDetails={this.props.navigateToDetails} presentation={this.props.presentations[i]} reserveTicket={this.props.reserveTicket} deletePresentation={this.props.deletePresentation} isAdmin={this.props.isAdmin}/>);
+            elementList.push(<PresentationElement key={"presentation_"+i} films={this.props.films} auditoriums={this.props.auditoriums}
+                                                  navigateToDetails={this.props.navigateToDetails} presentation={this.props.presentations[i]}
+                                                  reserveTicket={this.props.reserveTicket} deletePresentation={this.props.deletePresentation} isAdmin={this.props.isAdmin}/>);
         }
 
         return elementList;
@@ -42,7 +44,9 @@ PresentationView.propTypes = {
     reserveTicket: PropTypes.func,
     deletePresentation: PropTypes.func,
     isAdmin: PropTypes.bool.isRequired,
-    navigateToDetails: PropTypes.func
+    navigateToDetails: PropTypes.func,
+    auditoriums: PropTypes.array.isRequired,
+    films: PropTypes.array.isRequired,
 };
 
 export default PresentationView;
