@@ -22,7 +22,7 @@ module.exports.create = async (req, res) => {
             if (presentationHasAlreadyStarted(presentationDate)) {
                 throw(errors.presentationAlreadyStarted);
             } else {
-                if (notSeatIdButRowAndColumn(newTicket)) {
+                if (requestedWithRowAndColumnInsteadOfId(newTicket)) {
                     return createTicketWithSeatRowAndColumn(presentationId, newTicket);
                 } else {
                     return checkAvailabilityAndCreateTicket(newTicket);
@@ -43,7 +43,7 @@ module.exports.create = async (req, res) => {
 
 module.exports.get = async (req, res) => {
     let ticket = req.query;
-    if (notSeatIdButRowAndColumn(ticket) && ticket.presentation !== undefined) {
+    if (requestedWithRowAndColumnInsteadOfId(ticket) && ticket.presentation !== undefined) {
         const seatId = await getSeatIdWithRowAndColumn(ticket);
         ticket = {
             presentation: ticket.presentation,
@@ -142,24 +142,24 @@ const presentationHasAlreadyStarted = presentationDate => {
     return now.getTime() >= presentationDate.getTime();
 };
 
-const notSeatIdButRowAndColumn = newTicket => newTicket.seat === undefined &&
-    newTicket.seatRow !== undefined &&
-    newTicket.seatColumn !== undefined;
+const requestedWithRowAndColumnInsteadOfId = newTicket => {
+    return newTicket.seat === undefined && newTicket.seatRow !== undefined && newTicket.seatColumn !== undefined;
+};
 
 const createTicketWithSeatRowAndColumn = (presentationId, newTicket) => new Promise((resolve, reject) => {
-    getAuditoriumOfPresentation(presentationId)
+    getAuditoriumIdOfPresentation(presentationId)
         .then(auditoriumId => {
             const seatToReserve = {
                 row: newTicket.seatRow,
                 column: newTicket.seatColumn,
                 auditorium: new ObjectID(auditoriumId.toString())
             };
-            return (getSeatId(seatToReserve));
+            return (getOneSeat(seatToReserve));
         })
-        .then(seatId => {
+        .then(seat => {
             newTicket = {
                 presentation: presentationId,
-                seat: seatId,
+                seat: seat.id,
                 sold: false,
             };
             resolve(checkAvailabilityAndCreateTicket(newTicket));
@@ -169,7 +169,7 @@ const createTicketWithSeatRowAndColumn = (presentationId, newTicket) => new Prom
         });
 });
 
-const getAuditoriumOfPresentation = presentationId => {
+const getAuditoriumIdOfPresentation = presentationId => {
     return new Promise((resolve, reject) => {
         Presentation.findOne({'_id': new ObjectID(presentationId)})
             .then(presentation => {
@@ -185,14 +185,14 @@ const getAuditoriumOfPresentation = presentationId => {
     });
 };
 
-const getSeatId = seatDocument => {
+const getOneSeat = seatDocument => {
     return new Promise((resolve, reject) => {
         Seat.findOne(seatDocument)
             .then(seat => {
                 if (seat === null) {
                     reject(errors.seatNotFound);
                 } else {
-                    resolve(seat.id);
+                    resolve(seat);
                 }
             })
             .catch(err => {
@@ -250,9 +250,9 @@ const getSeatIdWithRowAndColumn = ticket => new Promise((resolve, reject) => {
                 column: ticket.seatColumn,
                 auditorium: new ObjectID(auditoriumId.toString())
             };
-            getSeatId(seatToReserve)
-                .then(seatId => {
-                    resolve(seatId);
+            getOneSeat(seatToReserve)
+                .then(seat => {
+                    resolve(seat.id);
                 })
                 .catch(err => {
                     reject(err);
