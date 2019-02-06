@@ -78,29 +78,12 @@ function movieWrongIdPutTest(done) {
         });
 }
 
-function movieWrongIdPutTest(done) {
-    request(app)
-        .put('/movies/' + testingMovieWrongIdToSearch)
-        .send(testingUpdateMovieData)
-        .then(res => {
-            setTimeout(() => {
-                res.body.should.be.an('object');
-                res.status.should.equal(404);
-            });
-            done();
-        })
-        .catch(err => {
-            console.log(err);
-        });
-}
-
 function movieDbErrorPutTest(done) {
     request(app)
         .put('/movies/' + testingMovieIdToSearch)
         .send(testingUpdateMovieData)
         .then(res => {
             setTimeout(() => {
-                res.body.should.be.an('object');
                 res.status.should.equal(500);
             });
             done();

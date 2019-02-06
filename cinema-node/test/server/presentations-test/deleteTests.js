@@ -60,17 +60,17 @@ describe("Presentation Delete by id test", function () {
     });
 
     afterEach(() => {
-        Presentation.find.restore();
+        Presentation.findById.restore();
         Presentation.findOneAndDelete.restore();
     });
 
     it('Successful - Delete presentation', (done) => {
-        sinon.stub(Presentation, 'find').resolves([testingPresentationData]);
+        sinon.stub(Presentation, 'findById').resolves([testingPresentationData]);
         sinon.stub(Presentation, 'findOneAndDelete').resolves();
         presentationDeleteTestbyId(done);
     });
     it('Failed - Wrong id', (done) => {
-        sinon.stub(Presentation, 'find').resolves(null);
+        sinon.stub(Presentation, 'findById').resolves(null);
         sinon.stub(Presentation, 'findOneAndDelete').resolves(null);
         presentationWrongIdDeleteTest(done);
     });
