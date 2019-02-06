@@ -6,6 +6,7 @@ import {editTicket, getSingleTicket} from "../../../API/tickets";
 import {getPresentations} from "../../../API/presentations";
 import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
+import {getFilms} from "../../../API/films";
 
 class TicketDetailsContainer extends Component {
 
@@ -16,9 +17,11 @@ class TicketDetailsContainer extends Component {
         ticket: {
             film: {},
             startTime: null,
-            auditorium: {}
+            auditorium: {},
+            seat: {}
         },
         presentations: [],
+        films:[]
     };
 
     constructor(props){
@@ -34,6 +37,7 @@ class TicketDetailsContainer extends Component {
         }, () => {
             getSingleTicket(this.state.id, (success, data) => {
                 if(success){
+                    console.log(data);
                     this.setState({
                         ticket: data,
                     });
@@ -56,6 +60,17 @@ class TicketDetailsContainer extends Component {
                 //TODO: HANDLE ERROR
             }
         });
+
+        getFilms((success, data) => {
+            if(success){
+                this.setState({
+                    films: data
+                });
+            }
+            else{
+                //TODO: HANDLE ERROR
+            }
+        })
     }
 
     editTicket(newTicket){
@@ -77,7 +92,8 @@ class TicketDetailsContainer extends Component {
                 this.history = history;
                 return (<div>
                             <NavBar isAdmin={true} history={this.history}/>
-                            <TicketDetails presentations={this.state.presentations} ticket={this.state.ticket} callback={this.editTicket} buttonText={"EDIT"}/>
+                            <TicketDetails presentations={this.state.presentations} ticket={this.state.ticket} films={this.state.films}
+                                           callback={this.editTicket} buttonText={"EDIT"}/>
                         </div>);}} />
         );
     }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import './styles.css';
 import cross from "../../../images/generic/cross.png";
+import {parseTime} from "../../../utils/time";
 
 
 class TicketElement extends Component {
@@ -18,7 +19,8 @@ class TicketElement extends Component {
                 {this.props.isAdmin ? <img className="ticketElementDelete" alt={"Delete ticket"} src={cross} onClick={(event) => {event.stopPropagation(); this.props.deleteTicket(this.props.ticket.id)}}/> : null}
                 <div className="ticketElementSecondaryText">FILM: {this.props.ticket.film.name}</div>
                 <div className="ticketElementSecondaryText">AUDITORIUM: {this.props.ticket.auditorium.number}</div>
-                <div className="ticketElementSecondaryText">START DATE: {this.props.ticket.startTime}</div>
+                <div className="ticketElementSecondaryText">SEAT: {this.props.ticket.seat.row} - {this.props.ticket.seat.column}</div>
+                <div className="ticketElementSecondaryText">START DATE: {parseTime(this.props.ticket.startTime)}</div>
             </div>
         );
     }

@@ -1,20 +1,26 @@
 .auditoriumElementContainer{
-
+    margin: 10pt;
+    padding-top: 10pt;
+    padding-bottom: 10pt;
+    background-color: var(--background);
 }
 
 .auditoriumElementDelete{
-    width: 10%;
-    margin-left: 83%;
-    margin-top: 2%;
+    width: 6%;
+    margin-left: 95%;
+    margin-top: -5%;
 }
 
 .auditoriumElementMainText{
     font-size: 14px;
+    font-weight: bold;
     color: var(--subText);
 }
 
 .auditoriumElementSecondaryText{
     font-size: 10px;
+    font-weight: bold;
+    margin-top: 5px;
     color: var(--text);
 }
 

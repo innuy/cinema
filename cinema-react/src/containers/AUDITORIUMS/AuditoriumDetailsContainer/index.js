@@ -33,13 +33,14 @@ class AuditoriumDetailsContainer extends Component {
         this.setState({
             id: this.props.match.params.id,
         }, () => {
-
+            this.obtainAuditoriumData();
         });
     }
 
     obtainAuditoriumData(){
         getSingleAuditorium(this.state.id, (success, auditorium) => {
             if(success) {
+                console.log(auditorium);
                 this.setState({
                     auditorium
                 });

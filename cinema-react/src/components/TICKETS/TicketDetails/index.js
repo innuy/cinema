@@ -41,8 +41,6 @@ class TicketDetails extends Component {
         ticket.startTime = this.props.presentations[index].startTime;
         ticket.presentation = this.props.presentations[index].id;
 
-        console.log(ticket);
-
         this.setState({
             ticket
         });
@@ -51,9 +49,14 @@ class TicketDetails extends Component {
     renderPresentations(){
         const res = [];
 
-
-        for(let i = 0; i < this.props.presentations.length; i++){
-            res.push(<option key={"presentation_"+i} value={i}>{"Film: " + this.props.presentations[i].film.name +" - Auditorium:"+ this.props.presentations[i].auditorium.number +" - At:"+ this.props.presentations[i].startTime}</option>);
+        if(this.props.films.length > 0) {
+            for (let i = 0; i < this.props.presentations.length; i++) {
+                let result = this.props.films.find(obj => {
+                    return obj.id === this.props.presentations[i].film
+                });
+                res.push(<option key={"presentation_" + i}
+                                 value={i}>{"Film: " + result.name + " - Auditorium:" + this.props.presentations[i].auditorium[0].number + " - At:" + this.props.presentations[i].startTime}</option>);
+            }
         }
 
         return res;
@@ -61,6 +64,7 @@ class TicketDetails extends Component {
 
     render() {
 
+        console.log("a");
         return (
             <div>
                 <div className="ticketDetailsSeparator"/>
@@ -68,7 +72,7 @@ class TicketDetails extends Component {
                 <div className="ticketDetailsContainer">
                     <div className="ticketDetailsPageTitle">TICKET INFORMATION</div>
                     <div className="ticketDetailsSeparator"/>
-                    <select onChange={(data) => {
+                    <select className="ticketDetailsSelect" onChange={(data) => {
                         this.updateInformation(data.target.value);
                     }}>
                         {this.renderPresentations()}
@@ -106,6 +110,7 @@ TicketDetails.propTypes = {
     callback: PropTypes.func.isRequired,
     buttonText: PropTypes.string.isRequired,
     presentations: PropTypes.array.isRequired,
+    films: PropTypes.array.isRequired,
 };
 
 export default TicketDetails;

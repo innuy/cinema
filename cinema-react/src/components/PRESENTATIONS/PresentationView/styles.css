@@ -1,7 +1,8 @@
 .presentationViewContainer {
     flex-direction: row;
     background-color: var(--secondBackground);
-
+    float: none;
+    ººmargin: 0 auto;
 }
 
 .presentationRow{
