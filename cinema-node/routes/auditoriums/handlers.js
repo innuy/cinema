@@ -84,6 +84,7 @@ module.exports.deleteById = (req, res) => {
 const createSeats = auditorium => new Promise((resolve, reject) => {
     const startingInOne = 1;
     let seat = {auditorium: auditorium._id};
+
     const seatArray = [];
 
     for (let row = 0; row < auditorium.seatRows; row++) {
@@ -95,6 +96,7 @@ const createSeats = auditorium => new Promise((resolve, reject) => {
                     seatArray.push(seat);
                 })
                 .catch(err => {
+                    deleteAuditoriumById(auditorium._id);
                     reject(err);    //TODO delete already created seats
                 });
         }
