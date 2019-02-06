@@ -2,6 +2,9 @@ const errors = require("./errors");
 const Movie = require('../../db/models/movies');
 var ObjectID = require('mongodb').ObjectID;
 
+const upload = require('../../utils/fileUpload');
+const singleUpload = upload.single('image');
+
 module.exports.create = (req, res) => {
     Movie.create(req.body)
         .then(movie => res.send(movie))
@@ -66,6 +69,16 @@ module.exports.deleteById = (req, res) => {
                 errors.databaseError(err, res);
             }
         });
+};
+
+module.exports.imageUpload = (req, res) => {
+    singleUpload(req, res, function(err, some) {
+        if (err) {
+            return res.status(422).send({errors: [{title: 'Image Upload Error', detail: err.message}] });
+        }
+
+        return res.json({'imageUrl': req.file.location});
+    });
 };
 
 const ifMovieExists = movieId => new Promise((resolve, reject) => {
