@@ -57,12 +57,12 @@ module.exports.deleteById = (req, res) => {
     const movieId = req.params.id;
     ifMovieExists(movieId)
         .then(async movies => {
-            const movieFilter = { movie: movieId };
+            const movieFilter = {movie: movieId};
             const presentationList = await getPresentationListWithFilter(movieFilter);
             return Promise.all([
                 deleteMovieById(movieId),
                 deletePresentationsAndRelatedTickets(presentationList),
-            ])
+            ]);
         })
         .then(movie => {
             res.status(204);
@@ -122,7 +122,7 @@ const getPresentationListWithFilter = filter => new Promise((resolve, reject) =>
 const deletePresentationsWithFilter = filter => new Promise((resolve, reject) => {
     Presentation.deleteMany(filter)
         .then(dbResponse => {
-                resolve(dbResponse);
+            resolve(dbResponse);
         })
         .catch(err => {
             reject(err)
@@ -140,7 +140,7 @@ const deleteTicketWithFilter = filter => new Promise((resolve, reject) => {
 const deletePresentationsAndRelatedTickets = presentationsList => {
     const deleteTicketPromiseArray = [];
 
-    presentationsList.forEach( presentation => {
+    presentationsList.forEach(presentation => {
         const ticketFilter = {presentation: presentation._id};
         const presentationFilter = {'_id': new ObjectID(presentation._id)};
         deleteTicketPromiseArray.push(deleteTicketWithFilter(ticketFilter));

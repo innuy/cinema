@@ -4,7 +4,7 @@ const Movie = require("../../cinema-node/db/models/movies");
 const Presentation = require("../../cinema-node/db/models/presentations");
 const Ticket = require("../../cinema-node/db/models/tickets");
 
-const auditoriumId = "5c37ac1e638afe1e734f9cfe";
+const auditoriumId = "5c5c6f45bcc3f94719802796";
 const seatId = "5c37ac1e638afe1e734f9d17";
 
 const theGodfather = {
@@ -31,7 +31,7 @@ const moviePostTest = async () => {
             for (let i = 0; i < presentationsPerMovie; i++) {
                 const presentation = await createPresentation(presentationFilter);
                 for (let j = 0; j < ticketsPerPresentation; j++) {
-                    const ticket ={
+                    const ticket = {
                         presentation: presentation._id,
                         seat: seatId,
                         sold: false,

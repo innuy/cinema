@@ -36,7 +36,7 @@ const testingPresentationAnswerData = {
 };
 
 function movieDeleteTestbyId(done) {
-     request(app)
+    request(app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
         .then((res) => {
@@ -50,6 +50,7 @@ function movieDeleteTestbyId(done) {
             console.log(err);
         })
 }
+
 function movieNotFoundTest(done) {
     request(app)
         .del('/movies/' + testingMovieIdToDelete)
@@ -65,6 +66,7 @@ function movieNotFoundTest(done) {
             console.log(err);
         })
 }
+
 function moviePresentationNotFoundTest(done) {
     request(app)
         .del('/movies/' + testingMovieIdToDelete)
@@ -80,6 +82,7 @@ function moviePresentationNotFoundTest(done) {
             console.log(err);
         })
 }
+
 function movieDbErrorFindingPresentationTest(done) {
     request(app)
         .del('/movies/' + testingMovieIdToDelete)
@@ -95,6 +98,7 @@ function movieDbErrorFindingPresentationTest(done) {
             console.log(err);
         })
 }
+
 function movieDbErrorDeletingMovieTest(done) {
     request(app)
         .del('/movies/' + testingMovieIdToDelete)
@@ -110,6 +114,7 @@ function movieDbErrorDeletingMovieTest(done) {
             console.log(err);
         })
 }
+
 function movieDbErrorDeletingTicketsTest(done) {
     request(app)
         .del('/movies/' + testingMovieIdToDelete)
@@ -125,6 +130,7 @@ function movieDbErrorDeletingTicketsTest(done) {
             console.log(err);
         })
 }
+
 function movieDbErrorDeletingPresentationTest(done) {
     request(app)
         .del('/movies/' + testingMovieIdToDelete)
@@ -140,6 +146,7 @@ function movieDbErrorDeletingPresentationTest(done) {
             console.log(err);
         })
 }
+
 function movieWrongIdDeleteTest(done) {
     request(app)
         .del('/movies/' + testingMovieWrongIdToDelete)
@@ -181,7 +188,7 @@ describe("Movie Delete by id test", async function () {
     it('Failed - Movie not found', (done) => {
         sinon.stub(Movie, 'find').resolves(null);
         sinon.stub(Presentation, 'find').resolves();
-        sinon.stub(Movie, 'findOneAndDelete').rejects();
+        sinon.stub(Movie, 'findOneAndDelete').resolves();
         sinon.stub(Ticket, 'deleteMany').resolves();
         sinon.stub(Presentation, 'deleteMany').resolves();
         movieNotFoundTest(done);
@@ -189,7 +196,7 @@ describe("Movie Delete by id test", async function () {
     it('Failed - Presentations not found', (done) => {
         sinon.stub(Movie, 'find').resolves([testingMovieData]);
         sinon.stub(Presentation, 'find').resolves(null);
-        sinon.stub(Movie, 'findOneAndDelete').rejects();
+        sinon.stub(Movie, 'findOneAndDelete').resolves();
         sinon.stub(Ticket, 'deleteMany').resolves();
         sinon.stub(Presentation, 'deleteMany').resolves();
         moviePresentationNotFoundTest(done);
@@ -197,7 +204,7 @@ describe("Movie Delete by id test", async function () {
     it('Failed - Db error finding presentations', (done) => {
         sinon.stub(Movie, 'find').resolves([testingMovieData]);
         sinon.stub(Presentation, 'find').rejects(Error("DB error"));
-        sinon.stub(Movie, 'findOneAndDelete').rejects();
+        sinon.stub(Movie, 'findOneAndDelete').resolves();
         sinon.stub(Ticket, 'deleteMany').resolves();
         sinon.stub(Presentation, 'deleteMany').resolves();
         movieDbErrorFindingPresentationTest(done);

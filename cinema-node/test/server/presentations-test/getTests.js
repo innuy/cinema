@@ -11,11 +11,11 @@ const Presentations = require("../../../db/models/presentations");
 
 const testingMovieId = '5c2f723b62607929f4c347d3';
 const testingAuditoriumId = '5c34a1ce4150f31a815d41b4';
-const date = new Date("August 25, 1825 12:00:00");
 
 const testingPresentationIdToSearch = '5c267aa85335a14c175cb0dd';
-
 const testingPresentationWrongId = '000000000000000000000001';
+
+const date = new Date("August 25, 1825 12:00:00");
 
 const testingPresentationFilterData = {
     movie: testingMovieId,
