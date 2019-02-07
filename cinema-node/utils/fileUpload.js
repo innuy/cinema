@@ -7,14 +7,14 @@ aws.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     region: 'us-east-1' // region of your bucket
 });
-console.log(aws.config);
+
 const s3 = new aws.S3();
 
 const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: 'cinema-project',
-        acl: 'private',
+        acl: 'public-read',
         metadata: function (req, file, cb) {
             cb(null, {fieldName: file.fieldname});
         },

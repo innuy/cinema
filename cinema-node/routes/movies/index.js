@@ -38,5 +38,9 @@ module.exports = router => {
         handlers.imageUpload,
     );
 
+    router.post('/movie/image-upload/:id',
+        handlers.movieImageUpload,
+    );
+
     return router;
 };
