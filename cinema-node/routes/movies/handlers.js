@@ -6,6 +6,9 @@ const Ticket = require("../../db/models/tickets");
 
 var ObjectID = require('mongodb').ObjectID;
 
+const upload = require('../../utils/fileUpload');
+const singleUpload = upload.single('image');
+
 module.exports.create = (req, res) => {
     Movie.create(req.body)
         .then(movie => res.send(movie))
@@ -73,6 +76,89 @@ module.exports.deleteById = (req, res) => {
                 err(res);
             } else {
                 errors.databaseError(err, res);
+            }
+        });
+};
+
+const singleUploadPromise = (req, res) => new Promise((resolve, reject) => {
+    singleUpload(req, res, function (err, some) {
+        if (err) {
+            reject(err);
+        } else {
+            const imageUrl = req.file.location;
+            resolve(imageUrl)
+        }
+    });
+});
+
+module.exports.imageUpload = (req, res) => {
+    singleUpload(req, res, function (err, some) {
+        if (err) {
+            return res.status(422).send({errors: [{title: 'Image Upload Error', detail: err.message}]});
+        }
+
+        return res.json({'imageUrl': req.file.location});
+    });
+};
+
+const getMovie = id => new Promise((resolve, reject) => {
+    Movie.findById(id)
+        .then(movie => {
+            if (thereIsNoMovie(movie)) {
+                reject(errors.movieNotFound);
+            } else {
+                resolve(movie)
+            }
+        })
+        .catch(err => reject(err));
+});
+
+const addImageLinkInMovie = (id, imageUrl) => new Promise((resolve, reject) => {
+    const id_filter = {'_id': new ObjectID(id)};
+    const setToReturnUpdatedValue = {new: true};
+    const parametersToSet = {$set: {image: imageUrl}};
+
+    Movie.findOneAndUpdate(
+        id_filter,
+        parametersToSet,
+        setToReturnUpdatedValue,
+    )
+        .then(movie => {
+            if (thereIsNoMovie(movie)) {
+                reject(errors.movieNotFound);
+            } else {
+                resolve(movie)
+            }
+        })
+        .catch(err => reject(err));
+});
+
+module.exports.movieImageUpload = (req, res) => {
+    const id = req.params.id;
+
+    singleUploadPromise(req, res)
+        .then(imageUrl => {
+            getMovie(id)
+                .then(movie => {
+                    return addImageLinkInMovie(id, imageUrl);
+                })
+                .then(movie => {
+                    res.send(movie);
+                })
+                .catch(err => {
+                    if (err instanceof Function) {
+                        err(res);
+                    } else {
+                        errors.databaseError(err, res);
+                    }
+                });
+
+        })
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.imageUploadError(err, res);
             }
         });
 };
