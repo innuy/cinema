@@ -1,7 +1,7 @@
 const handlers = require('./handlers');
 const validation = require('./validation');
 /**
- * Movie routes.
+ * Ticket routes.
  *
  * @param {Object} router
  * @return {Object}

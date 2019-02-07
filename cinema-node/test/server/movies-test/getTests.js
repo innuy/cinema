@@ -126,7 +126,7 @@ describe("Movie Get Test", function () {
     });
 
     it('Failed - Wrong filters', (done) => {
-        sinon.stub(Movie, 'find').rejects(); //<-- why the validation dont stop this request?
+        sinon.stub(Movie, 'find').rejects();
         getMovieListWithWrongFilters(done);
     });
 
