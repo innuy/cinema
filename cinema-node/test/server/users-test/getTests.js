@@ -126,7 +126,7 @@ describe("User Get Test", function () {
     });
 
     it('Failed - Wrong filters', (done) => {
-        sinon.stub(User, 'find').rejects(); //<-- why the validation dont stop this request?
+        sinon.stub(User, 'find').rejects();
         getUserListWithWrongFilters(done);
     });
 
