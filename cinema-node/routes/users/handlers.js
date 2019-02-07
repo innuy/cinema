@@ -55,22 +55,31 @@ module.exports.deleteById = (req, res) => {
     User.find(id_filter)
         .then(users => {
             if (thereIsNoUser(users)) {
-                errors.userNotFound(res);
+                throw(errors.userNotFound);
             } else {
-                deleteUserById(id_filter, res);
+                return(deleteUserById(id_filter));
             }
         })
-        .catch(err => errors.databaseError(err, res))
-};
-
-function deleteUserById(id_filter, res) {
-    User.findOneAndDelete(id_filter)
         .then(user => {
             res.status(204);
             res.send({});
         })
-        .catch(err => errors.databaseError(err, res))
-}
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
+        });
+};
+
+const deleteUserById = id_filter => new Promise((resolve, reject) => {
+    User.findOneAndDelete(id_filter)
+        .then(user => {
+            resolve(user);
+        })
+        .catch(err => reject(err))
+});
 
 function thereIsNoUser(user) {
     if (Array.isArray(user))
