@@ -7,14 +7,14 @@ import './styles.css';
 
 class TicketDetails extends Component {
 
-
     state = {
         ticket: {
             film: {},
             startTime: null,
             auditorium: {},
             presentation: null,
-            seat: {}
+            seat: {},
+            sold: false,
         },
     };
 
@@ -22,14 +22,18 @@ class TicketDetails extends Component {
         super(props);
 
         this.updateInformation = this.updateInformation.bind(this);
+        this.handlePaidChange = this.handlePaidChange.bind(this);
     }
 
 
     componentWillReceiveProps(newProps) {
         if(newProps.ticket){
+
             this.setState({
                 ticket: newProps.ticket,
-            })
+            });
+
+            console.log("b");
         }
     }
 
@@ -54,17 +58,28 @@ class TicketDetails extends Component {
                 let result = this.props.films.find(obj => {
                     return obj.id === this.props.presentations[i].film
                 });
-                res.push(<option key={"presentation_" + i}
-                                 value={i}>{"Film: " + result.name + " - Auditorium:" + this.props.presentations[i].auditorium[0].number + " - At:" + this.props.presentations[i].startTime}</option>);
+                if(result) {
+                    res.push(<option key={"presentation_" + i}
+                                     value={i}>{"Film: " + result.name + " - Auditorium:" + this.props.presentations[i].auditorium[0].number + " - At:" + this.props.presentations[i].startTime}</option>);
+                }
             }
         }
 
         return res;
     }
 
+    handlePaidChange(){
+        const newTicket = this.state.ticket;
+        newTicket.sold = !newTicket.sold;
+        this.setState({
+            ticket: newTicket,
+        });
+    }
+
     render() {
 
-        console.log("a");
+        console.log("a " + this.state.ticket.sold);
+
         return (
             <div>
                 <div className="ticketDetailsSeparator"/>
@@ -90,6 +105,9 @@ class TicketDetails extends Component {
                     <div className="ticketDetailsTitle">Seat:</div>
                     <div className="ticketInput">{"Row: " + this.state.ticket.seat.row + " - Column: " + this.state.ticket.seat.column}</div>
                     <div className="ticketDetailsSeparator"/>
+                    <div className="ticketDetailsTitle">Has it been paid?</div>
+                    <input className="ticketInput" type="checkbox" checked={this.state.ticket.sold} onChange={this.handlePaidChange}/>
+                    <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
@@ -97,8 +115,8 @@ class TicketDetails extends Component {
                         //TODO: CHECK ALL DATA IS PRESENT
                         this.props.callback(this.state.ticket);
                     }} text={this.props.buttonText}/>
+                    <div className="ticketDetailsSeparator"/>
                 </div>
-                <div className="ticketDetailsSeparator"/>
                 <div className="ticketDetailsSeparator"/>
             </div>
         );

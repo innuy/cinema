@@ -105,14 +105,15 @@ export function reserveTicket(presentationId, row, column, callback){
 export function editTicket(ticket, callback){
     console.log(ticket);
     axios.put(urls.tickets + "/" + ticket.id, {
-        "presentation": ticket.presentation,
-        "seat": ticket.seat.id
+        presentation: ticket.presentation.id,
+        seat: ticket.seat.id,
+        sold: ticket.sold,
     })
         .then((response) => {
             callback(true);
         }).catch((error) => {
             console.log(error);
-        callback(false, "There was an error with the connection");
+            callback(false, "There was an error with the connection");
     });
 }
 
@@ -121,6 +122,6 @@ export function deleteTicket(id, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+            callback(false, "There was an error with the connection");
     });
 }

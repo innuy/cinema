@@ -21,6 +21,7 @@ class TicketElement extends Component {
                 <div className="ticketElementSecondaryText">AUDITORIUM: {this.props.ticket.auditorium.number}</div>
                 <div className="ticketElementSecondaryText">SEAT: {this.props.ticket.seat.row} - {this.props.ticket.seat.column}</div>
                 <div className="ticketElementSecondaryText">START DATE: {parseTime(this.props.ticket.startTime)}</div>
+                <div className="ticketElementSecondaryText">WAS PAID: {this.props.ticket.sold ? "YES" : "NO"}</div>
             </div>
         );
     }

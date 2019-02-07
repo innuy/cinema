@@ -60,10 +60,26 @@ export function addFilm(film, callback){
         director: film.director,
     })
         .then((response) => {
-            callback(true);
+            console.log("response: " + JSON.stringify(response));
+            callback(true, response.data._id);
         }).catch((error) => {
         console.log(JSON.stringify(error));
         callback(false, "There was an error with the connection");
+    });
+}
+
+export function addImageToFilm(filmId, filmImage, callback){
+
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    let fd = new FormData();
+    fd.append('image',filmImage);
+
+    axios.post(urls.addFilmImage + filmId, fd, config)
+        .then((response) => {
+            callback(true);
+        }).catch((error) => {
+            console.log(JSON.stringify(error));
+            callback(false, "There was an error with the connection");
     });
 }
 

@@ -6,6 +6,7 @@ export const urls = {
     login: BASE_URL + "/login",
     signUp: BASE_URL + "/signUp",
     films: BASE_URL + "/movies",
+    addFilmImage: BASE_URL + '/movie/image-upload/',
     auditoriums: BASE_URL + '/auditoriums',
     presentations: BASE_URL + '/presentations',
     tickets: BASE_URL + '/tickets',

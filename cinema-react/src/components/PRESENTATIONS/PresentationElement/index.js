@@ -21,7 +21,6 @@ class PresentationElement extends Component {
         }
 
         for(let i = 0; i < this.props.auditoriums.length; i++){
-            console.log(this.props.presentation);
             if(this.props.auditoriums[i].id === this.props.presentation.auditoriumData.id){
                 auditoriumNumber = this.props.auditoriums[i].number
             }

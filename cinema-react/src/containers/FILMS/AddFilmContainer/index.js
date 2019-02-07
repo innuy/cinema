@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FilmDetails from "../../../components/FILMS/FilmDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
-import {addFilm} from '../../../API/films';
+import {addFilm, addImageToFilm} from '../../../API/films';
 import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
 import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
@@ -29,10 +29,20 @@ class AddFilmContainer extends Component {
         });
     }
 
-    addFilm(newFilm){
+    addFilm(newFilm, filmImage){
         addFilm(newFilm, (success, data) => {
             if(success){
-                navigateBack(this.history);
+                console.log('id? : ' + data);
+                addImageToFilm(data, filmImage, (success) => {
+                    if(success) {
+                        navigateBack(this.history);
+                    }
+                    else{
+                        //TODO: HANDLE ERROR
+                        console.log("image fail upload");
+                    }
+                });
+
             }
             else{
                 this.setState({
