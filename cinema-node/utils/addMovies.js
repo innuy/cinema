@@ -51,7 +51,7 @@ const twelveAngryMen = {
 };
 
 
-const moviePostTest = async () => {
+const moviePostTest = () => {
     const top5IMDbMovies = [
         theShawshankRedemption,
         theGodfather,
