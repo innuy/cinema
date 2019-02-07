@@ -8,6 +8,7 @@ let app;
 require('../setup');
 
 const Presentation = require("../../../db/models/presentations");
+const Ticket = require("../../../db/models/tickets");
 
 const testingMovieId = '5c2f723b62607929f4c347d3';
 const testingAuditoriumId = '5c34a1ce4150f31a815d41b4';
@@ -54,24 +55,93 @@ function presentationWrongIdDeleteTest(done) {
         })
 }
 
+function presentationDbErrorWhenCheckingPresentationTest(done) {
+    request(app)
+        .del('/presentations/' + testingPresentationWrongIdToDelete)
+        .send()
+        .then((res) => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.equal(res.status, 500);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+function presentationDbErrorWhenDeletingPresentationTest(done) {
+    request(app)
+        .del('/presentations/' + testingPresentationWrongIdToDelete)
+        .send()
+        .then((res) => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.equal(res.status, 500);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+function presentationDbErrorWhenDeletingTicketsTest(done) {
+    request(app)
+        .del('/presentations/' + testingPresentationWrongIdToDelete)
+        .send()
+        .then((res) => {
+            setTimeout(() => {
+                res.should.be.an('object');
+                assert.equal(res.status, 500);
+                done();
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
 describe("Presentation Delete by id test", function () {
     beforeEach(() => {
         app = require('../../../app');
     });
 
     afterEach(() => {
-        Presentation.find.restore();
+        Presentation.findById.restore();
         Presentation.findOneAndDelete.restore();
+        Ticket.deleteMany.restore();
     });
 
     it('Successful - Delete presentation', (done) => {
-        sinon.stub(Presentation, 'find').resolves([testingPresentationData]);
+        sinon.stub(Presentation, 'findById').resolves([testingPresentationData]);
         sinon.stub(Presentation, 'findOneAndDelete').resolves();
+        sinon.stub(Ticket, 'deleteMany').resolves();
         presentationDeleteTestbyId(done);
     });
+    it('Failed - DB error when checking presentations', (done) => {
+        sinon.stub(Presentation, 'findById').rejects(Error("Db error"));
+        sinon.stub(Presentation, 'findOneAndDelete').rejects(Error("Db error"));
+        sinon.stub(Ticket, 'deleteMany').resolves();
+        presentationDbErrorWhenCheckingPresentationTest(done);
+    });
+    it('Failed - DB error when deleting presentations', (done) => {
+        sinon.stub(Presentation, 'findById').resolves([testingPresentationData]);
+        sinon.stub(Presentation, 'findOneAndDelete').resolves();
+        sinon.stub(Ticket, 'deleteMany').rejects(Error("Db error"));
+        presentationDbErrorWhenDeletingPresentationTest(done);
+    });
+    it('Failed - DB error when deleting tickets', (done) => {
+        sinon.stub(Presentation, 'findById').resolves([testingPresentationData]);
+        sinon.stub(Presentation, 'findOneAndDelete').resolves();
+        sinon.stub(Ticket, 'deleteMany').rejects(Error("Db error"));
+        presentationDbErrorWhenDeletingTicketsTest(done);
+    });
     it('Failed - Wrong id', (done) => {
-        sinon.stub(Presentation, 'find').resolves(null);
-        sinon.stub(Presentation, 'findOneAndDelete').resolves(null);
+        sinon.stub(Presentation, 'findById').resolves(null);
+        sinon.stub(Presentation, 'findOneAndDelete').resolves();
+        sinon.stub(Ticket, 'deleteMany').resolves();
         presentationWrongIdDeleteTest(done);
     });
 });

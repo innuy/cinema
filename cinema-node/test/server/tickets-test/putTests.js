@@ -108,7 +108,6 @@ describe("Ticket Put Test", function () {
     });
     afterEach(() => {
         Ticket.findOneAndUpdate.restore();
-        ;
         Presentation.findById.restore();
         Seat.findById.restore()
     });
@@ -124,7 +123,6 @@ describe("Ticket Put Test", function () {
     it('Failed - Db error test', (done) => {
         Ticket.findOneAndUpdate.restore();
         sinon.stub(Ticket, 'findOneAndUpdate').rejects(Error("DB error"));
-        ;
         ticketWithDbErrorPostTest(done);
     });
 });
