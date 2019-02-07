@@ -1,6 +1,8 @@
 const errors = require("./errors");
 const Auditorium = require('../../db/models/auditoriums');
 const Seat = require('../../db/models/seats');
+const Presentation = require("../../db/models/presentations");
+const Ticket = require("../../db/models/tickets");
 var ObjectID = require('mongodb').ObjectID;
 
 module.exports.create = (req, res) => {
@@ -65,10 +67,17 @@ module.exports.putById = (req, res) => {
 module.exports.deleteById = (req, res) => {
     const id = req.params.id;
     getAuditorium(id)
-        .then(currentAuditorium => {
-            return deleteAuditoriumById(id);
+        .then(async currentAuditorium => {
+            const auditoriumFilter = {auditorium: id};
+            const presentationList = await getPresentationListWithFilter(auditoriumFilter);
+            return Promise.all([
+                deleteAuditoriumById(id),
+                deleteSeatByAuditoriumId(id),
+                deletePresentationsAndRelatedTickets(presentationList),
+            ]);
         })
-        .then(dbresponse => {
+        .then(dbResponse => {
+            console.log(dbResponse);
             res.status(204);
             res.send({});
         })
@@ -148,12 +157,63 @@ const updateAuditoriumDocument = (id, newAuditorium) => new Promise((resolve, re
 
 const deleteAuditoriumById = id => new Promise((resolve, reject) => {
     const idFilter = {'_id': new ObjectID(id)};
-    Seat.deleteMany({auditorium: id})
-        .catch(err => reject(err));
-
     Auditorium.findOneAndDelete(idFilter)
-        .then(dbresponse => {
-            resolve(dbresponse);
+        .then(dbResponse => {
+            resolve(dbResponse);
         })
         .catch(err => reject(err));
 });
+
+const deleteSeatByAuditoriumId = id => new Promise((resolve, reject) => {
+    const auditoriumIdFilter = {auditorium: id};
+    Seat.deleteMany(auditoriumIdFilter)
+        .then(dbResponse => {
+            resolve(dbResponse);
+        })
+        .catch(err => reject(err));
+});
+
+const getPresentationListWithFilter = filter => new Promise((resolve, reject) => {
+    Presentation.find(filter)
+        .then(presentations => {
+            if (presentations === null) {
+                reject(errors.presentationNotFound);
+            } else {
+                resolve(presentations);
+            }
+        })
+        .catch(err => {
+            reject(err)
+        });
+});
+
+const deletePresentationsWithFilter = filter => new Promise((resolve, reject) => {
+    Presentation.deleteMany(filter)
+        .then(dbResponse => {
+            resolve(dbResponse);
+        })
+        .catch(err => {
+            reject(err)
+        });
+});
+
+const deleteTicketWithFilter = filter => new Promise((resolve, reject) => {
+    Ticket.deleteMany(filter)
+        .then(dbResponse => {
+            resolve(dbResponse);
+        })
+        .catch(err => reject(err));
+});
+
+const deletePresentationsAndRelatedTickets = presentationsList => {
+    const deleteTicketPromiseArray = [];
+
+    presentationsList.forEach(presentation => {
+        const ticketFilter = {presentation: presentation._id};
+        const presentationFilter = {'_id': new ObjectID(presentation._id)};
+        deleteTicketPromiseArray.push(deleteTicketWithFilter(ticketFilter));
+        deleteTicketPromiseArray.push(deletePresentationsWithFilter(presentationFilter));
+    });
+
+    return Promise.all(deleteTicketPromiseArray);
+};
