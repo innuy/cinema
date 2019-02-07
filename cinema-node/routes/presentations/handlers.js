@@ -2,6 +2,7 @@ const errors = require("./errors");
 
 const Auditorium = require('../../db/models/auditoriums');
 const Presentation = require("../../db/models/presentations");
+const Ticket = require("../../db/models/tickets");
 
 
 var ObjectID = require('mongodb').ObjectID;
@@ -132,12 +133,16 @@ module.exports.putById = (req, res) => {
 };
 
 module.exports.deleteById = (req, res) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
+    const presentationFilter = {'_id': new ObjectID(req.params.id)};
     checkPresentation(req.params.id)
         .then(presentation => {
-            return deletePresentationById(id_filter);
+            return Promise.all([
+                deletePresentationById(presentationFilter),
+                deleteTicketWithFilter(presentationFilter),
+            ])
+
         })
-        .then(presentation =>{
+        .then(presentation => {
             res.status(204);
             res.send({});
         })
@@ -221,8 +226,16 @@ const checkPresentation = id => new Promise((resolve, reject) => {
 
 const deletePresentationById = id_filter => new Promise((resolve, reject) => {
     Presentation.findOneAndDelete(id_filter)
-        .then(presentation => {
-            resolve(presentation);
+        .then(dbResponse => {
+            resolve(dbResponse);
         })
         .catch(err => reject(err))
+});
+
+const deleteTicketWithFilter = filter => new Promise((resolve, reject) => {
+    Ticket.deleteMany(filter)
+        .then(dbResponse => {
+            resolve(dbResponse);
+        })
+        .catch(err => reject(err));
 });
