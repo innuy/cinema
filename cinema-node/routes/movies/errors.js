@@ -15,6 +15,15 @@ module.exports.imageUploadError = (err, res) => {
     });
 };
 
+module.exports.presentationNotFound = res => {
+    res.status(412);
+    res.send({
+        "statusCode": 412,
+        "error": "Not Found",
+        "message": "there is no presentation here"
+    });
+};
+
 module.exports.movieNotFound = res => {
     res.status(404);
     res.send({
