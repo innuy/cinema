@@ -6,11 +6,10 @@
 
 .optionButtonInner{
     border-style: solid;
-    border-color: black;
-    border-radius: 15%;
-    border-width: 1px;
-    padding-left: 15px;
-    padding-right: 15px;
+    border-color: var(--background);
+    border-radius: 25%;
+    border-width: 2px;
+    padding: 5px 15px;
     color: var(--headerText);
     font-weight: bolder;
 }

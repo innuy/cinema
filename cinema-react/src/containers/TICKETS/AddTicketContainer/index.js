@@ -6,6 +6,8 @@ import {addTicket} from '../../../API/tickets';
 import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
 import {getPresentations} from "../../../API/presentations";
+import {getFilms} from "../../../API/films";
+import {getAuditoriums} from "../../../API/auditoriums";
 
 class AddTicketContainer extends Component {
 
@@ -14,6 +16,8 @@ class AddTicketContainer extends Component {
     state = {
         id: 0,
         presentations: [],
+        films: [],
+        auditoriums: [],
     };
 
     constructor(props){
@@ -32,6 +36,28 @@ class AddTicketContainer extends Component {
             if(success){
                 this.setState({
                     presentations: data
+                });
+            }
+            else{
+                //TODO: HANDLE ERROR
+            }
+        });
+
+        getFilms((success, data) => {
+            if(success){
+                this.setState({
+                    films: data
+                });
+            }
+            else{
+                //TODO: HANDLE ERROR
+            }
+        });
+
+        getAuditoriums((success, data) => {
+            if(success){
+                this.setState({
+                    auditoriums: data
                 });
             }
             else{
@@ -59,7 +85,8 @@ class AddTicketContainer extends Component {
                 this.history = history;
                 return (<div>
                             <NavBar isAdmin={true} history={this.history}/>
-                            <TicketDetails presentations={this.state.presentations} callback={this.addTicket} buttonText={"ADD"}/>
+                            <TicketDetails presentations={this.state.presentations} auditoriums={this.state.auditoriums}
+                                           films={this.state.films} callback={this.addTicket} buttonText={"ADD"}/>
                         </div>);}} />
         );
     }

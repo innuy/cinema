@@ -32,14 +32,14 @@ class AddFilmContainer extends Component {
     addFilm(newFilm, filmImage){
         addFilm(newFilm, (success, data) => {
             if(success){
-                console.log('id? : ' + data);
                 addImageToFilm(data, filmImage, (success) => {
                     if(success) {
                         navigateBack(this.history);
                     }
                     else{
-                        //TODO: HANDLE ERROR
-                        console.log("image fail upload");
+                        this.setState({
+                            errorVisible: true,
+                        });
                     }
                 });
 

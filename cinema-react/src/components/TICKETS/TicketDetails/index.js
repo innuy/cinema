@@ -32,16 +32,32 @@ class TicketDetails extends Component {
             this.setState({
                 ticket: newProps.ticket,
             });
-
-            console.log("b");
         }
     }
 
     updateInformation(index){
 
         const ticket = this.state.ticket;
-        ticket.film = this.props.presentations[index].film;
-        ticket.auditorium = this.props.presentations[index].auditorium;
+
+        //console.log(index);
+        //console.log(this.props.presentations[index]);
+
+        console.log(this.props.presentations[index].auditorium[0]._id);
+
+        let filmResult = this.props.films.find(obj => {
+            return obj.id === this.props.presentations[index].film
+        });
+        if(filmResult) {
+            ticket.film = filmResult;
+        }
+
+        let auditoriumResult = this.props.auditoriums.find(obj => {
+            return obj.id === this.props.presentations[index].auditorium[0]._id
+        });
+        if(auditoriumResult) {
+            ticket.auditorium = auditoriumResult;
+        }
+
         ticket.startTime = this.props.presentations[index].startTime;
         ticket.presentation = this.props.presentations[index].id;
 
@@ -77,8 +93,6 @@ class TicketDetails extends Component {
     }
 
     render() {
-
-        console.log("a " + this.state.ticket.sold);
 
         return (
             <div>
@@ -129,6 +143,7 @@ TicketDetails.propTypes = {
     buttonText: PropTypes.string.isRequired,
     presentations: PropTypes.array.isRequired,
     films: PropTypes.array.isRequired,
+    auditoriums: PropTypes.array.isRequired,
 };
 
 export default TicketDetails;

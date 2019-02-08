@@ -1,6 +1,8 @@
 //const BASE_URL = "http://localhost:8000";
 
-const BASE_URL = "http://192.168.0.109:8000"; //JP PC
+const BASE_URL = "https://cinema-innuy-backend.now.sh"; //SERVER
+
+//const BASE_URL = "http://192.168.0.109:8000"; //JP PC
 
 export const urls = {
     login: BASE_URL + "/login",

@@ -35,9 +35,9 @@ class TicketView extends Component {
                 <div className="row ticketViewContainer justify-content-center">
                     {this.renderTickets()}
                 </div>
-                {this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">
+                {/*this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">
                     <OptionButton onClick={this.props.addTicket} text={"Add Ticket"}/>
-                </div> : null}
+                </div> : null*/}
             </div>
         );
     }
