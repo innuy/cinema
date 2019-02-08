@@ -30,8 +30,8 @@ const testingIncompleteMovieData = {
     director: "John Lasseter"
 };
 
-async function moviePutTest(done) {
-    await request(app)
+function moviePutTest(done) {
+    request(app)
         .put('/movies/' + testingMovieIdToSearch)
         .send(testingUpdateMovieData)
         .then(res => {
@@ -46,8 +46,8 @@ async function moviePutTest(done) {
         });
 }
 
-async function movieIncompletePutTest(done) {
-    await request(app)
+function movieIncompletePutTest(done) {
+    request(app)
         .put('/movies/' + testingMovieIdToSearch)
         .send(testingIncompleteMovieData)
         .then(res => {
@@ -62,8 +62,8 @@ async function movieIncompletePutTest(done) {
         });
 }
 
-async function movieWrongIdPutTest(done) {
-    await request(app)
+function movieWrongIdPutTest(done) {
+    request(app)
         .put('/movies/' + testingMovieWrongIdToSearch)
         .send(testingUpdateMovieData)
         .then(res => {
@@ -78,14 +78,13 @@ async function movieWrongIdPutTest(done) {
         });
 }
 
-async function movieWrongIdPutTest(done) {
-    await request(app)
-        .put('/movies/' + testingMovieWrongIdToSearch)
+function movieDbErrorPutTest(done) {
+    request(app)
+        .put('/movies/' + testingMovieIdToSearch)
         .send(testingUpdateMovieData)
         .then(res => {
             setTimeout(() => {
-                res.body.should.be.an('object');
-                res.status.should.equal(404);
+                res.status.should.equal(500);
             });
             done();
         })
@@ -104,20 +103,20 @@ describe("Movie Put Test", function () {
         Movie.findOneAndUpdate.restore();
     });
 
-    it('Successful - Update movie', () => {
+    it('Successful - Update movie', (done) => {
         sinon.stub(Movie, 'findOneAndUpdate').resolves();
-        moviePutTest;
+        moviePutTest(done);
     });
-    it('Failed - Incomplete movie data', () => {
+    it('Failed - Incomplete movie data', (done) => {
         sinon.stub(Movie, 'findOneAndUpdate').resolves();
-        movieIncompletePutTest;
+        movieIncompletePutTest(done);
     });
-    it('Failed - Wrong id', () => {
+    it('Failed - Wrong id', (done) => {
         sinon.stub(Movie, 'findOneAndUpdate').resolves(null);
-        movieWrongIdPutTest;
+        movieWrongIdPutTest(done);
     });
-    it('Failed - Db id', () => {
-        sinon.stub(Movie, 'findOneAndUpdate').throws();
-        moviePutTest;
+    it('Failed - Db id', (done) => {
+        sinon.stub(Movie, 'findOneAndUpdate').rejects();
+        movieDbErrorPutTest(done);
     });
 });

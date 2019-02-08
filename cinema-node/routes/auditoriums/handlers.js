@@ -1,29 +1,24 @@
 const errors = require("./errors");
 const Auditorium = require('../../db/models/auditoriums');
 const Seat = require('../../db/models/seats');
+const Presentation = require("../../db/models/presentations");
+const Ticket = require("../../db/models/tickets");
 var ObjectID = require('mongodb').ObjectID;
 
 module.exports.create = (req, res) => {
     Auditorium.create(req.body)
-        .then(auditorium => {
-            createSeats(auditorium, req);
+        .then(async auditorium => {
+            const seats = await createSeats(auditorium);
             res.send(auditorium)
         })
-        .catch(err => errors.databaseError(err, res))
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
+        });
 };
-
-function createSeats(auditorium, req) {
-    const startingInOne = 1;
-    let seat = {auditorium: auditorium._id};
-
-    for (let row = 0; row < req.body.seatRows; row++) {
-        for (let column = 0; column < req.body.seatColumns; column++) {
-            seat.row = row + startingInOne;
-            seat.column = column + startingInOne;
-            Seat.create(seat);
-        }
-    }
-}
 
 module.exports.get = (req, res) => {
     Auditorium.find(req.query)
@@ -33,9 +28,8 @@ module.exports.get = (req, res) => {
 
 module.exports.getById = (req, res) => {
     const id = req.params.id;
-    const idFilter = {'_id': new ObjectID(id)};
 
-    Auditorium.find(idFilter)
+    Auditorium.findById(id)
         .then(auditorium => {
             if (thereIsNoAuditorium(auditorium)) {
                 errors.auditoriumNotFound(res);
@@ -47,30 +41,105 @@ module.exports.getById = (req, res) => {
 };
 
 module.exports.putById = (req, res) => {
-    const idFilter = {'_id': new ObjectID(req.params.id)};
+    const id = req.params.id;
+    const newAuditorium = req.body;
 
-    Auditorium.findOne(idFilter)
-        .then(auditorium => {
-            if (thereIsNoAuditorium(auditorium)) {
-                errors.auditoriumNotFound(res);
-            } else if (auditoriumSizeUpdated(auditorium, req)) {
-                errors.auditoriumChangingSize(res);
+    getAuditorium(id)
+        .then(currentAuditorium => {
+            if (auditoriumSizeUpdated(currentAuditorium, newAuditorium)) {
+                throw(errors.auditoriumChangingSize);
             } else {
-                updateAuditoriumDocument(req, res);
+                return updateAuditoriumDocument(id, newAuditorium);
             }
         })
-        .catch(err => errors.databaseError(err, res))
+        .then(newAuditorium => {
+            res.send();
+        })
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
+        });
 };
 
-function auditoriumSizeUpdated(auditorium, req) {
-    return (auditorium.seatRows != req.body.seatRows) ||
-        (auditorium.seatColumns != req.body.seatColumns);
-}
+module.exports.deleteById = (req, res) => {
+    const id = req.params.id;
+    getAuditorium(id)
+        .then(async currentAuditorium => {
+            const auditoriumFilter = {auditorium: id};
+            const presentationList = await getPresentationListWithFilter(auditoriumFilter);
+            return Promise.all([
+                deleteAuditoriumById(id),
+                deleteSeatByAuditoriumId(id),
+                deletePresentationsAndRelatedTickets(presentationList),
+            ]);
+        })
+        .then(dbResponse => {
+            console.log(dbResponse);
+            res.status(204);
+            res.send({});
+        })
+        .catch(err => {
+            if (err instanceof Function) {
+                err(res);
+            } else {
+                errors.databaseError(err, res);
+            }
+        });
+};
 
-function updateAuditoriumDocument(req, res) {
-    const idFilter = {'_id': new ObjectID(req.params.id)};
+const createSeats = auditorium => new Promise((resolve, reject) => {
+    const startingInOne = 1;
+    let seat = {auditorium: auditorium._id};
+
+    const seatArray = [];
+
+    for (let row = 0; row < auditorium.seatRows; row++) {
+        for (let column = 0; column < auditorium.seatColumns; column++) {
+            seat.row = row + startingInOne;
+            seat.column = column + startingInOne;
+            Seat.create(seat)
+                .then(seat => {
+                    seatArray.push(seat);
+                })
+                .catch(err => {
+                    deleteAuditoriumById(auditorium._id);
+                    reject(err);    //TODO delete already created seats
+                });
+        }
+    }
+    resolve(seatArray);
+});
+
+const getAuditorium = id => new Promise((resolve, reject) => {
+    const idFilter = {'_id': new ObjectID(id)};
+    Auditorium.findOne(idFilter)
+        .then(currentAuditorium => {
+            if (thereIsNoAuditorium(currentAuditorium)) {
+                reject(errors.auditoriumNotFound);
+            } else {
+                resolve(currentAuditorium);
+            }
+        })
+        .catch(err => reject(err));
+});
+
+const thereIsNoAuditorium = auditorium => {
+    if (Array.isArray(auditorium))
+        return auditorium.length === 0;
+    else
+        return auditorium === null;
+};
+
+const auditoriumSizeUpdated = (auditorium, newAuditorium) => (auditorium.seatRows !== newAuditorium.seatRows) ||
+    (auditorium.seatColumns !== newAuditorium.seatColumns);
+
+const updateAuditoriumDocument = (id, newAuditorium) => new Promise((resolve, reject) => {
+    const idFilter = {'_id': new ObjectID(id)};
     const setToReturnUpdatedValue = {new: true};
-    const parametersToSet = {$set: req.body};
+    const parametersToSet = {$set: newAuditorium};
     Auditorium.findOneAndUpdate(
         idFilter,
         parametersToSet,
@@ -78,45 +147,73 @@ function updateAuditoriumDocument(req, res) {
     )
         .then(auditorium => {
             if (thereIsNoAuditorium(auditorium)) {
-                errors.auditoriumNotFound(res);
+                reject(errors.auditoriumNotFound);
             } else {
-                res.send();
+                resolve(auditorium);
             }
         })
-        .catch(err => errors.databaseError(err, res))
-}
+        .catch(err => reject(err))
+});
 
-module.exports.deleteById = (req, res) => {
-    const idFilter = {'_id': new ObjectID(req.params.id)};
-    Auditorium.find(idFilter)
-        .then(auditoriums => {
-            if (thereIsNoAuditorium(auditoriums)) {
-                errors.auditoriumNotFound(res);
-            } else {
-                deleteAuditoriumById(idFilter, res);
-            }
-        })
-        .catch(err => errors.databaseError(err, res))
-};
-
-
-function deleteAuditoriumById(idFilter, res) {
-    Seat.deleteMany({auditorium: idFilter._id})
-        .catch(err => errors.databaseError(err, res))
-
+const deleteAuditoriumById = id => new Promise((resolve, reject) => {
+    const idFilter = {'_id': new ObjectID(id)};
     Auditorium.findOneAndDelete(idFilter)
-        .then(dbresponse => {
-            res.status(204);
-            res.send({});
+        .then(dbResponse => {
+            resolve(dbResponse);
         })
-        .catch(err => errors.databaseError(err, res))
+        .catch(err => reject(err));
+});
 
-}
+const deleteSeatByAuditoriumId = id => new Promise((resolve, reject) => {
+    const auditoriumIdFilter = {auditorium: id};
+    Seat.deleteMany(auditoriumIdFilter)
+        .then(dbResponse => {
+            resolve(dbResponse);
+        })
+        .catch(err => reject(err));
+});
 
-function thereIsNoAuditorium(movie) {
-    if (Array.isArray(movie))
-        return movie.length === 0;
-    else
-        return movie === null;
-}
+const getPresentationListWithFilter = filter => new Promise((resolve, reject) => {
+    Presentation.find(filter)
+        .then(presentations => {
+            if (presentations === null) {
+                reject(errors.presentationNotFound);
+            } else {
+                resolve(presentations);
+            }
+        })
+        .catch(err => {
+            reject(err)
+        });
+});
 
+const deletePresentationsWithFilter = filter => new Promise((resolve, reject) => {
+    Presentation.deleteMany(filter)
+        .then(dbResponse => {
+            resolve(dbResponse);
+        })
+        .catch(err => {
+            reject(err)
+        });
+});
+
+const deleteTicketWithFilter = filter => new Promise((resolve, reject) => {
+    Ticket.deleteMany(filter)
+        .then(dbResponse => {
+            resolve(dbResponse);
+        })
+        .catch(err => reject(err));
+});
+
+const deletePresentationsAndRelatedTickets = presentationsList => {
+    const deleteTicketPromiseArray = [];
+
+    presentationsList.forEach(presentation => {
+        const ticketFilter = {presentation: presentation._id};
+        const presentationFilter = {'_id': new ObjectID(presentation._id)};
+        deleteTicketPromiseArray.push(deleteTicketWithFilter(ticketFilter));
+        deleteTicketPromiseArray.push(deletePresentationsWithFilter(presentationFilter));
+    });
+
+    return Promise.all(deleteTicketPromiseArray);
+};

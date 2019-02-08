@@ -7,6 +7,15 @@ module.exports.databaseError = (err, res) => {
     });
 };
 
+module.exports.presentationNotFound = res => {
+    res.status(412);
+    res.send({
+        "statusCode": 412,
+        "error": "Not Found",
+        "message": "there is no presentation here"
+    });
+};
+
 module.exports.auditoriumNotFound = res => {
     res.status(404);
     res.send({
@@ -21,6 +30,6 @@ module.exports.auditoriumChangingSize = res => {
     res.send({
         "statusCode": 403,
         "error": "Not Found",
-        "message": "the auditorium size is locked"//for the time being because of the seat references in the tickets
+        "message": "the auditorium size is locked"
     });
 };

@@ -14,9 +14,11 @@ var SeatSchema = new Schema({
     auditorium: {
         type: ObjectId,
         required: true,
+        ref: 'Auditorium',
     },
 });
 
 var SeatModel = mongoose.model('Seat', SeatSchema);
-
 module.exports = SeatModel;
+
+

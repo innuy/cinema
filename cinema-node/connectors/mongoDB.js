@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-module.exports.isConnected =function () {
+module.exports.isConnected = function () {
     const db = mongoose.connection;
     var state = db.readyState;
     if (state === 0)
@@ -14,10 +14,11 @@ module.exports.isConnected =function () {
 };
 
 
+
 module.exports.connectMongo = () => (
     new Promise((resolve, reject) => {
         //DB Configuration parameters
-        let mongoUri =`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
+        let mongoUri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
         console.log(mongoUri);
         var mongoDB = mongoose.connect(
             mongoUri,

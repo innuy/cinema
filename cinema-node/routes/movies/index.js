@@ -34,5 +34,13 @@ module.exports = router => {
         handlers.deleteById,
     );
 
+    router.post('/image-upload',
+        handlers.imageUpload,
+    );
+
+    router.post('/movie/image-upload/:id',
+        handlers.movieImageUpload,
+    );
+
     return router;
 };

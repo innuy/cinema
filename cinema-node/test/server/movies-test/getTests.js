@@ -9,20 +9,20 @@ require('../setup');
 
 const Movie = require("../../../db/models/movies");
 
+const testingMovieIdToSearch = '5c267aa85335a14c175cb0dd';
+
+const testingMovieWrongId = '100000000000000000000001';
+
 const testingMovieFilterData = {
     name: "Toy Story",
 };
 
 const testingMovieWrongFilterData = {
-    name: 1,
+    number: "Toy Story",
 };
 
-const testingMovieIdToSearch = '5c267aa85335a14c175cb0dd';
-
-const testingMovieWrongId = '000000000000000000000001';
-
-async function getMovieListWithFilters(done) {
-    await request(app)
+function getMovieListWithFilters(done) {
+    request(app)
         .get('/movies')
         .query(testingMovieFilterData)
         .then(res => {
@@ -41,8 +41,8 @@ async function getMovieListWithFilters(done) {
         })
 }
 
-async function getMovieListWithoutFilters(done) {
-    await request(app)
+function getMovieListWithoutFilters(done) {
+    request(app)
         .get('/movies')
         .query()
         .then(res => {
@@ -50,9 +50,6 @@ async function getMovieListWithoutFilters(done) {
                 res.should.be.an('object');
                 res.body.should.be.an('array');
                 assert.strictEqual(res.status, 200);
-                res.body.forEach(movie => {
-                    assert.strictEqual(movie.name, testingMovieFilterData.name)
-                });
             });
             done();
         })
@@ -61,35 +58,30 @@ async function getMovieListWithoutFilters(done) {
         })
 }
 
-async function getMovieListWithWrongFilters(done) {
-    await request(app)
+function getMovieListWithWrongFilters(done) {
+    request(app)
         .get('/movies')
         .query(testingMovieWrongFilterData)
         .then(res => {
             setTimeout(() => {
                 res.should.be.an('object');
-                res.body.should.be.an('array');
-                assert.strictEqual(res.status, 200);
-                res.body.forEach(movie => {
-                    assert.strictEqual(movie.name, testingMovieFilterData.name)
-                });
+                assert.strictEqual(res.status, 400);
+                done();
             });
-            done();
         })
         .catch(err => {
             console.log(err);
         })
 }
 
-async function getMovieById(done) {
-    await request(app)
+function getMovieById(done) {
+    request(app)
         .get('/movies/' + testingMovieIdToSearch)
         .query()
         .then(res => {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.strictEqual(res.status, 200);
-                assert.strictEqual(res.body._id, testingMovieIdToSearch)
             });
             done();
         })
@@ -98,8 +90,8 @@ async function getMovieById(done) {
         })
 }
 
-async function getMovieWithWrongId(done) {
-    await request(app)
+function getMovieWithWrongId(done) {
+    request(app)
         .get('/movies/' + testingMovieWrongId)
         .query()
         .then(res => {
@@ -123,28 +115,28 @@ describe("Movie Get Test", function () {
         Movie.find.restore();
     });
 
-    it('Successful - Get list with filters', () => {
+    it('Successful - Get list with filters', (done) => {
         sinon.stub(Movie, 'find').resolves([testingMovieFilterData]);
-        getMovieListWithFilters;
+        getMovieListWithFilters(done);
     });
 
-    it('Successful - Get list without filters', () => {
-        sinon.stub(Movie, 'find').resolves([testingMovieFilterData]);
-        getMovieListWithoutFilters;
+    it('Successful - Get list without filters', (done) => {
+        sinon.stub(Movie, 'find').resolves([testingMovieFilterData, testingMovieFilterData]);
+        getMovieListWithoutFilters(done);
     });
 
-    it('Failed - Wrong filters', () => {
-        sinon.stub(Movie, 'find').resolves(null);
-        getMovieListWithWrongFilters;
+    it('Failed - Wrong filters', (done) => {
+        sinon.stub(Movie, 'find').rejects();
+        getMovieListWithWrongFilters(done);
     });
 
-    it('Successful - Get one by id', () => {
+    it('Successful - Get one by id', (done) => {
         sinon.stub(Movie, 'find').resolves(testingMovieFilterData);
-        getMovieById;
+        getMovieById(done);
     });
 
-    it('Failed - Wrong id', () => {
+    it('Failed - Wrong id', (done) => {
         sinon.stub(Movie, 'find').resolves(null);
-        getMovieWithWrongId;
+        getMovieWithWrongId(done);
     });
 });

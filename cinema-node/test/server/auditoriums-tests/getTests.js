@@ -9,24 +9,22 @@ require('../setup');
 
 const Auditoriums = require("../../../db/models/auditoriums");
 
+const testingAuditoriumIdToSearch = '5c267aa85335a14c175cb0dd';
+
+const testingAuditoriumWrongId = '000000000000000000000001';
+
 const testingAuditoriumFilterData = {
+    _id: testingAuditoriumIdToSearch,
     number: 2,
-    seatRows: 20,
-    seatColumns: 10,
 };
 
 const testingAuditoriumWrongFilterData = {
     number: "one",
 };
 
-const testingAuditoriumIdToSearch = '5c267aa85335a14c175cb0dd';
-
-const testingAuditoriumWrongId = '000000000000000000000001';
-
-async function getAuditoriumListWithFilters(done) {
-    await request(app)
-        .get('/auditoriums')
-        .query(testingAuditoriumFilterData)
+function getAuditoriumListWithFilters(done) {
+    request(app)
+        .get('/auditoriums?number=2')
         .then((res) => {
             setTimeout(() => {
                 res.should.be.an('object');
@@ -35,16 +33,16 @@ async function getAuditoriumListWithFilters(done) {
                 res.body.forEach(auditorium => {
                     assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
                 });
+                done();
             });
-            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function getAuditoriumsListWithoutFilters(done) {
-    await request(app)
+function getAuditoriumsListWithoutFilters(done) {
+    request(app)
         .get('/auditoriums')
         .query()
         .then(res => {
@@ -55,61 +53,57 @@ async function getAuditoriumsListWithoutFilters(done) {
                 res.body.forEach(auditorium => {
                     assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
                 });
+                done();
             });
-            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function getAuditoriumsListWithWrongFilters(done) {
-    await request(app)
+function getAuditoriumsListWithWrongFilters(done) {
+    request(app)
         .get('/auditoriums')
         .query(testingAuditoriumWrongFilterData)
         .then(res => {
             setTimeout(() => {
                 res.should.be.an('object');
-                res.body.should.be.an('array');
-                assert.strictEqual(res.status, 200);
-                res.body.forEach(auditorium => {
-                    assert.strictEqual(auditorium.number, testingAuditoriumFilterData.number)
-                });
+                assert.strictEqual(res.status, 400);
+                done();
             });
-            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function getAuditoriumsById(done) {
-    await request(app)
+function getAuditoriumsById(done) {
+    request(app)
         .get('/auditoriums/' + testingAuditoriumIdToSearch)
         .query()
         .then(res => {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.strictEqual(res.status, 200);
-                assert.strictEqual(res.body._id, testingAuditoriumIdToSearch)
+                assert.strictEqual(res.body._id, testingAuditoriumIdToSearch);
+                done();
             });
-            done();
         })
         .catch(err => {
             console.log(err);
         });
 }
 
-async function getAuditoriumsWithWrongId(done) {
-    await request(app)
+function getAuditoriumsByIdWithWrongId(done) {
+    request(app)
         .get('/auditoriums/' + testingAuditoriumWrongId)
         .query()
         .then(res => {
             setTimeout(() => {
                 res.should.be.an('object');
                 assert.strictEqual(res.status, 404);
+                done();
             });
-            done();
         })
         .catch(err => {
             console.log(err);
@@ -125,28 +119,38 @@ describe("Auditoriums Get Test", function () {
         Auditoriums.find.restore();
     });
 
-    it('Successful - Get list with filters', () => {
+    it('Successful - Get list with filters', (done) => {
         sinon.stub(Auditoriums, 'find').resolves([testingAuditoriumFilterData]);
-        getAuditoriumListWithFilters;
+        getAuditoriumListWithFilters(done);
     });
 
-    it('Successful - Get list without filters', () => {
+    it('Successful - Get list without filters', (done) => {
         sinon.stub(Auditoriums, 'find').resolves([testingAuditoriumFilterData]);
-        getAuditoriumsListWithoutFilters;
+        getAuditoriumsListWithoutFilters(done);
     });
 
-    it('Failed - Wrong filters', () => {
+    it('Failed - Wrong filters', (done) => {
         sinon.stub(Auditoriums, 'find').resolves(null);
-        getAuditoriumsListWithWrongFilters;
+        getAuditoriumsListWithWrongFilters(done);
+    });
+});
+
+describe("Auditoriums Get by Id Test", function () {
+    beforeEach(() => {
+        app = require('../../../app');
     });
 
-    it('Successful - Get one by id', () => {
-        sinon.stub(Auditoriums, 'find').resolves(testingAuditoriumFilterData);
-        getAuditoriumsById;
+    afterEach(() => {
+        Auditoriums.findById.restore();
     });
 
-    it('Failed - Wrong id', () => {
-        sinon.stub(Auditoriums, 'find').resolves(null);
-        getAuditoriumsWithWrongId;
+    it('Successful - Get one by id', (done) => {
+        sinon.stub(Auditoriums, 'findById').resolves(testingAuditoriumFilterData);
+        getAuditoriumsById(done);
+    });
+
+    it('Failed - Get one with wrong id', (done) => {
+        sinon.stub(Auditoriums, 'findById').resolves(null);
+        getAuditoriumsByIdWithWrongId(done);
     });
 });
