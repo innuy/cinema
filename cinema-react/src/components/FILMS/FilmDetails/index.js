@@ -15,6 +15,7 @@ class FilmDetails extends Component {
         this.editCastCallback = this.editCastCallback.bind(this);
         this.fileChangedHandler = this.fileChangedHandler.bind(this);
         this.saveFilmData = this.saveFilmData.bind(this);
+        this.deleteCastCallback = this.deleteCastCallback.bind(this);
     }
 
     state = {
@@ -34,6 +35,7 @@ class FilmDetails extends Component {
             director: false,
             cast: false,
             duration: false,
+            image: false,
         }
     };
 
@@ -48,7 +50,7 @@ class FilmDetails extends Component {
 
     renderCast(){
         const res = [
-            <div className="filmDetailsTitleContainer row">
+            <div key={"castInput_title"} className="filmDetailsTitleContainer row">
                 <div className="filmDetailsTitle col-8">Cast:</div>
                 <button className="filmDetailsTitleButton col-3 offset-1" onClick={() => {
                     const film = this.state.film;
@@ -62,7 +64,7 @@ class FilmDetails extends Component {
         if(this.state.film.cast) {
             for (let i = 0; i < this.state.film.cast.length; i++) {
                 res.push(<CastElement key={"castInput_" + i} index={i} text={this.state.film.cast[i]}
-                                      editCallback={this.editCastCallback}/>);
+                                      editCallback={this.editCastCallback} deleteCallback={this.deleteCastCallback}/>);
             }
         }
 
@@ -74,6 +76,16 @@ class FilmDetails extends Component {
         const film = this.state.film;
         if(film.cast.length > index) {
             film.cast[index] = newText;
+            this.setState({
+                film
+            });
+        }
+    }
+
+    deleteCastCallback(index){
+        const film = this.state.film;
+        if(film.cast.length > index) {
+            film.cast.splice(index, 1);
             this.setState({
                 film
             });
@@ -121,19 +133,23 @@ class FilmDetails extends Component {
         if(!this.state.film.cast || this.state.film.cast.length <= 0){
             errors.cast = true;
         }
+        if(!this.state.imageFile){
+            errors.image = true;
+        }
 
         this.setState({
             errors,
         }, () => {
             if(!this.filmHasErrors()) {
-                this.props.callback(this.state.film);
+                this.props.callback(this.state.film, this.state.imageFile);
             }
         });
 
     }
 
     filmHasErrors(){
-        return this.state.errors.name && this.state.errors.summary && this.state.errors.director && this.state.errors.duration && this.state.errors.cast
+        return this.state.errors.name && this.state.errors.summary && this.state.errors.director &&
+            this.state.errors.duration && this.state.errors.cast && this.state.errors.image
     }
 
     render() {
@@ -157,6 +173,7 @@ class FilmDetails extends Component {
                     <div className="filmDetailsTitle">Image:</div>
                     <input type="file" onChange={this.fileChangedHandler} />
                     {this.state.imageError ? <div>The file you selected is not of the correct type</div> : null}
+                    {this.state.errors.image ? <div className="filmDetailsErrorMessage">You need to add an image file</div> : null}
                     <div className="filmDetailsSeparator"/>
                     <div className="filmDetailsTitle">Summary:</div>
                     <input className="filmInput" value={this.state.film.summary} onChange={(event) => {

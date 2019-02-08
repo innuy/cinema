@@ -38,8 +38,9 @@ function parseSingleAuditorium(auditorium){
 export function getSingleAuditorium(id, callback){
     axios.get(urls.auditoriums + "/" + id)
         .then((response) => {
-            callback(true, parseSingleAuditorium(response.data[0]));
+            callback(true, parseSingleAuditorium(response.data));
         }).catch((error) => {
+            console.log(error);
         callback(false, "There was an error with the connection");
     });
 }

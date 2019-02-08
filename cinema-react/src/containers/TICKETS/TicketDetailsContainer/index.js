@@ -37,7 +37,6 @@ class TicketDetailsContainer extends Component {
         }, () => {
             getSingleTicket(this.state.id, (success, data) => {
                 if(success){
-                    console.log(data);
                     this.setState({
                         ticket: data,
                     });

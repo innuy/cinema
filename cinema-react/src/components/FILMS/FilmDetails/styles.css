@@ -1,5 +1,7 @@
 .filmDetailsContainer{
-    width: 40%;
+    width: 60%;
+    padding-left: 20px;
+    padding-right: 20px;
     margin-left: 5%;
     background-color: var(--background);
 }

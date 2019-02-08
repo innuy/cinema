@@ -22,6 +22,7 @@ class FilmContainer extends Component {
         this.deleteFilm = this.deleteFilm.bind(this);
         this.refreshFilms = this.refreshFilms.bind(this);
         this.addFilm = this.addFilm.bind(this);
+        this.navigateToDetails = this.navigateToDetails.bind(this);
     }
 
     componentWillMount() {
@@ -46,6 +47,10 @@ class FilmContainer extends Component {
         navigate(this.history, '/addFilm');
     }
 
+    navigateToDetails(id){
+        navigate(this.history, 'film/'+id);
+    }
+
     deleteFilm(id){
         deleteFilm(id, (success) => {
             if(success) {
@@ -63,7 +68,7 @@ class FilmContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <FilmView films={this.state.films} addFilm={this.addFilm} deleteFilm={this.deleteFilm} isAdmin={this.state.isAdmin}/>
+                    <FilmView films={this.state.films} addFilm={this.addFilm} deleteFilm={this.deleteFilm} navigateToDetails={this.navigateToDetails} isAdmin={this.state.isAdmin}/>
                 </div>);
             }} />
         );

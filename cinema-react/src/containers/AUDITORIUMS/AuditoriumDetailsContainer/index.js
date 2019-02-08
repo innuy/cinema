@@ -38,9 +38,9 @@ class AuditoriumDetailsContainer extends Component {
     }
 
     obtainAuditoriumData(){
+        this.hideError();
         getSingleAuditorium(this.state.id, (success, auditorium) => {
             if(success) {
-                console.log(auditorium);
                 this.setState({
                     auditorium
                 });

@@ -5,6 +5,7 @@ import OptionButton from "../../GENERAL/OptionButton";
 
 import './styles.css';
 import {getAuditoriums} from "../../../API/auditoriums";
+import {parseTime} from "../../../utils/time";
 
 class PresentationDetails extends Component {
 
@@ -13,7 +14,7 @@ class PresentationDetails extends Component {
         presentation: {
             auditorium: null,
             film: null,
-            startTime: null,
+            startTime: "",
         },
 
         errors: {
@@ -47,7 +48,7 @@ class PresentationDetails extends Component {
         const res = [];
 
         for(let i = 0; i < this.props.films.length; i++){
-            res.push(<option key={"film_"+i} value={this.props.films[i].id} selected={this.props.films[i].id === this.state.presentation.film}>{this.props.films[i].name}</option>);
+            res.push(<option key={"film_"+i} value={this.props.films[i].id}>{this.props.films[i].name}</option>);
         }
 
         return res;
@@ -57,7 +58,7 @@ class PresentationDetails extends Component {
         const res = [];
 
         for(let i = 0; i < this.props.auditoriums.length; i++){
-            res.push(<option key={"auditorium_"+i} value={this.props.auditoriums[i].id} selected={this.props.auditoriums[i].id === this.state.presentation.auditorium}>{this.props.auditoriums[i].number}</option>);
+            res.push(<option key={"auditorium_"+i} value={this.props.auditoriums[i].id} >{this.props.auditoriums[i].number}</option>);
         }
 
         return res;
@@ -98,7 +99,7 @@ class PresentationDetails extends Component {
     parseDateValue(startTime){
         const date = new Date(startTime);
 
-        let month = date.getMonth() > 9 ? date.getMonth() : "0" + date.getMonth();
+        let month = (date.getMonth()+1) > 9 ? (date.getMonth()+1) : "0" + (date.getMonth()+1);
         let day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
         let hours = date.getUTCHours() > 9 ? date.getUTCHours() : "0" + date.getUTCHours();
         let minutes = date.getUTCMinutes() > 9 ? date.getUTCMinutes() : "0" + date.getUTCMinutes();
@@ -108,7 +109,6 @@ class PresentationDetails extends Component {
 
     render() {
 
-
         return (
             <div>
                 <div className="presentationDetailsSeparator"/>
@@ -117,7 +117,7 @@ class PresentationDetails extends Component {
                     <div className="presentationDetailsPageTitle">PRESENTATION INFORMATION</div>
                     <div className="presentationDetailsSeparator"/>
                     <div className="presentationDetailsTitle">Film:</div>
-                    <select className="presentationInput" onChange={(data) => {
+                    <select className="presentationInput" defaultValue={this.state.presentation.film} onChange={(data) => {
                         const presentation = this.state.presentation;
                         presentation.film = data.target.value;
                         this.setState({
@@ -128,7 +128,7 @@ class PresentationDetails extends Component {
                     {this.state.errors.film ? <div className="presentationDetailsErrorMessage">There is an error in the film</div> : null}
                     <div className="presentationDetailsSeparator"/>
                     <div className="presentationDetailsTitle">Auditorium:</div>
-                    <select className="presentationInput" onChange={(data) => {
+                    <select className="presentationInput" defaultValue={this.state.presentation.auditorium} onChange={(data) => {
                         const presentation = this.state.presentation;
                         presentation.auditorium = data.target.value;
                         this.setState({
@@ -141,7 +141,6 @@ class PresentationDetails extends Component {
                     <div className="presentationDetailsSeparator"/>
                     <div className="presentationDetailsTitle">Start time:</div>
                     <input className="presentationInput" type="datetime-local" value={this.state.presentation.startTime} onChange={(event) => {
-                        console.log(event.target.value);
                         const presentation = this.state.presentation;
                         presentation.startTime = event.target.value;
                         this.setState({
