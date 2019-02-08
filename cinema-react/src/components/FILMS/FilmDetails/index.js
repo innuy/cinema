@@ -50,7 +50,7 @@ class FilmDetails extends Component {
 
     renderCast(){
         const res = [
-            <div className="filmDetailsTitleContainer row">
+            <div key={"castInput_title"} className="filmDetailsTitleContainer row">
                 <div className="filmDetailsTitle col-8">Cast:</div>
                 <button className="filmDetailsTitleButton col-3 offset-1" onClick={() => {
                     const film = this.state.film;

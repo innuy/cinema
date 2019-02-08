@@ -109,8 +109,6 @@ class PresentationDetails extends Component {
 
     render() {
 
-        console.log(this.state.presentation.startTime);
-
         return (
             <div>
                 <div className="presentationDetailsSeparator"/>
