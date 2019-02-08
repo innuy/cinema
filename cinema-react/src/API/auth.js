@@ -10,7 +10,6 @@ export function login(username, password, callback){
         console.log(JSON.stringify(error));
         callback(false, "There was an error with the connection");
     });
-    
 }
 
 export function signUp(username, password, callback){
