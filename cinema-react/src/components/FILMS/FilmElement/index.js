@@ -22,7 +22,6 @@ class FilmElement extends Component {
         else{
             return "";
         }
-
     }
 
     render() {
