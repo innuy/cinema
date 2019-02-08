@@ -1,0 +1,49 @@
+.loginDetailsContainer{
+    width: 40%;
+    margin-left: 30%;
+    margin-top: 20pt;
+    background-color: var(--background);
+}
+
+.loginDetailsPageTitle{
+    color: var(--headerText);
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.loginDetailsErrorMessage{
+    color: var(--dangerText);
+}
+
+.loginDetailsTitleContainer{
+    width: 100%;
+}
+
+.loginDetailsTitle{
+    color: var(--subText);
+    font-weight: bold;
+}
+
+.loginDetailsTitleButton{
+    width: 10%;
+    float: right;
+}
+
+.loginInput{
+    width: 100%;
+    color: var(--text);
+}
+
+.loginChangeScreenButton{
+    width: 100%;
+    color: blue;
+    font-size: 10px;
+    text-align: center;
+}
+
+.loginDetailsSeparator{
+    height: 15px;
+    width: 100%;
+}

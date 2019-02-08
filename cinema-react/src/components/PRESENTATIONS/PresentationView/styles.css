@@ -1,0 +1,18 @@
+.presentationViewContainer {
+    flex-direction: row;
+    background-color: var(--secondBackground);
+    float: none;
+    ººmargin: 0 auto;
+}
+
+.presentationRow{
+    margin-top: 10pt;
+}
+
+.presentationViewTitle{
+    font-weight: bolder;
+    font-size: 20px;
+    color: var(--headerText);
+    width: 100%;
+    text-align: center;
+}
