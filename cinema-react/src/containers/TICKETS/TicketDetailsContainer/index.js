@@ -7,6 +7,8 @@ import {getPresentations} from "../../../API/presentations";
 import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
 import {getFilms} from "../../../API/films";
+import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
+import {getAuditoriums} from "../../../API/auditoriums";
 
 class TicketDetailsContainer extends Component {
 
@@ -21,13 +23,20 @@ class TicketDetailsContainer extends Component {
             seat: {}
         },
         presentations: [],
-        films:[]
+        films:[],
+        auditoriums: [],
+
+        errorVisible: false,
+        errorCallback: null,
+        errorText: "",
     };
 
     constructor(props){
         super(props);
 
         this.editTicket = this.editTicket.bind(this);
+        this.getAllInfo = this.getAllInfo.bind(this);
+        this.hideError = this.hideError.bind(this);
     }
 
     componentWillMount() {
@@ -35,19 +44,28 @@ class TicketDetailsContainer extends Component {
         this.setState({
             id: this.props.match.params.id,
         }, () => {
-            getSingleTicket(this.state.id, (success, data) => {
-                if(success){
-                    this.setState({
-                        ticket: data,
-                    });
-                }
-                else{
-                    //TODO: HANDLE ERROR
-                }
-            });
+            this.getAllInfo();
         });
 
+    }
 
+    getAllInfo(){
+        getSingleTicket(this.state.id, (success, data) => {
+            if(success){
+                this.setState({
+                    ticket: data,
+                });
+            }
+            else{
+                if(!this.state.errorVisible) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: "There was an error obtaining ticket details",
+                        errorCallback: this.getAllInfo,
+                    });
+                }
+            }
+        });
 
         getPresentations((success, data) => {
             if(success){
@@ -56,7 +74,13 @@ class TicketDetailsContainer extends Component {
                 });
             }
             else{
-                //TODO: HANDLE ERROR
+                if(!this.state.errorVisible) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: "There was an error obtaining presentations details",
+                        errorCallback: this.getAllInfo,
+                    });
+                }
             }
         });
 
@@ -67,23 +91,54 @@ class TicketDetailsContainer extends Component {
                 });
             }
             else{
-                //TODO: HANDLE ERROR
+                if(!this.state.errorVisible) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: "There was an error obtaining film details",
+                        errorCallback: this.getAllInfo,
+                    });
+                }
             }
-        })
+        });
+
+        getAuditoriums((success, data) => {
+            if(success){
+                this.setState({
+                    auditoriums: data
+                });
+            }
+            else{
+                if(!this.state.errorVisible) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: "There was an error obtaining auditorium details",
+                        errorCallback: this.getAllInfo,
+                    });
+                }
+            }
+        });
     }
 
     editTicket(newTicket){
         editTicket(newTicket, (success) => {
-            //TODO: SHOW FEEDBACK
             if(success){
                 navigateBack(this.history);
             }
             else{
-                //TODO: HANDLE ERROR
+                if(!this.state.errorVisible) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: "There was an error saving the ticket",
+                        errorCallback: this.hideError,
+                    });
+                }
             }
         })
     }
 
+    hideError(){
+        this.setState({errorVisible: false});
+    }
 
     render() {
         return (
@@ -92,7 +147,8 @@ class TicketDetailsContainer extends Component {
                 return (<div>
                             <NavBar isAdmin={true} history={this.history}/>
                             <TicketDetails presentations={this.state.presentations} ticket={this.state.ticket} films={this.state.films}
-                                           callback={this.editTicket} buttonText={"EDIT"}/>
+                                           auditoriums={this.state.auditoriums} callback={this.editTicket} buttonText={"EDIT"}/>
+                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                         </div>);}} />
         );
     }

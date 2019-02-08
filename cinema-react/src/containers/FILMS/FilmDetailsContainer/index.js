@@ -5,6 +5,7 @@ import NavBar from "../../../components/GENERAL/NavBar";
 import {editFilm, getSingleFilm} from "../../../API/films";
 import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
+import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 
 class FilmDetailsContainer extends Component {
 
@@ -12,13 +13,19 @@ class FilmDetailsContainer extends Component {
 
     state = {
         id: 0,
-        film: {}
+        film: {},
+
+        errorVisible: false,
+        errorCallback: null,
+        errorText: "",
     };
 
     constructor(props){
         super(props);
 
         this.editFilm = this.editFilm.bind(this);
+        this.obtainFilmData = this.obtainFilmData.bind(this);
+        this.hideError = this.hideError.bind(this);
     }
 
     componentWillMount() {
@@ -26,19 +33,26 @@ class FilmDetailsContainer extends Component {
         this.setState({
             id: this.props.match.params.id,
         }, () => {
-            getSingleFilm(this.state.id, (success, film) => {
-                if(success) {
-                    this.setState({
-                        film
-                    });
-                }
-                else{
-                    /* TODO: HANDLE ERROR */
-                }
-            })
+            this.obtainFilmData();
         });
+    }
 
-
+    obtainFilmData(){
+        this.hideError();
+        getSingleFilm(this.state.id, (success, film) => {
+            if(success) {
+                this.setState({
+                    film
+                });
+            }
+            else{
+                this.setState({
+                    errorVisible: true,
+                    errorText: "There was an error obtaining film details",
+                    errorCallback: this.obtainFilmData,
+                });
+            }
+        })
     }
 
     editFilm(newFilm){
@@ -47,9 +61,17 @@ class FilmDetailsContainer extends Component {
                 navigateBack(this.history);
             }
             else{
-                //TODO: SHOW ERROR
+                this.setState({
+                    errorVisible: true,
+                    errorText: "There was an error saving the film",
+                    errorCallback: this.hideError,
+                });
             }
         })
+    }
+
+    hideError(){
+        this.setState({errorVisible: false});
     }
 
 
@@ -61,6 +83,7 @@ class FilmDetailsContainer extends Component {
                     <div>
                         <NavBar isAdmin={true} history={this.history}/>
                         <FilmDetails film={this.state.film} callback={this.editFilm} buttonText={"EDIT"}/>
+                        {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                     </div>);}}
             />
         );
