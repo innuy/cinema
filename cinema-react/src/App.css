@@ -1,5 +1,22 @@
+:root {
+  --background: #D7CDCC;
+  --secondBackground: #FFFFFF;
+  --headerText: #9C528B;
+  --subText: #59656F;
+  --text: #1D1E2C;
+  --dangerText: #ff0000;
+}
+
 .App {
   text-align: center;
+}
+
+html{
+  background-color: var(--background);
+}
+
+body{
+  background-color: var(--secondBackground);
 }
 
 .App-header {
@@ -24,4 +41,10 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.rowFullWidth{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }

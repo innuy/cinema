@@ -1,0 +1,43 @@
+.filmDetailsContainer{
+    width: 60%;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 5%;
+    background-color: var(--background);
+}
+
+.filmDetailsPageTitle{
+    color: var(--headerText);
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.filmDetailsErrorMessage{
+    color: var(--dangerText);
+}
+
+.filmDetailsTitleContainer{
+    width: 100%;
+}
+
+.filmDetailsTitle{
+    color: var(--subText);
+    font-weight: bold;
+}
+
+.filmDetailsTitleButton{
+    width: 10%;
+    float: right;
+}
+
+.filmInput{
+    width: 100%;
+    color: var(--text);
+}
+
+.filmDetailsSeparator{
+    height: 15px;
+    width: 100%;
+}

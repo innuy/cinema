@@ -2,6 +2,15 @@
   "version": 2,
   "name": "cinema-node",
   "builds": [
-    { "src": "*.js", "use": "@now/node" }
+    {
+      "src": "*.js",
+      "use": "@now/node-server"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.js"
+    }
   ]
 }

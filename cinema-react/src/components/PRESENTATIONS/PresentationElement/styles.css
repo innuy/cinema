@@ -1,0 +1,35 @@
+.presentationElementContainer{
+    margin: 10pt;
+    padding-top: 10pt;
+    padding-bottom: 10pt;
+    background-color: var(--background);
+}
+
+.presentationElementDelete{
+    width: 6%;
+    margin-left: 95%;
+    margin-top: -5%;
+}
+
+.presentationElementMainText{
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--subText);
+}
+
+.presentationElementSecondaryText{
+    font-size: 10px;
+    margin-top: 5px;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.presentationElementImage{
+    width: 70%;
+    margin-left: 15%;
+}
+
+.presentationElementButtonContainer{
+    margin-top: 10px;
+    text-align: center;
+}
