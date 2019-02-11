@@ -80,17 +80,6 @@ module.exports.deleteById = (req, res) => {
         });
 };
 
-const singleUploadPromise = (req, res) => new Promise((resolve, reject) => {
-    singleUpload(req, res, function (err, some) {
-        if (err) {
-            reject(err);
-        } else {
-            const imageUrl = req.file.location;
-            resolve(imageUrl)
-        }
-    });
-});
-
 module.exports.imageUpload = (req, res) => {
     singleUpload(req, res, function (err, some) {
         if (err) {
@@ -100,38 +89,6 @@ module.exports.imageUpload = (req, res) => {
         return res.json({'imageUrl': req.file.location});
     });
 };
-
-const getMovie = id => new Promise((resolve, reject) => {
-    Movie.findById(id)
-        .then(movie => {
-            if (thereIsNoMovie(movie)) {
-                reject(errors.movieNotFound);
-            } else {
-                resolve(movie)
-            }
-        })
-        .catch(err => reject(err));
-});
-
-const addImageLinkInMovie = (id, imageUrl) => new Promise((resolve, reject) => {
-    const id_filter = {'_id': new ObjectID(id)};
-    const setToReturnUpdatedValue = {new: true};
-    const parametersToSet = {$set: {image: imageUrl}};
-
-    Movie.findOneAndUpdate(
-        id_filter,
-        parametersToSet,
-        setToReturnUpdatedValue,
-    )
-        .then(movie => {
-            if (thereIsNoMovie(movie)) {
-                reject(errors.movieNotFound);
-            } else {
-                resolve(movie)
-            }
-        })
-        .catch(err => reject(err));
-});
 
 module.exports.movieImageUpload = (req, res) => {
     const id = req.params.id;
@@ -235,3 +192,46 @@ const deletePresentationsAndRelatedTickets = presentationsList => {
 
     return Promise.all(deleteTicketPromiseArray);
 };
+
+const singleUploadPromise = (req, res) => new Promise((resolve, reject) => {
+    singleUpload(req, res, function (err, some) {
+        if (err) {
+            reject(err);
+        } else {
+            const imageUrl = req.file.location;
+            resolve(imageUrl)
+        }
+    });
+});
+
+const getMovie = id => new Promise((resolve, reject) => {
+    Movie.findById(id)
+        .then(movie => {
+            if (thereIsNoMovie(movie)) {
+                reject(errors.movieNotFound);
+            } else {
+                resolve(movie)
+            }
+        })
+        .catch(err => reject(err));
+});
+
+const addImageLinkInMovie = (id, imageUrl) => new Promise((resolve, reject) => {
+    const id_filter = {'_id': new ObjectID(id)};
+    const setToReturnUpdatedValue = {new: true};
+    const parametersToSet = {$set: {image: imageUrl}};
+
+    Movie.findOneAndUpdate(
+        id_filter,
+        parametersToSet,
+        setToReturnUpdatedValue,
+    )
+        .then(movie => {
+            if (thereIsNoMovie(movie)) {
+                reject(errors.movieNotFound);
+            } else {
+                resolve(movie)
+            }
+        })
+        .catch(err => reject(err));
+});
