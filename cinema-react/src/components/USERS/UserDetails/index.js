@@ -6,7 +6,7 @@ import OptionButton from "../../GENERAL/OptionButton";
 import './styles.css';
 import {emailIsValid} from "../../../utils/dataValidation";
 
-class EditUserInfo extends Component {
+class UserDetails extends Component {
 
     constructor(props){
         super(props);
@@ -18,12 +18,14 @@ class EditUserInfo extends Component {
     state = {
         user: {
             email: '',
+            password: '',
             firstName: '',
             lastName: '',
         },
 
         errors:{
             email: false,
+            password: false,
             firstName: false,
             lastName: false,
         }
@@ -41,12 +43,17 @@ class EditUserInfo extends Component {
 
         const errors = {
             email: false,
+            password: false,
             firstName: false,
             lastName: false,
         };
 
         if(!this.state.user.email || !emailIsValid(this.state.user.email)){
             errors.email = true;
+        }
+
+        if(!this.state.user.password){
+            errors.password = true;
         }
 
         if(!this.state.user.firstName){
@@ -69,7 +76,7 @@ class EditUserInfo extends Component {
     }
 
     userDataHasErrors(){
-        return this.state.errors.email || this.state.errors.firstName || this.state.errors.lastName;
+        return this.state.errors.email || this.state.errors.password || this.state.errors.firstName || this.state.errors.lastName;
     }
 
     render() {
@@ -89,6 +96,16 @@ class EditUserInfo extends Component {
                         });
                     }}/>
                     {this.state.errors.email ? <div className="userDataErrorMessage">There is an error in the email</div> : null}
+                    <div className="userDataSeparator"/>
+                    <div className="userDataTitle">New password:</div>
+                    <input className="userDataInput" value={this.state.user.password} onChange={(event) => {
+                        const user = this.state.user;
+                        user.password = event.target.value;
+                        this.setState({
+                            user
+                        });
+                    }}/>
+                    {this.state.errors.password ? <div className="userDataErrorMessage">There is an error in the password</div> : null}
                     <div className="userDataSeparator"/>
                     <div className="userDataTitle">First name:</div>
                     <input className="userDataInput" value={this.state.user.firstName} onChange={(event) => {
@@ -110,7 +127,6 @@ class EditUserInfo extends Component {
                     }}/>
                     {this.state.errors.lastName ? <div className="userDataErrorMessage">There is an error in the last name</div> : null}
                     <div className="userDataSeparator"/>
-
                     <div className="userDataSeparator"/>
                     <div className="userDataSeparator"/>
                     <div className="userDataSeparator"/>
@@ -123,9 +139,9 @@ class EditUserInfo extends Component {
     }
 }
 
-EditUserInfo.propTypes = {
-    user: PropTypes.object.isRequired,
+UserDetails.propTypes = {
+    user: PropTypes.object,
     callback: PropTypes.func.isRequired,
 };
 
-export default EditUserInfo;
+export default UserDetails;

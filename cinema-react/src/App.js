@@ -21,7 +21,9 @@ import ReserveTicketContainer from "./containers/TICKETS/ReserveTicketContainer"
 import LoginContainer from "./containers/AUTH/LoginContainer";
 import SignUpContainer from "./containers/AUTH/SignupContainer";
 import ConfirmReservationContainer from "./containers/TICKETS/ConfirmReservationContainer";
-import EditUserInfoContainer from "./containers/USERS/EditUserInfoContainer";
+import UserContainer from "./containers/USERS/UserContainer";
+import UserDetailsContainer from "./containers/USERS/UserDetailsContainer";
+import AddUserContainer from "./containers/USERS/AddUserContainer";
 
 class App extends Component {
   render() {
@@ -44,11 +46,14 @@ class App extends Component {
                 <Route exact path='/addTicket' component={AddTicketContainer}/>
                 <Route exact path='/tickets/:id' component={TicketDetailsContainer}/>
                 <Route exact path='/confirmReservation' component={ConfirmReservationContainer}/>
+                <Route exact path='/users' component={UserContainer}/>
+                <Route exact path='/addUser' component={AddUserContainer}/>
+                <Route exact path='/user/:id' component={UserDetailsContainer}/>
                 {/*USER SCREENS*/}
                 <Route exact path='/seePresentations' component={SeePresentationContainer}/>
                 <Route exact path='/myTickets' component={MyTicketsContainer}/>
                 <Route exact path='/reserveTicket/:id' component={ReserveTicketContainer}/>
-                <Route exact path='/myInfo' component={EditUserInfoContainer}/>
+                <Route exact path='/myInfo' component={UserDetailsContainer}/>
             </Switch>
         </div>
     );

@@ -6,7 +6,7 @@ import NavBarElement from "./NavBarElement";
 import {navigate} from "../../../utils/navigation";
 
 const ADMIN_NAV = [createNavItem("Films", "/films"), createNavItem("Auditoriums", "/auditoriums"),
-    createNavItem("Presentations", "/presentations"), createNavItem("Tickets", "/tickets")];
+    createNavItem("Presentations", "/presentations"), createNavItem("Tickets", "/tickets"), createNavItem("Users", "/users")];
 const USER_NAV = [createNavItem("Presentations", "/seePresentations"), createNavItem("Tickets", "/myTickets"),
     createNavItem("My Info", '/myInfo')];
 
@@ -39,7 +39,7 @@ class NavBar extends Component {
     render() {
 
         return (
-            <div className="col-12 navBarContainer rowFullWidth row">
+            <div className="col-12 navBarContainer rowFullWidth row justify-content-center">
                 {this.renderElements()}
             </div>
         );

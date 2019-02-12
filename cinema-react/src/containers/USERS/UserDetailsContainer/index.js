@@ -4,14 +4,15 @@ import NavBar from "../../../components/GENERAL/NavBar";
 import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
 import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
-import EditUserInfo from "../../../components/USERS/EditUserInfo";
+import UserDetails from "../../../components/USERS/UserDetails";
 import {editUser, getSingleUser} from "../../../API/users";
 
-class EditUserInfoContainer extends Component {
+class UserDetailsContainer extends Component {
 
     history = null;
 
     state = {
+        id: null,
         user: {},
 
         errorVisible: false,
@@ -28,8 +29,16 @@ class EditUserInfoContainer extends Component {
     }
 
     componentWillMount() {
-
-        this.obtainUserData();
+        if(this.props.match.params.id){
+            this.setState({
+                id: this.props.match.params.id,
+            }, () => {
+                this.obtainUserData();
+            });
+        }
+        else{
+            this.obtainUserData();
+        }
     }
 
     obtainUserData(){
@@ -73,12 +82,12 @@ class EditUserInfoContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                    <NavBar isAdmin={true} history={this.history}/>
-                    <EditUserInfo user={this.state.user} callback={this.editUserInfo}/>
+                    <NavBar isAdmin={false} history={this.history}/>
+                    <UserDetails user={this.state.user} callback={this.editUserInfo}/>
                     {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);}} />
         );
     }
 }
 
-export default EditUserInfoContainer;
+export default UserDetailsContainer;
