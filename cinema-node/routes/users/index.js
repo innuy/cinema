@@ -1,5 +1,6 @@
 const handlers = require('./handlers');
 const validation = require('./validation');
+const auth = require('../auth');
 /**
  * User routes.
  *
@@ -10,6 +11,7 @@ const validation = require('./validation');
 module.exports = router => {
 
     router.post('/users',
+        auth.optional,
         validation.create,
         handlers.create,
     );

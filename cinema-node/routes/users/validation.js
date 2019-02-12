@@ -8,6 +8,7 @@ const create = celebrate({
         name: Joi.string().required(),
         surname: Joi.string().required(),
         role: Joi.number().positive().integer().valid([ 1, 2 ]).required(),
+        password: Joi.string().required(),
     }
 });
 
