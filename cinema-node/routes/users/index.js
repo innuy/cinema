@@ -1,3 +1,5 @@
+const adminOnly = require("../../middlewares/roleAuthentication");
+
 const handlers = require('./handlers');
 const validation = require('./validation');
 const auth = require('../auth');
@@ -43,6 +45,7 @@ module.exports = router => {
 
     router.get('/user/current',
         auth.required,
+        adminOnly,
         handlers.current,
     );
 
