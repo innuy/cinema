@@ -58,6 +58,17 @@ module.exports = router => {
         handlers.getCurrent,
     );
 
+    router.put('/user/current',
+        auth.required,
+        adminOnly,
+        validation.putCurrent,
+        handlers.putCurrent,
+    );
+
+    router.patch('/user/updatePassword',
+        auth.optional,
+        validation.updatePassword,
+        handlers.updatePassword,
     );
 
     return router;

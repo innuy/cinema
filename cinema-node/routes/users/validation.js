@@ -54,15 +54,21 @@ const login = celebrate({
     }
 });
 
+const putCurrent = celebrate({
     body: {
-        email: Joi.string().email({ minDomainAtoms: 2 }).required(),
-        password: Joi.string().required(),
+        email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
+        name: Joi.string().required(),
+        surname: Joi.string().required(),
     }
 });
 
-const current = celebrate({
-    params: {
-        id: Joi.objectId(),
+const updatePassword = celebrate({
+    body: {
+        user:{
+            email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
+            password: Joi.string().required(),
+        },
+        newPassword: Joi.string().required(),
     }
 });
 
@@ -73,5 +79,6 @@ module.exports = {
     putById,
     deleteById,
     login,
-    current,
+    putCurrent,
+    updatePassword,
 };
