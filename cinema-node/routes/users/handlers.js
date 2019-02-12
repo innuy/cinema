@@ -79,6 +79,40 @@ module.exports.deleteById = (req, res) => {
         });
 };
 
+module.exports.login = (req, res, next) => {
+    const user = req.body;
+
+    return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+        if(err) {
+            return next(err);
+        }
+
+        if(passportUser) {
+            const user = passportUser;
+            user.token = passportUser.generateJWT();
+
+            return res.json({ user: user.toAuthJSON() });
+        }
+
+        return res.status(400).send(info);
+    })(req, res, next);
+};
+
+
+module.exports.current = (req, res, next) => {
+    const { payload: { id } } = req;
+
+    return User.findById(id)
+        .then((user) => {
+            if(!user) {
+                return errors.userNotFound(res);
+            }
+
+            return res.json({ user: user.toAuthJSON() });
+        });
+};
+
+
 const deleteUserById = id_filter => new Promise((resolve, reject) => {
     User.findOneAndDelete(id_filter)
         .then(user => {

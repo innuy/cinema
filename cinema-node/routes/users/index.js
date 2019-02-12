@@ -36,5 +36,15 @@ module.exports = router => {
         handlers.deleteById,
     );
 
+    router.post('/login',
+        auth.optional,
+        handlers.login,
+    );
+
+    router.get('/user/current',
+        auth.required,
+        handlers.current,
+    );
+
     return router;
 };
