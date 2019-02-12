@@ -60,7 +60,6 @@ export function addFilm(film, callback){
         director: film.director,
     })
         .then((response) => {
-            console.log("response: " + JSON.stringify(response));
             callback(true, response.data._id);
         }).catch((error) => {
         console.log(JSON.stringify(error));

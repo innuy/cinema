@@ -7,7 +7,8 @@ import {navigate} from "../../../utils/navigation";
 
 const ADMIN_NAV = [createNavItem("Films", "/films"), createNavItem("Auditoriums", "/auditoriums"),
     createNavItem("Presentations", "/presentations"), createNavItem("Tickets", "/tickets")];
-const USER_NAV = [createNavItem("Presentations", "/seePresentations"), createNavItem("Tickets", "/myTickets")];
+const USER_NAV = [createNavItem("Presentations", "/seePresentations"), createNavItem("Tickets", "/myTickets"),
+    createNavItem("My Info", '/myInfo')];
 
 class NavBar extends Component {
 
