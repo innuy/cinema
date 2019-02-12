@@ -6,7 +6,7 @@ import ReserveTicket from "../../../components/TICKETS/ReserveTicket";
 import {getSinglePresentation} from "../../../API/presentations";
 import {getTicketsOfPresentation, reserveTicket} from "../../../API/tickets";
 import {navigateBack} from "../../../utils/navigation";
-import {getSingleAuditorium} from "../../../API/auditoriums";
+import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 
 
 class ReserveTicketContainer extends Component {
@@ -16,7 +16,11 @@ class ReserveTicketContainer extends Component {
         auditorium: {
             rows: 0,
             columns: 0
-        }
+        },
+
+        errorVisible: false,
+        errorText: "",
+        errorCallback: null,
     };
 
     history = null;
@@ -26,6 +30,7 @@ class ReserveTicketContainer extends Component {
 
         this.getPresentationInfo = this.getPresentationInfo.bind(this);
         this.makeReservation = this.makeReservation.bind(this);
+        this.hideError = this.hideError.bind(this);
     }
 
     componentWillMount() {
@@ -38,12 +43,13 @@ class ReserveTicketContainer extends Component {
     }
 
     getPresentationInfo(){
-        getTicketsOfPresentation(this.state.presentationId, (success, tickets) => {
+        this.hideError();
+        getTicketsOfPresentation(this.state.presentationId, (success, ticketsData) => {
             if(success) {
-                if(tickets.length > 0) {
+                if(ticketsData.length > 0) {
                     this.setState({
-                        tickets,
-                        auditorium: tickets[0].auditorium,
+                        ticketsData,
+                        auditorium: ticketsData[0].auditorium,
                     });
                 }
                 else{
@@ -54,13 +60,21 @@ class ReserveTicketContainer extends Component {
                             });
                         }
                         else{
-                            //TODO: HANDLE ERROR
+                            this.setState({
+                                errorVisible: true,
+                                errorText: data,
+                                errorCallback: this.getPresentationInfo,
+                            });
                         }
                     });
                 }
             }
             else{
-                //TODO: HANDLE ERROR
+                this.setState({
+                    errorVisible: true,
+                    errorText: ticketsData,
+                    errorCallback: this.getPresentationInfo,
+                });
             }
         });
 
@@ -68,15 +82,22 @@ class ReserveTicketContainer extends Component {
     }
 
     makeReservation(row, column){
-        reserveTicket(this.state.presentationId, row, column, (success) => {
-            //TODO: SHOW FEEDBACK
+        reserveTicket(this.state.presentationId, row, column, (success, errorMsg) => {
             if(success){
                 navigateBack(this.history);
             }
             else{
-                //TODO: HANDLE ERROR
+                this.setState({
+                    errorVisible: true,
+                    errorText: errorMsg,
+                    errorCallback: this.hideError,
+                });
             }
         })
+    }
+
+    hideError(){
+        this.setState({errorVisible: false});
     }
 
 
@@ -87,6 +108,7 @@ class ReserveTicketContainer extends Component {
                 return (<div>
                             <NavBar isAdmin={false} history={this.history}/>
                             <ReserveTicket tickets={this.state.tickets} auditorium={this.state.auditorium} finalSelection={this.makeReservation}/>
+                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                         </div>);
             }} />
         );

@@ -7,11 +7,11 @@ import './styles.css';
 class LoginView extends Component {
 
     state = {
-        username: "",
+        email: "",
         password: "",
 
         errors: {
-            username: false,
+            email: false,
             password: false,
         }
     };
@@ -23,16 +23,16 @@ class LoginView extends Component {
                 <div className="loginDetailsPageTitle">LOGIN</div>
                 <div className="loginDetailsContainer">
                     <div className="loginDetailsSeparator"/>
-                    <div className="loginDetailsTitle">Username:</div>
-                    <input className="loginInput" value={this.state.username} onChange={(event) => {
+                    <div className="loginDetailsTitle">Email:</div>
+                    <input className="loginInput" value={this.state.email} onChange={(event) => {
                         this.setState({
-                            username: event.target.value,
+                            email: event.target.value,
                         });
                     }}/>
-                    {this.state.errors.username ? <div className="loginDetailsErrorMessage">There is an error in the username</div> : null}
+                    {this.state.errors.email ? <div className="loginDetailsErrorMessage">There is an error in the email</div> : null}
                     <div className="loginDetailsSeparator"/>
                     <div className="loginDetailsTitle">Password:</div>
-                    <input className="loginInput" value={this.state.password} onChange={(event) => {
+                    <input type="password" className="loginInput" value={this.state.password} onChange={(event) => {
                         this.setState({
                             password: event.target.value,
                         });
