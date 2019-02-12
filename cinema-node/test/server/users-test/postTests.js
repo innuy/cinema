@@ -14,6 +14,7 @@ const testingUserData = {
     surname: "uset",
     email: "test@test.com",
     role: "1",
+    password: "password",
 };
 
 function userPostTest(done) {

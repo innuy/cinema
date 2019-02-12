@@ -1,11 +1,17 @@
 const errors = require("./errors");
 const User = require('../../db/models/users');
+const passport = require('passport');
 var ObjectID = require('mongodb').ObjectID;
 
 module.exports.create = (req, res) => {
-    User.create(req.body)
-        .then(user => res.send(user))
-        .catch(err => errors.databaseError(err, res))
+    const user = req.body;
+    const finalUser = new User(user);
+
+    finalUser.setPassword(user.password);
+
+    finalUser.save()
+        .then(() => res.send(finalUser))
+        .catch(err => errors.databaseError(err, res));
 };
 
 module.exports.get = (req, res) => {
