@@ -25,6 +25,16 @@ export function getSingleUser(id, callback){
     });
 }
 
+export function getMyUserData(callback){
+
+    axios.get(urls.currentUser)
+        .then((response) => {
+            callback(true, parseUsers(response.data));
+        }).catch((error) => {
+            callback(false, "There was an error with the connection");
+    });
+}
+
 export function addUser(user, callback){
     /*TODO: CHANGE USERS URL*/
     axios.post(urls.users, {
@@ -42,6 +52,19 @@ export function editUser(user, callback){
     /*TODO: CHANGE USERS URL*/
     axios.put(urls.users + "/" + user.id, {
 
+    })
+        .then((response) => {
+            callback(true);
+        }).catch((error) => {
+            callback(false, "There was an error with the connection");
+    });
+}
+
+export function editMyUserData(user, callback){
+    axios.put(urls.currentUser, {
+        email: user.email,
+        name: user.firstName,
+        surname: user.lastName,
     })
         .then((response) => {
             callback(true);

@@ -5,7 +5,7 @@ import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
 import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 import UserDetails from "../../../components/USERS/UserDetails";
-import {editUser, getSingleUser} from "../../../API/users";
+import {editMyUserData, editUser, getMyUserData, getSingleUser} from "../../../API/users";
 
 class UserDetailsContainer extends Component {
 
@@ -13,6 +13,7 @@ class UserDetailsContainer extends Component {
 
     state = {
         id: null,
+        isSelf: true,
         user: {},
 
         errorVisible: false,
@@ -26,18 +27,20 @@ class UserDetailsContainer extends Component {
         this.editUserInfo = this.editUserInfo.bind(this);
         this.hideError = this.hideError.bind(this);
         this.obtainUserData = this.obtainUserData.bind(this);
+        this.obtainMyUserData = this.obtainMyUserData.bind(this);
     }
 
     componentWillMount() {
         if(this.props.match.params.id){
             this.setState({
                 id: this.props.match.params.id,
+                isSelf: false,
             }, () => {
                 this.obtainUserData();
             });
         }
         else{
-            this.obtainUserData();
+            this.obtainMyUserData();
         }
     }
 
@@ -45,7 +48,9 @@ class UserDetailsContainer extends Component {
         this.hideError();
         getSingleUser(this.state.user.id, (success, user) => {
             if (success){
-
+                this.setState({
+                    user
+                });
             }
             else{
                 this.setState({
@@ -57,19 +62,51 @@ class UserDetailsContainer extends Component {
         });
     }
 
-    editUserInfo(userInfo){
-        editUser(userInfo, (success) => {
-            if(success){
-                navigateBack(this.history);
+    obtainMyUserData(){
+        this.hideError();
+        getMyUserData((success, user) => {
+            if (success){
+                this.setState({
+                    user
+                });
             }
             else{
                 this.setState({
                     errorVisible: true,
-                    errorText: "There was an error saving the user",
-                    errorCallback: this.hideError,
+                    errorText: "There was an error obtaining your details",
+                    errorCallback: this.obtainMyUserData,
                 });
             }
-        })
+        });
+    }
+
+    editUserInfo(userInfo){
+        if(this.state.isSelf){
+            editMyUserData(userInfo, (success) => {
+                if (success) {
+                    navigateBack(this.history);
+                } else {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: "There was an error saving your data",
+                        errorCallback: this.hideError,
+                    });
+                }
+            });
+        }
+        else {
+            editUser(userInfo, (success) => {
+                if (success) {
+                    navigateBack(this.history);
+                } else {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: "There was an error saving the user",
+                        errorCallback: this.hideError,
+                    });
+                }
+            });
+        }
     }
 
     hideError(){
