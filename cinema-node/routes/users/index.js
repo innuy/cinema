@@ -19,34 +19,45 @@ module.exports = router => {
     );
 
     router.get('/users',
+        auth.required,
+        adminOnly,
         validation.get,
         handlers.get,
     );
 
     router.get('/users/:id',
+        auth.required,
+        adminOnly,
         validation.getById,
         handlers.getById,
     );
 
     router.put('/users/:id',
+        auth.required,
+        adminOnly,
         validation.putById,
         handlers.putById,
     );
 
     router.delete('/users/:id',
+        auth.required,
+        adminOnly,
         validation.deleteById,
         handlers.deleteById,
     );
 
     router.post('/login',
         auth.optional,
+        validation.login,
         handlers.login,
     );
 
     router.get('/user/current',
         auth.required,
         adminOnly,
-        handlers.current,
+        handlers.getCurrent,
+    );
+
     );
 
     return router;

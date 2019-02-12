@@ -12,7 +12,6 @@ const adminOnly = (req, res, next) => {
     else{
         errors.adminOnly(res);
     }
-
 };
 
 module.exports = adminOnly;

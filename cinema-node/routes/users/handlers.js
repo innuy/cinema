@@ -84,7 +84,7 @@ module.exports.login = (req, res, next) => {
 
     return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
         if(err) {
-            return next(err);
+            return errors.authenticationError(err, res);
         }
 
         if(passportUser) {
@@ -99,7 +99,7 @@ module.exports.login = (req, res, next) => {
 };
 
 
-module.exports.current = (req, res, next) => {
+module.exports.getCurrent = (req, res) => {
     const { payload: { id } } = req;
 
     return User.findById(id)

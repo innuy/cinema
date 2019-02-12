@@ -15,3 +15,12 @@ module.exports.userNotFound = res => {
         "message": "there is no user here"
     });
 };
+
+module.exports.authenticationError = (err, res) => {
+    res.status(500);
+    res.send({
+        "statusCode": 500,
+        "error": "Authentication error",
+        "message": err
+    });
+};

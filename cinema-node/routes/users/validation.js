@@ -46,6 +46,14 @@ const deleteById = celebrate({
 });
 
 const login = celebrate({
+    params: {
+        user:{
+            email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
+            password: Joi.string().required(),
+        }
+    }
+});
+
     body: {
         email: Joi.string().email({ minDomainAtoms: 2 }).required(),
         password: Joi.string().required(),
