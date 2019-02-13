@@ -6,6 +6,7 @@
     "start": "node app.js",
     "dbTest": "./node_modules/.bin/mocha test/db/**/*.js --reporter spec --exit",
     "test": "./node_modules/.bin/mocha test/server/**/*.js --reporter spec --exit",
+    "coverage": "nyc ./node_modules/.bin/mocha test/server/**/*.js --reporter spec --exit",
     "dev": "nodemon app.js"
   },
   "dependencies": {
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "morgan": "^1.9.1",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "nyc": "^13.2.0"
   }
 }
