@@ -63,7 +63,7 @@ export function getSinglePresentation(id, callback){
         .then((response) => {
             callback(true, parseSinglePresentation(response.data[0]));
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+        callback(false, "There was an error obtaining data");
     });
 }
 
@@ -78,7 +78,7 @@ export function addPresentation(presentation, callback){
             callback(true);
         }).catch((error) => {
             console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
+            callback(false, "There was an error with the connection");
     });
 }
 

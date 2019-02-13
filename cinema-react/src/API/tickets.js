@@ -72,10 +72,9 @@ export function getSingleTicket(id, callback){
 export function getTicketsOfPresentation(presentationId, callback){
     axios.get(urls.tickets + "/?presentation=" + presentationId)
         .then((response) => {
-            console.log("succ: " + JSON.stringify(response.data));
             callback(true, parseTickets(response.data));
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+        callback(false, "There was an error obtaining tickets");
     });
 }
 
@@ -91,14 +90,21 @@ export function getMyTickets(callback){
 export function reserveTicket(presentationId, row, column, callback){
 
     axios.post(urls.tickets, {
-        "presentation": presentationId,
-        "seatRow": row,
-        "seatColumn": column
+        presentation: presentationId,
+        seatRow: row,
+        seatColumn: column
     })
-        .then((response) => {
+        .then(() => {
             callback(true);
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+            console.log(error.response.data.message);
+            if(error.response.data.message){
+                callback(false, error.response.data.message);
+            }
+            else {
+                console.log("whut");
+                callback(false, "There was an error reserving the ticket");
+            }
     });
 }
 
@@ -112,7 +118,6 @@ export function editTicket(ticket, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            console.log(error);
             callback(false, "There was an error with the connection");
     });
 }

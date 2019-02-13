@@ -10,7 +10,7 @@ import {navigate} from "../../../utils/navigation";
 class AuditoriumContainer extends Component {
 
     state = {
-        auditoriums: [{},{},{}],
+        auditoriums: [],
         isAdmin: true,
     };
 

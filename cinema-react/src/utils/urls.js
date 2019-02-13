@@ -12,4 +12,6 @@ export const urls = {
     auditoriums: BASE_URL + '/auditoriums',
     presentations: BASE_URL + '/presentations',
     tickets: BASE_URL + '/tickets',
+    users: BASE_URL + '/user',
+    currentUser: BASE_URL + '/user/current',
 };

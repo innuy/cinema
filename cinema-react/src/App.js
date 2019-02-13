@@ -21,10 +21,27 @@ import ReserveTicketContainer from "./containers/TICKETS/ReserveTicketContainer"
 import LoginContainer from "./containers/AUTH/LoginContainer";
 import SignUpContainer from "./containers/AUTH/SignupContainer";
 import ConfirmReservationContainer from "./containers/TICKETS/ConfirmReservationContainer";
+import UserContainer from "./containers/USERS/UserContainer";
+import UserDetailsContainer from "./containers/USERS/UserDetailsContainer";
+import AddUserContainer from "./containers/USERS/AddUserContainer";
+import UnauthorizedAlert from "./components/GENERAL/UnauthorizedAlert";
+
+let isUnauthorized = true;
 
 class App extends Component {
+
+    componentDidMount() {
+        setInterval(() => {
+            this.setState(() => {
+                return { unseen: "does not display" }
+            });
+        }, 1500);
+    }
+
   render() {
+
     return (
+
         <div>
             <Switch>
                 <Route exact path='/' component={LoginContainer}/>
@@ -43,14 +60,27 @@ class App extends Component {
                 <Route exact path='/addTicket' component={AddTicketContainer}/>
                 <Route exact path='/tickets/:id' component={TicketDetailsContainer}/>
                 <Route exact path='/confirmReservation' component={ConfirmReservationContainer}/>
+                <Route exact path='/users' component={UserContainer}/>
+                <Route exact path='/addUser' component={AddUserContainer}/>
+                <Route exact path='/user/:id' component={UserDetailsContainer}/>
                 {/*USER SCREENS*/}
                 <Route exact path='/seePresentations' component={SeePresentationContainer}/>
                 <Route exact path='/myTickets' component={MyTicketsContainer}/>
                 <Route exact path='/reserveTicket/:id' component={ReserveTicketContainer}/>
+                <Route exact path='/myInfo' component={UserDetailsContainer}/>
             </Switch>
+            {isUnauthorized ? <UnauthorizedAlert/> : null }
         </div>
     );
   }
+}
+
+export function unauthorizedAccess(){
+    isUnauthorized = true;
+}
+
+export function resetAuthorization(){
+    isUnauthorized = false;
 }
 
 export default App;

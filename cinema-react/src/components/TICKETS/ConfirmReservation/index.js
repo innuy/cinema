@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import OptionButton from "../../GENERAL/OptionButton";
-
 import './styles.css';
 import {parseTime} from "../../../utils/time";
 

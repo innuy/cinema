@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom';
 
 import {getTickets} from "../../../API/tickets";
 import NavBar from "../../../components/GENERAL/NavBar";
-import MyTickets from '../../../components/TICKETS/MyTickets';
 import ConfirmReservation from "../../../components/TICKETS/ConfirmReservation";
 
 

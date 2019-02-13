@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import OptionButton from "../../GENERAL/OptionButton";
 
 import './styles.css';
-import {getAuditoriums} from "../../../API/auditoriums";
-import {parseTime} from "../../../utils/time";
 
 class PresentationDetails extends Component {
 
