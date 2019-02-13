@@ -18,8 +18,11 @@ class LoginContainer extends Component {
 
 
     login(username, password){
-        login(username,password,(data) => {
+        login(username,password,(success, data) => {
             //TODO: NAVIGATE TO CORRECT PAGE
+            if(success){
+
+            }
         })
     }
 

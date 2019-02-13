@@ -19,6 +19,8 @@ class UserDetailsContainer extends Component {
         errorVisible: false,
         errorText: "",
         errorCallback: null,
+
+        unauthorizedVisible: false,
     };
 
     constructor(props){

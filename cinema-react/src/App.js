@@ -24,10 +24,24 @@ import ConfirmReservationContainer from "./containers/TICKETS/ConfirmReservation
 import UserContainer from "./containers/USERS/UserContainer";
 import UserDetailsContainer from "./containers/USERS/UserDetailsContainer";
 import AddUserContainer from "./containers/USERS/AddUserContainer";
+import UnauthorizedAlert from "./components/GENERAL/UnauthorizedAlert";
+
+let isUnauthorized = true;
 
 class App extends Component {
+
+    componentDidMount() {
+        setInterval(() => {
+            this.setState(() => {
+                return { unseen: "does not display" }
+            });
+        }, 1500);
+    }
+
   render() {
+
     return (
+
         <div>
             <Switch>
                 <Route exact path='/' component={LoginContainer}/>
@@ -55,9 +69,18 @@ class App extends Component {
                 <Route exact path='/reserveTicket/:id' component={ReserveTicketContainer}/>
                 <Route exact path='/myInfo' component={UserDetailsContainer}/>
             </Switch>
+            {isUnauthorized ? <UnauthorizedAlert/> : null }
         </div>
     );
   }
+}
+
+export function unauthorizedAccess(){
+    isUnauthorized = true;
+}
+
+export function resetAuthorization(){
+    isUnauthorized = false;
 }
 
 export default App;

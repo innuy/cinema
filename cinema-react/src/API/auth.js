@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {urls} from '../utils/urls';
-import {getUserToken} from "../utils/cookieStorage";
+import {saveUserToken} from "../utils/cookieStorage";
+
 
 export function login(email, password, callback){
     axios.post(urls.login, {
@@ -11,15 +12,22 @@ export function login(email, password, callback){
     })
         .then((response) => {
             callback(true);
+            //saveUserToken()
         }).catch((error) => {
             callback(false, "There was an error with the connection");
     });
 }
 
-export function signUp(username, password, firstName, lastName, callback){
-    axios.post(urls.signUp)
+export function signUp(email, password, firstName, lastName, callback){
+    axios.post(urls.signUp, {
+        email,
+        password,
+        name: firstName,
+        surname: lastName
+    })
         .then((response) => {
             callback(true);
+            //saveUserToken()
         }).catch((error) => {
             callback(false, "There was an error with the connection");
     });
