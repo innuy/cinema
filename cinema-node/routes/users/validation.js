@@ -14,6 +14,7 @@ const create = celebrate({
 
 const get = celebrate({
     query: {
+        email:  Joi.string().email({ minDomainAtoms: 2 }),
         user: Joi.string(),
         name: Joi.string(),
         surname: Joi.number().positive().integer(),
@@ -46,11 +47,11 @@ const deleteById = celebrate({
 });
 
 const login = celebrate({
-    params: {
-        user:{
+    body: {
+        user: Joi.object().required().keys({
             email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
             password: Joi.string().required(),
-        }
+        })
     }
 });
 
@@ -64,10 +65,10 @@ const putCurrent = celebrate({
 
 const updatePassword = celebrate({
     body: {
-        user:{
+        user: Joi.object().required().keys({
             email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
             password: Joi.string().required(),
-        },
+        }),
         newPassword: Joi.string().required(),
     }
 });

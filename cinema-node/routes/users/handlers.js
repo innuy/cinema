@@ -12,7 +12,7 @@ module.exports.create = (req, res) => {
     finalUser.save()
         .then(() => res.send(finalUser))
         .catch(err => errors.databaseError(err, res));
-};
+};//TODO add the register to the tests
 
 module.exports.get = (req, res) => {
     console.log(req.query);
@@ -82,7 +82,8 @@ module.exports.deleteById = (req, res) => {
 module.exports.login = (req, res, next) => {
     const user = req.body;
 
-    return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+    return passport.authenticate('local', { session: false },
+        (err, passportUser, info) => {
         if(err) {
             return errors.authenticationError(err, res);
         }
@@ -95,23 +96,23 @@ module.exports.login = (req, res, next) => {
         }
 
         return res.status(400).send(info);
-    })(req, res, next);
+    }
+    )(req, res, next);
 };
-
 
 module.exports.getCurrent = (req, res) => {
     const { payload: { id } } = req;
 
-    return User.findById(id)
+    User.findById(id)
         .then((user) => {
             if(!user) {
-                return errors.userNotFound(res);
+                errors.userNotFound(res);
             }
 
-            return res.json({ user: user.toAuthJSON() });
-        });
+            res.json({ user: user.toAuthJSON() });
+        })
+        .catch(err => errors.databaseError(err, res));
 };
-
 
 module.exports.putCurrent = (req, res) => {
     const { payload: { id } } = req;

@@ -4,6 +4,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 const should = chai.should();
 const request = require('supertest');
+const auth = require('../../../middlewares/auth');
 let app;
 
 require('../setup');

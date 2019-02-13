@@ -21,6 +21,6 @@ module.exports.authenticationError = (err, res) => {
     res.send({
         "statusCode": 500,
         "error": "Authentication error",
-        "message": err
+        "message": err.message
     });
 };

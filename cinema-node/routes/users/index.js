@@ -1,8 +1,6 @@
-const adminOnly = require("../../middlewares/roleAuthentication");
-
 const handlers = require('./handlers');
 const validation = require('./validation');
-const auth = require('../auth');
+const auth = require('../../middlewares/auth');
 /**
  * User routes.
  *
@@ -20,52 +18,51 @@ module.exports = router => {
 
     router.get('/users',
         auth.required,
-        adminOnly,
+        auth.adminOnly,
         validation.get,
         handlers.get,
     );
 
+    router.get('/users/current',
+        auth.required,
+        auth.adminOnly,
+        handlers.getCurrent,
+    );
+
     router.get('/users/:id',
         auth.required,
-        adminOnly,
+        auth.adminOnly,
         validation.getById,
         handlers.getById,
     );
 
+    router.put('/users/current',
+        auth.required,
+        validation.putCurrent,
+        handlers.putCurrent,
+    );
+
     router.put('/users/:id',
         auth.required,
-        adminOnly,
+        auth.adminOnly,
         validation.putById,
         handlers.putById,
     );
 
     router.delete('/users/:id',
         auth.required,
-        adminOnly,
+        auth.adminOnly,
         validation.deleteById,
         handlers.deleteById,
     );
 
-    router.post('/login',
+    router.post('/auth/login',
         auth.optional,
         validation.login,
         handlers.login,
     );
 
-    router.get('/user/current',
-        auth.required,
-        adminOnly,
-        handlers.getCurrent,
-    );
-
-    router.put('/user/current',
-        auth.required,
-        adminOnly,
-        validation.putCurrent,
-        handlers.putCurrent,
-    );
-
-    router.patch('/user/updatePassword',
+    router.patch('/auth/updatePassword',
         auth.optional,
         validation.updatePassword,
         handlers.updatePassword,
