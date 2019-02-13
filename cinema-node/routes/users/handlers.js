@@ -85,7 +85,7 @@ module.exports.login = (req, res, next) => {
     return passport.authenticate('local', { session: false },
         (err, passportUser, info) => {
         if(err) {
-            return errors.authenticationError(err, res);
+            return errors.authenticationError(err.message, res);
         }
 
         if(passportUser) {
@@ -141,10 +141,10 @@ module.exports.updatePassword = (req, res, next) => {
 
     return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
         if(err) {
-            return errors.authenticationError(err, res);
+            return errors.authenticationError(err.message, res);
         }
         if(passportUser) {
-            updatePassword(passportUser)
+            updatePassword(passportUser, user.newPassword)
                 .then(user => {
                     return res.json({ user: user.toAuthJSON() });
                 })
@@ -155,6 +155,9 @@ module.exports.updatePassword = (req, res, next) => {
                         errors.databaseError(err, res);
                     }
                 });
+        }
+        else if (info.errors["email or password"]!==undefined){
+            return errors.authenticationError(info.errors, res);
         }
         else {
             return res.status(400).send(info);
@@ -177,12 +180,12 @@ function thereIsNoUser(user) {
         return user === null;
 }
 
-function updatePassword(passportUser) {
+function updatePassword(passportUser, newPassword) {
     return new Promise((resolve, reject) => {
         const user = passportUser;
         user.token = passportUser.generateJWT();
 
-        user.setPassword(user.newPassword);
+        user.setPassword(newPassword);
         const id_filter = {'_id': new ObjectID(user._id)};
 
         const setToReturnUpdatedValue = {new: true};

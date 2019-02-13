@@ -17,10 +17,10 @@ module.exports.userNotFound = res => {
 };
 
 module.exports.authenticationError = (err, res) => {
-    res.status(500);
+    res.status(401);
     res.send({
-        "statusCode": 500,
+        "statusCode": 401,
         "error": "Authentication error",
-        "message": err.message
+        "message": err
     });
 };
