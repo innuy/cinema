@@ -18,21 +18,21 @@ const loginRequest = {
 
 const userData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "test@test.com",
     role: "1",
     password: "password",
 };
 const wrongEmailUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "totally not an email",
     role: "1",
     password: "password",
 };
 const wrongPasswordUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "test@test.com",
     role: "1",
     password: 123456789

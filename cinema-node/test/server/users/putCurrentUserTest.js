@@ -14,17 +14,17 @@ const wrongToken = 'Token 111111111111111111111111111111eyJhbGciOiJIUzI1NiIsInR5
 
 const userData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "test@test.com",
 };
 const wrongEmailUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "totally not an email",
 };
 const wrongPasswordUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "test@test.com",
 };
 

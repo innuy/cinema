@@ -6,6 +6,7 @@ const request = require('supertest');
 const Ticket = require("../../../db/models/tickets");
 const Presentation = require("../../../db/models/presentations");
 const Seat = require("../../../db/models/seats");
+const auth = require('../../../middlewares/auth');
 require('../setup');
 
 let app;

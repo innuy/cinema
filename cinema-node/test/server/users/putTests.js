@@ -16,14 +16,14 @@ const testingUserWrongIdToSearch = '000000000000000000000001';
 
 const testingUpdateUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "test@test.com",
     role: "1",
 };
 
 const testingIncompleteUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     role: "1",
 };
 
