@@ -25,7 +25,6 @@ module.exports = router => {
 
     router.get('/users/current',
         auth.required,
-        auth.adminOnly,
         handlers.getCurrent,
     );
 
