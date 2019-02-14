@@ -3,16 +3,21 @@ const User = require('../../db/models/users');
 const passport = require('passport');
 var ObjectID = require('mongodb').ObjectID;
 
+const auth = require('../../middlewares/auth');
+
 module.exports.create = (req, res) => {
     const user = req.body;
+    const userLogged = req.payload;
     const finalUser = new User(user);
-
+    if(isCreatingAdmin(user) && isNotLogAsAdmin(userLogged)){
+        return errors.authenticationError('To create an administrator user you must be a logged administrator', res)
+    }
     finalUser.setPassword(user.password);
 
     finalUser.save()
         .then(() => res.send(finalUser))
         .catch(err => errors.databaseError(err, res));
-};//TODO add the register to the tests
+};
 
 module.exports.get = (req, res) => {
     console.log(req.query);
@@ -163,6 +168,15 @@ module.exports.updatePassword = (req, res, next) => {
             return res.status(400).send(info);
         }
     })(req, res, next);
+};
+
+const isCreatingAdmin = user => user.role === auth.adminRoleKey;
+
+const isNotLogAsAdmin = userLogged => {
+    if (userLogged === undefined)
+        return false;
+    else
+        return userLogged.role !== auth.adminRoleKey;
 };
 
 const deleteUserById = id_filter => new Promise((resolve, reject) => {
