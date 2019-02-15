@@ -1,13 +1,16 @@
 import axios from 'axios';
 import {urls} from '../utils/urls';
 import {getUserToken} from "../utils/cookieStorage";
+import {hasAuthorizationError} from "../utils/errorHandler";
 
 export function getTickets(callback){
     axios.get(urls.tickets)
         .then((response) => {
             callback(true, parseTickets(response.data));
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error getting tickets");
+            }
     });
 }
 
@@ -20,8 +23,9 @@ export function addTicket(presentationId, userId, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-        console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error adding the ticket");
+            }
     });
 }
 
@@ -64,7 +68,7 @@ export function getSingleTicket(id, callback){
         .then((response) => {
             callback(true, parseTickets([response.data])[0]);
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+            callback(false, "There was an error with the connection");
     });
 }
 
@@ -74,7 +78,7 @@ export function getTicketsOfPresentation(presentationId, callback){
         .then((response) => {
             callback(true, parseTickets(response.data));
         }).catch((error) => {
-        callback(false, "There was an error obtaining tickets");
+            callback(false, "There was an error obtaining tickets");
     });
 }
 
@@ -83,7 +87,9 @@ export function getMyTickets(callback){
         .then((response) => {
             callback(true, parseTickets(response.data));
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error obtaining tickets");
+            }
     });
 }
 
@@ -97,12 +103,10 @@ export function reserveTicket(presentationId, row, column, callback){
         .then(() => {
             callback(true);
         }).catch((error) => {
-            console.log(error.response.data.message);
             if(error.response.data.message){
                 callback(false, error.response.data.message);
             }
             else {
-                console.log("whut");
                 callback(false, "There was an error reserving the ticket");
             }
     });
@@ -127,6 +131,8 @@ export function deleteTicket(id, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error deleting the ticket");
+            }
     });
 }

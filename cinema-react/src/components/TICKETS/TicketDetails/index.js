@@ -39,11 +39,6 @@ class TicketDetails extends Component {
 
         const ticket = this.state.ticket;
 
-        //console.log(index);
-        //console.log(this.props.presentations[index]);
-
-        console.log(this.props.presentations[index].auditorium[0]._id);
-
         let filmResult = this.props.films.find(obj => {
             return obj.id === this.props.presentations[index].film
         });

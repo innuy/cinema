@@ -1,13 +1,16 @@
 import axios from 'axios';
 import {urls} from '../utils/urls';
 import {getUserToken} from "../utils/cookieStorage";
+import {hasAuthorizationError} from "../utils/errorHandler";
 
 export function getAuditoriums(callback){
     axios.get(urls.auditoriums)
         .then((response) => {
             callback(true, parseAuditoriums(response.data));
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error obtaining auditoriums");
+            }
     });
 }
 
@@ -30,7 +33,7 @@ function parseSingleAuditorium(auditorium){
         number: auditorium.number,
         numberOfRows: auditorium.seatRows,
         numberOfColumns: auditorium.seatColumns
-    }
+    };
 
     return res;
 }
@@ -40,8 +43,9 @@ export function getSingleAuditorium(id, callback){
         .then((response) => {
             callback(true, parseSingleAuditorium(response.data));
         }).catch((error) => {
-            console.log(error);
-        callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error with the connection");
+            }
     });
 }
 
@@ -69,7 +73,7 @@ export function editAuditorium(auditorium, callback){
             callback(true);
         }).catch((error) => {
             console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
+            callback(false, "There was an error saving the auditorium");
     });
 }
 
@@ -78,6 +82,6 @@ export function deleteAuditorium(id, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+            callback(false, "There was an error deleting the auditorium");
     });
 }

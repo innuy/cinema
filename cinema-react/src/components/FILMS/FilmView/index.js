@@ -9,6 +9,12 @@ import './styles.css';
 
 class FilmView extends Component {
 
+    constructor(props){
+        super(props);
+
+        this.renderFilms = this.renderFilms.bind(this);
+    }
+
     renderFilms(){
         const result = [];
 

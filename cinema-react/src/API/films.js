@@ -1,14 +1,16 @@
 import axios from 'axios';
 import {urls} from '../utils/urls';
 import {getUserToken} from "../utils/cookieStorage";
+import {hasAuthorizationError} from "../utils/errorHandler";
 
 export function getFilms(callback){
     axios.get(urls.films)
         .then((response) => {
             callback(true, parseFilms(response.data));
         }).catch((error) => {
-            console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error obtaining films");
+            }
     });
 }
 
@@ -96,7 +98,7 @@ export function editFilm(film, callback){
             callback(true);
         }).catch((error) => {
             console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
+            callback(false, "There was an error deleting the film");
     });
 }
 

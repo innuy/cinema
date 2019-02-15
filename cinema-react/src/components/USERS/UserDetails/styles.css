@@ -13,6 +13,7 @@
 }
 
 .userDataErrorMessage{
+    margin-left: 5%;
     color: var(--dangerText);
 }
 

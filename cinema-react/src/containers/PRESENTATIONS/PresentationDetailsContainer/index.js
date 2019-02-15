@@ -94,15 +94,15 @@ class PresentationDetailsContainer extends Component {
 
 
     editPresentation(newPresentation){
-        editPresentation(newPresentation, (success) => {
+        editPresentation(newPresentation, (success, data) => {
             if(success){
                 navigateBack(this.history);
             }
             else{
-                if(!this.state.errorVisible) {
+                if(!this.state.errorVisible && data) {
                     this.setState({
                         errorVisible: true,
-                        errorText: "There was an error saving the presentation",
+                        errorText: data,
                         errorCallback: this.hideError,
                     });
                 }

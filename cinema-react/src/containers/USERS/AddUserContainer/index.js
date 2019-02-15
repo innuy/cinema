@@ -13,7 +13,9 @@ class AddUserContainer extends Component {
 
     state = {
         id: 0,
+
         errorVisible: false,
+        errorText: '',
     };
 
     constructor(props){
@@ -30,15 +32,18 @@ class AddUserContainer extends Component {
 
     }
 
-    addUser(newUser){
-        addUser(newUser, (success) => {
+    addUser(id, email, password, firstName, lastName, role){
+        addUser(email, password, firstName, lastName, role, (success, msg) => {
             if(success){
                 navigateBack(this.history);
             }
             else{
-                this.setState({
-                    errorVisible: true,
-                });
+                if(msg) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: msg,
+                    });
+                }
             }
         });
     }
@@ -50,8 +55,8 @@ class AddUserContainer extends Component {
                 this.history = history;
                 return (<div>
                             <NavBar isAdmin={true} history={this.history}/>
-                            <UserDetails callback={this.addUser} isEdit={false} buttonText={"ADD"}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={() => {this.setState({errorVisible: false})}} text={'There was an error'}/> : null}
+                            <UserDetails isAdmin={true} callback={this.addUser} isNewUser={true}/>
+                            {this.state.errorVisible ? <ErrorAlert callback={() => {this.setState({errorVisible: false})}} text={this.state.errorText}/> : null}
                         </div>);}} />
         );
     }

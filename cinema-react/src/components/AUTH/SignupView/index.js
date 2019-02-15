@@ -64,7 +64,7 @@ class SignupView extends Component {
             errors
         },() => {
             if(!this.hasErrors()){
-                this.props.signUp();
+                this.props.signUp(this.state.email, this.state.password, this.state.firstName, this.state.lastName);
             }
         });
     }
@@ -105,7 +105,7 @@ class SignupView extends Component {
                     {this.state.errors.repeatPassword ? <div className="signUpDetailsErrorMessage">Passwords are not the same</div> : null}
                     <div className="signUpDetailsSeparator"/>
                     <div className="signUpDetailsTitle">First name:</div>
-                    <input type="password" className="signUpInput" value={this.state.firstName} onChange={(event) => {
+                    <input className="signUpInput" value={this.state.firstName} onChange={(event) => {
                         this.setState({
                             firstName: event.target.value,
                         });
@@ -113,7 +113,7 @@ class SignupView extends Component {
                     {this.state.errors.firstName ? <div className="signUpDetailsErrorMessage">There is an error with the first name</div> : null}
                     <div className="signUpDetailsSeparator"/>
                     <div className="signUpDetailsTitle">Last name:</div>
-                    <input type="password" className="signUpInput" value={this.state.lastName} onChange={(event) => {
+                    <input className="signUpInput" value={this.state.lastName} onChange={(event) => {
                         this.setState({
                             lastName: event.target.value,
                         });

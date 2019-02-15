@@ -17,9 +17,14 @@ class SignUpContainer extends Component {
     }
 
 
-    signUp(username, password){
-        signUp(username,password,(data) => {
-            //TODO: NAVIGATE TO PAGE
+    signUp(username, password, firstName, lastName){
+        signUp(username,password, firstName, lastName, (success, data) => {
+            if(success) {
+                navigate(this.history, '/seePresentations');
+            }
+            else{
+                //TODO: HANDLE ERROR
+            }
         })
     }
 

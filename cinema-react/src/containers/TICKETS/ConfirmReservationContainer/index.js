@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import {getTickets} from "../../../API/tickets";
 import NavBar from "../../../components/GENERAL/NavBar";
 import ConfirmReservation from "../../../components/TICKETS/ConfirmReservation";
+import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 
 
 class ConfirmReservationContainer extends Component {
@@ -11,6 +12,10 @@ class ConfirmReservationContainer extends Component {
     state = {
         tickets: [],
         isAdmin: true,
+
+        errorVisible: false,
+        errorText: "",
+        errorCallback: null,
     };
 
     history = null;
@@ -26,6 +31,7 @@ class ConfirmReservationContainer extends Component {
     }
 
     refreshTickets(){
+        this.hideError();
         getTickets((success, data) => {
 
             if(success) {
@@ -34,13 +40,23 @@ class ConfirmReservationContainer extends Component {
                 });
             }
             else{
-                /*TODO: HANDLE ERROR*/
+                if(data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.refreshTickets,
+                    });
+                }
             }
         });
     }
 
     confirmTicket(){
 
+    }
+
+    hideError(){
+        this.setState({errorVisible: false});
     }
 
     render() {
@@ -50,6 +66,7 @@ class ConfirmReservationContainer extends Component {
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
                     <ConfirmReservation confirmTicket={this.confirmTicket} tickets={this.state.tickets}/>
+                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
             }} />
         );
