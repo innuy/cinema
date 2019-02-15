@@ -1,7 +1,6 @@
 const errors = require("./errors");
 
 const Movie = require('../../db/models/movies');
-const Presentation = require("../../db/models/presentations");
 const Ticket = require("../../db/models/tickets");
 
 var ObjectID = require('mongodb').ObjectID;
