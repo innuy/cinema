@@ -10,17 +10,17 @@ const validation = require('./validation');
 
 module.exports = router => {
 
-    router.get('/top-movies',
+    router.get('/dashboard/top-movies',
         validation.getTopMovies,
         handlers.getTopMovies,
     );
 
-    router.get('/sold-ratio',
-        // handlers.getTopMovies,
+    router.get('/dashboard/sold-ratio',
+
     );
 
-    router.get('/busy-times',
-        handlers.getBusyTimes,
+    router.get('/dashboard/busy-times',
+        
     );
 
     return router;
