@@ -4,6 +4,7 @@ const presentations = require('./presentations');
 const tickets = require('./tickets');
 const users = require('./users');
 const sessions = require('./sessions');
+const dashboard = require('./dashboard');
 
 const resourceRoutes = [
     movies,
@@ -12,6 +13,7 @@ const resourceRoutes = [
     tickets,
     users,
     sessions,
+    dashboard,
 ];
 
 
