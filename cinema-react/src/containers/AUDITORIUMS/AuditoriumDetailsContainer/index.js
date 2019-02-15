@@ -39,41 +39,44 @@ class AuditoriumDetailsContainer extends Component {
 
     obtainAuditoriumData(){
         this.hideError();
-        getSingleAuditorium(this.state.id, (success, auditorium) => {
+        getSingleAuditorium(this.state.id, (success, data) => {
             if(success) {
                 this.setState({
-                    auditorium
+                    auditorium: data
                 });
             }
             else{
-                this.setState({
-                    errorVisible: true,
-                    errorText: "There was an error obtaining auditorium details",
-                    errorCallback: this.obtainAuditoriumData,
-                });
+                if(data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.obtainAuditoriumData,
+                    });
+                }
             }
         });
     }
 
     editAuditorium(newAuditorium){
-        editAuditorium(newAuditorium, (success) => {
+        editAuditorium(newAuditorium, (success, msg) => {
             if(success){
                 navigateBack(this.history);
             }
             else{
-                this.setState({
-                    errorVisible: true,
-                    errorText: "There was an error saving the auditorium",
-                    errorCallback: this.hideError,
-                });
+                if(msg){
+                    this.setState({
+                        errorVisible: true,
+                        errorText: msg,
+                        errorCallback: this.hideError,
+                    });
+                }
             }
-        })
+        });
     }
 
     hideError(){
         this.setState({errorVisible: false});
     }
-
 
     render() {
         return (

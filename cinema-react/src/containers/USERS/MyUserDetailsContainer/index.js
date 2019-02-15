@@ -5,10 +5,10 @@ import {Route} from "react-router-dom";
 import {navigateBack} from "../../../utils/navigation";
 import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 import UserDetails from "../../../components/USERS/UserDetails";
-import {editUser, getMyUserData, getSingleUser} from "../../../API/users";
+import {editMyUserData, getMyUserData} from "../../../API/users";
 import {changePassword} from "../../../API/users";
 
-class UserDetailsContainer extends Component {
+class MyUserDetailsContainer extends Component {
 
     history = null;
 
@@ -28,23 +28,16 @@ class UserDetailsContainer extends Component {
 
         this.editUserInfo = this.editUserInfo.bind(this);
         this.hideError = this.hideError.bind(this);
-        this.obtainUserData = this.obtainUserData.bind(this);
         this.obtainMyUserData = this.obtainMyUserData.bind(this);
     }
 
     componentWillMount() {
-        if(this.props.match.params.id){
-            this.setState({
-                id: this.props.match.params.id,
-            }, () => {
-                this.obtainUserData();
-            });
-        }
+        this.obtainMyUserData();
     }
 
-    obtainUserData(){
+    obtainMyUserData(){
         this.hideError();
-        getSingleUser(this.state.id, (success, data) => {
+        getMyUserData((success, data) => {
             if (success){
                 this.setState({
                     user: data
@@ -55,39 +48,21 @@ class UserDetailsContainer extends Component {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
-                        errorCallback: this.obtainUserData,
+                        errorCallback: this.obtainMyUserData,
                     });
                 }
             }
         });
     }
 
-    obtainMyUserData(){
-        this.hideError();
-        getMyUserData((success, user) => {
-            if (success){
-                this.setState({
-                    user
-                });
-            }
-            else{
-                this.setState({
-                    errorVisible: true,
-                    errorText: "There was an error obtaining your details",
-                    errorCallback: this.obtainMyUserData,
-                });
-            }
-        });
-    }
-
-    editUserInfo(id, email, password, firstName, lastName, role, oldPassword){
-        editUser(id, email, firstName, lastName, role, (success, msg) => {
+    editUserInfo(id, email, password, firstName, lastName, oldPassword){
+        editMyUserData(email, firstName, lastName, (success, msg) => {
             if (success) {
                 changePassword(email, oldPassword, password, (passSuccess, passMsg) => {
                     if(passSuccess){
                         navigateBack(this.history);
                     }
-                    else{
+                    else {
                         if(passMsg) {
                             this.setState({
                                 errorVisible: true,
@@ -120,12 +95,12 @@ class UserDetailsContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                    <NavBar isAdmin={true} history={this.history}/>
-                    <UserDetails user={this.state.user} callback={this.editUserInfo} isAdmin={true} isNewUser={false}/>
+                    <NavBar isAdmin={false} history={this.history}/>
+                    <UserDetails user={this.state.user} callback={this.editUserInfo} isAdmin={false} isNewUser={false}/>
                     {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);}} />
         );
     }
 }
 
-export default UserDetailsContainer;
+export default MyUserDetailsContainer;

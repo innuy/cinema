@@ -74,10 +74,10 @@ class TicketDetailsContainer extends Component {
                 });
             }
             else{
-                if(!this.state.errorVisible) {
+                if(!this.state.errorVisible && data) {
                     this.setState({
                         errorVisible: true,
-                        errorText: "There was an error obtaining presentations details",
+                        errorText: data,
                         errorCallback: this.getAllInfo,
                     });
                 }

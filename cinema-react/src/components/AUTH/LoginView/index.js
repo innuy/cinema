@@ -3,7 +3,6 @@ import OptionButton from "../../GENERAL/OptionButton";
 import PropTypes from 'prop-types';
 
 import './styles.css';
-import {login} from "../../../API/auth";
 
 class LoginView extends Component {
 
@@ -40,7 +39,7 @@ class LoginView extends Component {
                     }}/>
                     {this.state.errors.password ? <div className="loginDetailsErrorMessage">There is an error in the number of columns</div> : null}
                     <div className="loginDetailsSeparator"/>
-                    <OptionButton onClick={() => {this.props.login()}} text={"Login"}/>
+                    <OptionButton onClick={() => {this.props.login(this.state.email, this.state.password)}} text={"Login"}/>
                     <div className="loginDetailsSeparator"/>
                     <div className="loginChangeScreenButton" onClick={this.props.navigateToSignup}>Don't have an account? Sign up!</div>
                 </div>

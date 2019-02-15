@@ -7,6 +7,7 @@ import NavBar from "../../../components/GENERAL/NavBar";
 import {navigate} from "../../../utils/navigation";
 import {getAuditoriums} from "../../../API/auditoriums";
 import {getFilms} from "../../../API/films";
+import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 
 
 class PresentationContainer extends Component {
@@ -17,6 +18,10 @@ class PresentationContainer extends Component {
 
         films: [],
         auditoriums: [],
+
+        errorVisible: false,
+        errorText: "",
+        errorCallback: null,
     };
 
     history = null;
@@ -28,6 +33,7 @@ class PresentationContainer extends Component {
         this.refreshPresentations = this.refreshPresentations.bind(this);
         this.addPresentation = this.addPresentation.bind(this);
         this.navigateToDetails = this.navigateToDetails.bind(this);
+        this.hideError = this.hideError.bind(this);
     }
 
     componentWillMount() {
@@ -43,7 +49,13 @@ class PresentationContainer extends Component {
                 });
             }
             else{
-                /*TODO: HANDLE ERROR*/
+                if(!this.state.errorVisible && data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.refreshPresentations,
+                    });
+                }
             }
         });
 
@@ -54,7 +66,13 @@ class PresentationContainer extends Component {
                 });
             }
             else{
-                /*TODO: HANDLE ERROR*/
+                if(!this.state.errorVisible && data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.refreshPresentations,
+                    });
+                }
             }
         });
 
@@ -65,7 +83,13 @@ class PresentationContainer extends Component {
                 });
             }
             else{
-                /*TODO: HANDLE ERROR*/
+                if(!this.state.errorVisible && data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.refreshPresentations,
+                    });
+                }
             }
         });
     }
@@ -75,14 +99,24 @@ class PresentationContainer extends Component {
     }
 
     deletePresentation(id){
-        deletePresentation(id, (success) => {
+        deletePresentation(id, (success, data) => {
             if(success) {
                 this.refreshPresentations();
             }
             else{
-                /* TODO: HANDLE ERROR */
+                if(!this.state.errorVisible && data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.hideError,
+                    });
+                }
             }
         })
+    }
+
+    hideError(){
+        this.setState({errorVisible: false});
     }
 
     navigateToDetails(id){
@@ -98,6 +132,7 @@ class PresentationContainer extends Component {
                     <PresentationView navigateToDetails={this.navigateToDetails} presentations={this.state.presentations}
                                       addPresentation={this.addPresentation} deletePresentation={this.deletePresentation}
                                       films={this.state.films} auditoriums={this.state.auditoriums} isAdmin={this.state.isAdmin}/>
+                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
             }} />
         );

@@ -6,7 +6,8 @@ import NavBarElement from "./NavBarElement";
 import {navigate} from "../../../utils/navigation";
 
 const ADMIN_NAV = [createNavItem("Films", "/films"), createNavItem("Auditoriums", "/auditoriums"),
-    createNavItem("Presentations", "/presentations"), createNavItem("Tickets", "/tickets"), createNavItem("Users", "/users")];
+    createNavItem("Presentations", "/presentations"), createNavItem("Tickets", "/tickets"),
+    createNavItem("Users", "/users"), createNavItem("Dashboard", "/dashboard")];
 const USER_NAV = [createNavItem("Presentations", "/seePresentations"), createNavItem("Tickets", "/myTickets"),
     createNavItem("My Info", '/myInfo')];
 

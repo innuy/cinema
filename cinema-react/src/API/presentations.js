@@ -1,13 +1,16 @@
 import axios from 'axios';
 import {urls} from '../utils/urls';
 import {getUserToken} from "../utils/cookieStorage";
+import {hasAuthorizationError} from "../utils/errorHandler";
 
 export function getPresentations(callback){
     axios.get(urls.presentations)
         .then((response) => {
             callback(true, parsePresentations(response.data));
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+        if(!hasAuthorizationError(error)){
+            callback(false, "There was an error obtaining presentations");
+        }
     });
 }
 
@@ -91,8 +94,9 @@ export function editPresentation(presentation, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error editing the presentation");
+            }
     });
 }
 
@@ -101,6 +105,8 @@ export function deletePresentation(id, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-        callback(false, "There was an error with the connection");
+            if(!hasAuthorizationError(error)) {
+                callback(false, "There was an error deleting the presentation");
+            }
     });
 }
