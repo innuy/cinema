@@ -13,7 +13,7 @@ export function getUsers(callback){
         .then((response) => {
             callback(true, parseUsers(response.data));
         }).catch((error) => {
-            if(!hasAuthorizationError(error)){
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error obtaining users data");
             }
     });
@@ -28,7 +28,7 @@ export function getSingleUser(id, callback){
         .then((response) => {
             callback(true, parseSingleUser(response.data[0]));
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error obtaining user data");
             }
     });
@@ -40,7 +40,7 @@ export function getMyUserData(callback){
         .then((response) => {
             callback(true, parseSingleUser(response.data.user));
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error obtaining your user data");
             }
     });
@@ -58,7 +58,7 @@ export function addUser(email, password, firstName, lastName, role, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error adding the user");
             }
     });
@@ -74,7 +74,7 @@ export function editUser(id, email, firstName, lastName, role, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error editing the user's data");
             }
     });
@@ -89,7 +89,7 @@ export function editMyUserData(email, firstName, lastName, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error editing your data");
             }
     });
@@ -100,7 +100,7 @@ export function deleteUser(id, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error with deleting the user");
             }
     });
@@ -117,9 +117,9 @@ export function changePassword(email, oldPassword, newPassword, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-        if(!hasAuthorizationError(error)){
-            callback(false, "There was an error modifying the password");
-        }
+            if(error && error.response && !hasAuthorizationError(error)) {
+                callback(false, "There was an error modifying the password");
+            }
     });
 }
 

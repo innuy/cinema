@@ -14,4 +14,5 @@ export const urls = {
     users: BASE_URL + '/users',
     currentUser: BASE_URL + '/users/current',
     topMovies: BASE_URL + '/dashboard/top-movies',
+    ticketsSold: BASE_URL + '/dashboard/sold-ratio'
 };

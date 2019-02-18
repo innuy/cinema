@@ -6,19 +6,22 @@ import {hasAuthorizationError} from "../utils/errorHandler";
 export function getPresentations(callback){
     axios.get(urls.presentations)
         .then((response) => {
+            console.log(response);
             callback(true, parsePresentations(response.data));
         }).catch((error) => {
-        if(!hasAuthorizationError(error)){
-            callback(false, "There was an error obtaining presentations");
-        }
+            console.log(JSON.stringify(error));
+            if(error && error.response && !hasAuthorizationError(error)) {
+                callback(false, "There was an error obtaining presentations");
+            }
     });
 }
 
 function parsePresentations(presentations){
     const res = [];
     for(let i = 0; i < presentations.length; i++){
+        console.log(presentations[i]);
 
-        if(presentations[i] && presentations[i].movie && presentations[i].auditorium) {
+        if(presentations[i] && presentations[i].movie && presentations[i].auditorium && presentations[i].auditorium[0]) {
             res.push({
                 id: presentations[i]._id,
                 film: presentations[i].movie,
@@ -94,7 +97,7 @@ export function editPresentation(presentation, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error editing the presentation");
             }
     });
@@ -105,7 +108,7 @@ export function deletePresentation(id, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error deleting the presentation");
             }
     });

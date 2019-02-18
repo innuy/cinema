@@ -6,11 +6,23 @@ import {getUserToken} from "../utils/cookieStorage";
 export function getTopFilms(callback){
     axios.get(urls.topMovies + '?amount=10', {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
-            console.log(JSON.stringify(response.data));
             callback(true, parseTopFilms(response.data));
         }).catch((error) => {
             console.log(JSON.stringify(error));
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
+                callback(false, "There was an error obtaining auditoriums");
+            }
+    });
+}
+
+export function getSoldRatio(callback){
+    axios.get(urls.ticketsSold, {headers: {"Authorization": 'Token '+ getUserToken()}})
+        .then((response) => {
+            console.log("e");
+            callback(true, parseSoldRatioData(response.data));
+        }).catch((error) => {
+            console.log(JSON.stringify(error));
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error obtaining auditoriums");
             }
     });
@@ -28,4 +40,12 @@ function parseTopFilms(topMovies){
     }
 
     return res;
+}
+
+function parseSoldRatioData(data){
+    console.log(JSON.stringify(data));
+    return {
+        reserved: data.reservedTickets,
+        sold: data.soldTickets,
+    }
 }
