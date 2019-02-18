@@ -14,7 +14,7 @@ const getTokenFromHeaders = (req) => {
 };
 
 const adminOnly = (req, res, next) => {
-    const user = req.payload;
+    const user = req.requestingUser;
     if (user.role === adminRoleKey){
         next();
     }
@@ -26,12 +26,12 @@ const adminOnly = (req, res, next) => {
 const auth = {
     required: jwt({
         secret: 'secret',
-        userProperty: 'payload',
+        userProperty: 'requestingUser',
         getToken: getTokenFromHeaders,
     }),
     optional: jwt({
         secret: 'secret',
-        userProperty: 'payload',
+        userProperty: 'requestingUser',
         getToken: getTokenFromHeaders,
         credentialsRequired: false,
     }),
