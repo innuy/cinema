@@ -35,11 +35,11 @@ var UserSchema = new Schema({
 
 UserSchema.methods.setPassword = function (password) {
     this.salt = crypto.randomBytes(16).toString('hex');
-    this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+    this.hash = getHash(password, this.salt);
 };
 
 UserSchema.methods.validatePassword = function (password) {
-    const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+    const hash = getHash(password, this.salt);
     return this.hash === hash;
 };
 
@@ -71,3 +71,7 @@ UserSchema.methods.toAuthJSON = function () {
 var UserModel = mongoose.model('User', UserSchema);
 
 module.exports = UserModel;
+
+function getHash(password, salt) {
+    return crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString('hex');
+}
