@@ -55,12 +55,6 @@ module.exports = router => {
         handlers.deleteById,
     );
 
-    router.post('/session',
-        auth.optional,
-        validation.login,
-        handlers.login,
-    );
-
     router.patch('/users',
         auth.optional,
         validation.updatePassword,

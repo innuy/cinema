@@ -47,15 +47,6 @@ const deleteById = celebrate({
     }
 });
 
-const login = celebrate({
-    body: {
-        user: Joi.object().required().keys({
-            email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
-            password: Joi.string().min(minPasswordLenght).max(maxPasswordLenght).required(),
-        })
-    }
-});
-
 const putCurrent = celebrate({
     body: {
         email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
@@ -80,7 +71,6 @@ module.exports = {
     getById,
     putById,
     deleteById,
-    login,
     putCurrent,
     updatePassword,
 };

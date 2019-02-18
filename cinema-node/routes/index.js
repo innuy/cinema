@@ -3,6 +3,7 @@ const auditoriums = require('./auditoriums');
 const presentations = require('./presentations');
 const tickets = require('./tickets');
 const users = require('./users');
+const sessions = require('./sessions');
 const other = require('../middlewares/otherRoutes');
 
 const resourceRoutes = [
@@ -11,6 +12,7 @@ const resourceRoutes = [
     presentations,
     tickets,
     users,
+    sessions,
     other,
 ];
 
