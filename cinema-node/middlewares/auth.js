@@ -19,7 +19,7 @@ const adminOnly = (req, res, next) => {
         next();
     }
     else{
-        errors.adminOnly(res);
+        errors.notFoundError(res);
     }
 };
 
