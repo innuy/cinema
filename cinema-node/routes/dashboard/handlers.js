@@ -5,6 +5,18 @@ const Ticket = require("../../db/models/tickets");
 
 var ObjectID = require('mongodb').ObjectID;
 
+const soldTicketsSubQuery = [
+    {$match: {sold: true}},
+    {
+        $count: "soldTickets"
+    }
+];
+
+const reservedTicketsSubQuery = [
+    {
+        $count: "reservedTickets"
+    }
+];
 
 module.exports.getTopMovies = (req, res) => {
     let amount = req.query.amount;
@@ -32,7 +44,7 @@ module.exports.getTopMovies = (req, res) => {
                 _id: {
                     movie: "$presentationInfo.movie",
                 },
-                count: {$sum:"$$ROOT.count"}
+                count: {$sum: "$$ROOT.count"}
             }
         },
         {
@@ -56,12 +68,36 @@ module.exports.getTopMovies = (req, res) => {
                 count: 1,
             }
         },
-        { $sort : { count: -1 } },
-        { $limit : amount },
+        {$sort: {count: -1}},
+        {$limit: amount},
 
     ])
 
         .then(tickets => res.send(tickets))
+        .catch(err => errors.databaseError(err, res))
+};
+
+module.exports.getSoldRatio = (req, res) => {
+    let getGreaterThanXDaysAgoIdFilter = {_id: {$gt: objectIdWithTimestamp(getDateXDaysAgo(30))}};
+    Ticket.aggregate([
+        {$match: getGreaterThanXDaysAgoIdFilter},
+        {
+            $facet: {
+                soldTickets: [
+                    {$group: {_id: null, soldTickets: {$sum: {$cond: [{$eq: ['$sold', true]}, 1, 0]}}}},
+                    {$project: {_id: 0}}
+                ],
+                reservedTickets: [
+                    {$count: 'reservedTickets'},
+                ],
+            }
+        }
+    ])
+
+        .then(tickets => res.send({
+            soldTickets: tickets[0].soldTickets[0].soldTickets,
+            reservedTickets: tickets[0].reservedTickets[0].reservedTickets
+        }))
         .catch(err => errors.databaseError(err, res))
 };
 

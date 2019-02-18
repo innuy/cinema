@@ -16,11 +16,11 @@ module.exports = router => {
     );
 
     router.get('/dashboard/sold-ratio',
-
+        handlers.getSoldRatio,
     );
 
     router.get('/dashboard/busy-times',
-        
+
     );
 
     return router;
