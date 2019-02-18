@@ -1,6 +1,7 @@
 const {celebrate, Joi} = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
-
+const maxPasswordLenght = 6;
+const minPasswordLenght = 20;
 
 const create = celebrate({
     body: {
@@ -8,7 +9,7 @@ const create = celebrate({
         name: Joi.string().required(),
         surname: Joi.string().required(),
         role: Joi.number().positive().integer().valid([ 1, 2 ]).required(),
-        password: Joi.string().required(),
+        password: Joi.string().min(minPasswordLenght).max(maxPasswordLenght).required(),
     }
 });
 
@@ -50,7 +51,7 @@ const login = celebrate({
     body: {
         user: Joi.object().required().keys({
             email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
-            password: Joi.string().required(),
+            password: Joi.string().min(minPasswordLenght).max(maxPasswordLenght.required(),
         })
     }
 });
@@ -67,9 +68,9 @@ const updatePassword = celebrate({
     body: {
         user: Joi.object().required().keys({
             email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
-            password: Joi.string().required(),
+            password: Joi.string().min(minPasswordLenght).max(maxPasswordLenght.required(),
         }),
-        newPassword: Joi.string().required(),
+        newPassword: Joi.string().min(minPasswordLenght).max(maxPasswordLenght.required(),
     }
 });
 

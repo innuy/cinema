@@ -10,7 +10,7 @@ module.exports.create = (req, res) => {
     const userLogged = req.requestingUser;
     const finalUser = new User(user);
     if(isCreatingAdmin(user) && isNotLogAsAdmin(userLogged)){
-        return errors.authenticationError('To create an administrator user you must be a logged administrator', res)
+        return errors.needAdminAccessError('To create an administrator user you must be a logged administrator', res)
     }
     finalUser.setPassword(user.password);
 
