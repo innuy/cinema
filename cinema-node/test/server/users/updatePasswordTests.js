@@ -108,7 +108,7 @@ function passwordUpdatedWrongAuthenticationTest(done) {
         .send(passwordUpdateRequest)
         .then(res => {
             setTimeout(() => {
-                assert.strictEqual(res.status, 401);
+                assert.strictEqual(res.status, 403);
                 done();
             });
         })
@@ -123,7 +123,7 @@ function passwordUpdatedAuthenticationErrorsTest(done) {
         .send(passwordUpdateRequest)
         .then(res => {
             setTimeout(() => {
-                assert.strictEqual(res.status, 401);
+                assert.strictEqual(res.status, 403);
                 done();
             });
         })
