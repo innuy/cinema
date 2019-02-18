@@ -100,23 +100,23 @@ describe("Movie Put Test", function () {
     });
 
     afterEach(() => {
-        Movie.findOneAndUpdate.restore();
+        Movie.findByIdAndUpdate.restore();
     });
 
     it('Successful - Update movie', (done) => {
-        sinon.stub(Movie, 'findOneAndUpdate').resolves();
+        sinon.stub(Movie, 'findByIdAndUpdate').resolves(testingUpdateMovieData);
         moviePutTest(done);
     });
     it('Failed - Incomplete movie data', (done) => {
-        sinon.stub(Movie, 'findOneAndUpdate').resolves();
+        sinon.stub(Movie, 'findByIdAndUpdate').resolves(testingUpdateMovieData);
         movieIncompletePutTest(done);
     });
     it('Failed - Wrong id', (done) => {
-        sinon.stub(Movie, 'findOneAndUpdate').resolves(null);
+        sinon.stub(Movie, 'findByIdAndUpdate').resolves(null);
         movieWrongIdPutTest(done);
     });
     it('Failed - Db id', (done) => {
-        sinon.stub(Movie, 'findOneAndUpdate').rejects();
+        sinon.stub(Movie, 'findByIdAndUpdate').rejects();
         movieDbErrorPutTest(done);
     });
 });

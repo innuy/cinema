@@ -40,7 +40,7 @@ const wrongPasswordUserData = {
 
 function userLoginTest(done) {
     request(app)
-        .post('/auth/login')
+        .post('/session')
         .send(loginRequest)
         .then(res => {
             setTimeout(() => {
@@ -56,7 +56,7 @@ function userLoginTest(done) {
 
 function userEmptyTest(done) {
     request(app)
-        .post('/auth/login')
+        .post('/session')
         .send({})
         .then(res => {
             setTimeout(() => {
@@ -71,7 +71,7 @@ function userEmptyTest(done) {
 
 function userWrongEmailTest(done) {
     request(app)
-        .post('/auth/login')
+        .post('/session')
         .send(wrongEmailUserData)
         .then(res => {
             setTimeout(() => {
@@ -86,7 +86,7 @@ function userWrongEmailTest(done) {
 
 function userWrongPasswordTest(done) {
     request(app)
-        .post('/auth/login')
+        .post('/session')
         .send(wrongPasswordUserData)
         .then(res => {
             setTimeout(() => {

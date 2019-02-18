@@ -282,12 +282,10 @@ const checkPresentationAndUpdateTicket = (seat, ticketToUpdate) => new Promise((
 
 const updateTickets = (ticketId, newTicket) => new Promise((resolve, reject) => {
     const id_filter = {'_id': new ObjectID(ticketId)};
-    const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: newTicket};
-    Ticket.findOneAndUpdate(
-        id_filter,
+    Ticket.findByIdAndUpdate(
+        ticketId,
         parametersToSet,
-        setToReturnUpdatedValue,
     )
         .then(ticket => {
             if (thereIsNo(ticket)) {

@@ -114,23 +114,23 @@ describe("User Put Test", function () {
     });
 
     afterEach(() => {
-        User.findOneAndUpdate.restore();
+        User.findByIdAndUpdate.restore();
     });
 
     it('Successful - Update user', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves();
+        sinon.stub(User, 'findByIdAndUpdate').resolves();
         userPutTest(done);
     });
     it('Failed - Incomplete user data', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves();
+        sinon.stub(User, 'findByIdAndUpdate').resolves();
         userIncompletePutTest(done);
     });
     it('Failed - Wrong id', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(null);
+        sinon.stub(User, 'findByIdAndUpdate').resolves(null);
         userWrongIdPutTest(done);
     });
     it('Failed - Db id', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').rejects();
+        sinon.stub(User, 'findByIdAndUpdate').rejects();
         userDbErrorPutTest(done);
     });
 });

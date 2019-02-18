@@ -43,7 +43,7 @@ const wrongPasswordUserData = {
 
 function passwordUpdatedTest(done) {
     request(app)
-        .patch('/auth/updatePassword')
+        .patch('/users')
         .send(passwordUpdateRequest)
         .then(res => {
             setTimeout(() => {
@@ -59,7 +59,7 @@ function passwordUpdatedTest(done) {
 
 function passwordUpdatedEmptyTest(done) {
     request(app)
-        .patch('/auth/updatePassword')
+        .patch('/users')
         .send({})
         .then(res => {
             setTimeout(() => {
@@ -74,7 +74,7 @@ function passwordUpdatedEmptyTest(done) {
 
 function passwordUpdatedWrongEmailTest(done) {
     request(app)
-        .patch('/auth/updatePassword')
+        .patch('/users')
         .send(wrongEmailUserData)
         .then(res => {
             setTimeout(() => {
@@ -89,7 +89,7 @@ function passwordUpdatedWrongEmailTest(done) {
 
 function passwordUpdatedWrongPasswordTest(done) {
     request(app)
-        .patch('/auth/updatePassword')
+        .patch('/users')
         .send(wrongPasswordUserData)
         .then(res => {
             setTimeout(() => {
@@ -104,7 +104,7 @@ function passwordUpdatedWrongPasswordTest(done) {
 
 function passwordUpdatedWrongAuthenticationTest(done) {
     request(app)
-        .patch('/auth/updatePassword')
+        .patch('/users')
         .send(passwordUpdateRequest)
         .then(res => {
             setTimeout(() => {
@@ -119,7 +119,7 @@ function passwordUpdatedWrongAuthenticationTest(done) {
 
 function passwordUpdatedAuthenticationErrorsTest(done) {
     request(app)
-        .patch('/auth/updatePassword')
+        .patch('/users')
         .send(passwordUpdateRequest)
         .then(res => {
             setTimeout(() => {
@@ -134,7 +134,7 @@ function passwordUpdatedAuthenticationErrorsTest(done) {
 
 function passwordUpdatedDbErrorTest(done) {
     request(app)
-        .patch('/auth/updatePassword')
+        .patch('/users')
         .send(passwordUpdateRequest)
         .then(res => {
             setTimeout(() => {
@@ -157,23 +157,23 @@ describe("User update password test", function () {
     });
     afterEach(() => {
         this.authenticate.restore();
-        User.findOneAndUpdate.restore();
+        User.findByIdAndUpdate.restore();
     });
 
     it('Successful - Password updated', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(new User(userData));
+        sinon.stub(User, 'findByIdAndUpdate').resolves(new User(userData));
         passwordUpdatedTest(done);
     });
     it('Failed - Empty request', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(new User(userData));
+        sinon.stub(User, 'findByIdAndUpdate').resolves(new User(userData));
         passwordUpdatedEmptyTest(done);
     });
     it('Failed - Request with wrong email', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(new User(userData));
+        sinon.stub(User, 'findByIdAndUpdate').resolves(new User(userData));
         passwordUpdatedWrongEmailTest(done);
     });
     it('Failed - Request with wrong password', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(new User(userData));
+        sinon.stub(User, 'findByIdAndUpdate').resolves(new User(userData));
         passwordUpdatedWrongPasswordTest(done);
     });
     it('Failed - Wrong authentication', (done) => {
@@ -182,7 +182,7 @@ describe("User update password test", function () {
             return 1
         });
         this.authenticate.yields(null, null, {errors: {"email or password": "is invalid"}});
-        sinon.stub(User, 'findOneAndUpdate').resolves();
+        sinon.stub(User, 'findByIdAndUpdate').resolves();
         passwordUpdatedWrongAuthenticationTest(done);
     });
     it('Failed - Authentication error', (done) => {
@@ -191,11 +191,11 @@ describe("User update password test", function () {
             return 1
         });
         this.authenticate.yields(Error("Authentication error"));
-        sinon.stub(User, 'findOneAndUpdate').resolves();
+        sinon.stub(User, 'findByIdAndUpdate').resolves();
         passwordUpdatedAuthenticationErrorsTest(done);
     });
     it('Failed - Db error', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').rejects(Error("Db error"));
+        sinon.stub(User, 'findByIdAndUpdate').rejects(Error("Db error"));
         passwordUpdatedDbErrorTest(done);
     });
 

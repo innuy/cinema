@@ -102,26 +102,26 @@ describe("Current User Put Test", function () {
     });
 
     afterEach(() => {
-        User.findOneAndUpdate.restore();
+        User.findByIdAndUpdate.restore();
     });
 
     it('Successful - Put current user', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(new User(userData));
+        sinon.stub(User, 'findByIdAndUpdate').resolves(new User(userData));
         putCurrentUserTest(done);
     });
 
     it('Failed - Wrong token', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(new User(userData));
+        sinon.stub(User, 'findByIdAndUpdate').resolves(new User(userData));
         putCurrentUserWrongTokenTest(done);
     });
 
     it('Failed - Wrong user', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(null);
+        sinon.stub(User, 'findByIdAndUpdate').resolves(null);
         putCurrentUserWrongEmailTest(done);
     });
 
     it('Failed - DB error', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').rejects(Error("Db error"));
+        sinon.stub(User, 'findByIdAndUpdate').rejects(Error("Db error"));
         putCurrentUserDbErrorTest(done);
     });
 });

@@ -55,13 +55,13 @@ module.exports = router => {
         handlers.deleteById,
     );
 
-    router.post('/auth/login',
+    router.post('/session',
         auth.optional,
         validation.login,
         handlers.login,
     );
 
-    router.patch('/auth/updatePassword',
+    router.patch('/users',
         auth.optional,
         validation.updatePassword,
         handlers.updatePassword,

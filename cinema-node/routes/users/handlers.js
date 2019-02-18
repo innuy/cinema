@@ -42,14 +42,11 @@ module.exports.getById = (req, res) => {
 };
 
 module.exports.putById = (req, res) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
-    const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: req.body};
 
-    User.findOneAndUpdate(
-        id_filter,
+    User.findByIdAndUpdate(
+        req.params.id,
         parametersToSet,
-        setToReturnUpdatedValue,
     )
         .then(user => {
             if (thereIsNoUser(user)) {
@@ -106,7 +103,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.getCurrent = (req, res) => {
-    const { payload: { id } } = req;
+    const { requestingUser: { id } } = req;
 
     User.findById(id)
         .then((user) => {
@@ -120,16 +117,12 @@ module.exports.getCurrent = (req, res) => {
 };
 
 module.exports.putCurrent = (req, res) => {
-    const { payload: { id } } = req;
-    const id_filter = {'_id': new ObjectID(id)};
-
-    const setToReturnUpdatedValue = {new: true};
+    const { requestingUser: { id } } = req;
     const parametersToSet = {$set: req.body};
 
-    User.findOneAndUpdate(
-        id_filter,
+    User.findByIdAndUpdate(
+        id,
         parametersToSet,
-        setToReturnUpdatedValue,
     )
         .then(user => {
             if (thereIsNoUser(user)) {
@@ -143,8 +136,8 @@ module.exports.putCurrent = (req, res) => {
 
 module.exports.updatePassword = (req, res, next) => {
     const user = req.body;
-
     return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+
         if(err) {
             return errors.authenticationError(err.message, res);
         }
@@ -167,6 +160,7 @@ module.exports.updatePassword = (req, res, next) => {
         else {
             return res.status(400).send(info);
         }
+
     })(req, res, next);
 };
 
@@ -200,15 +194,11 @@ function updatePassword(passportUser, newPassword) {
         user.token = passportUser.generateJWT();
 
         user.setPassword(newPassword);
-        const id_filter = {'_id': new ObjectID(user._id)};
-
-        const setToReturnUpdatedValue = {new: true};
         const parametersToSet = {$set: user};
 
-        User.findOneAndUpdate(
-            id_filter,
+        User.findByIdAndUpdate(
+            user._id,
             parametersToSet,
-            setToReturnUpdatedValue,
         )
             .then(user => {
                 if (thereIsNoUser(user)) {
