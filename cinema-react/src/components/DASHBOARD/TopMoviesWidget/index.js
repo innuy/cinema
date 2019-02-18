@@ -15,12 +15,12 @@ class TopMoviesWidget extends Component {
     renderData(){
         const res = [];
 
-        for(let i = 0; i < this.props.topMovies.length; i++){
+        for(let i = 0; i < this.props.topFilms.length; i++){
 
                 res.push(<tr>
-                    <td className="reservationTableField">{this.props.topMovies[i].name}</td>
-                    <td className="reservationTableField">{this.props.topMovies[i].ticketsReserverd}</td>
-                    <td className="reservationTableField">{this.props.topMovies[i].ticketsSold}</td>
+                    <td className="reservationTableField">{this.props.topFilms[i].name}</td>
+                    <td className="reservationTableField">{this.props.topFilms[i].ticketsReserverd}</td>
+                    <td className="reservationTableField">{this.props.topFilms[i].ticketsSold}</td>
                 </tr>)
         }
 
@@ -31,7 +31,7 @@ class TopMoviesWidget extends Component {
 
         return (
             <div className="offset-1 col-4">
-                <div className="topMoviesViewTitle">Top movies</div>
+                <div className="topMoviesViewTitle">Top Films</div>
                 <div>
                     {this.renderData()}
                 </div>
@@ -48,7 +48,7 @@ class TopMoviesWidget extends Component {
 }
 
 TopMoviesWidget.propTypes = {
-    topMovies: PropTypes.array.isRequired,
+    topFilms: PropTypes.array.isRequired,
     ticketsReserved: PropTypes.number.isRequired,
     ticketsSold: PropTypes.number.isRequired,
 };

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import './styles.css';
-import TopMoviesWidgetContainer from "../../../containers/DASHBOARD/TopMoviesWidgetContainer";
+import TopFilmsWidgetContainer from "../../../containers/DASHBOARD/TopFilmsWidgetContainer";
 import BusyTimesWidgetContainer from "../../../containers/DASHBOARD/BusyTimesWidgetContainer";
 
 class MainDashboard extends Component {
@@ -11,7 +11,7 @@ class MainDashboard extends Component {
             <div>
                 <div className="dashboardViewTitle">Dashboard</div>
                 <div className="row">
-                    <TopMoviesWidgetContainer/>
+                    <TopFilmsWidgetContainer/>
                     <BusyTimesWidgetContainer/>
                 </div>
             </div>

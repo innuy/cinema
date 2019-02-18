@@ -107,7 +107,7 @@ export function deleteUser(id, callback){
 }
 
 export function changePassword(email, oldPassword, newPassword, callback){
-    axios.patch(urls.changePassword, {
+    axios.patch(urls.users, {
         user: {
             email,
             password: oldPassword,
