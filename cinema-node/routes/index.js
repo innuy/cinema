@@ -4,7 +4,6 @@ const presentations = require('./presentations');
 const tickets = require('./tickets');
 const users = require('./users');
 const sessions = require('./sessions');
-const other = require('../middlewares/otherRoutes');
 
 const resourceRoutes = [
     movies,
@@ -13,7 +12,6 @@ const resourceRoutes = [
     tickets,
     users,
     sessions,
-    other,
 ];
 
 

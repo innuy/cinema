@@ -48,11 +48,21 @@ if(!isProduction) {
 }
 
 app.use(logger('dev'));
+
+app.use('/', routes(router));
+
+app.use('*', function(req, res){
+    res.status(404);
+    res.send({
+        "statusCode": 404,
+        "error": "Not Found",
+        "message": "The page you ask for doesnt exist"
+    });
+});
+
 app.listen(port, "0.0.0.0", () => {
     console.log('We are live on ' + port);
 });
-
-app.use('/', routes(router));
 
 app.use(errors());
 
