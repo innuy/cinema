@@ -15,12 +15,12 @@ class TopMoviesWidget extends Component {
     renderData(){
         const res = [];
 
-        for(let i = 0; i < this.props.topMovies.length; i++){
+        for(let i = 0; i < this.props.topFilms.length; i++){
 
-                res.push(<tr>
-                    <td className="reservationTableField">{this.props.topMovies[i].name}</td>
-                    <td className="reservationTableField">{this.props.topMovies[i].ticketsReserverd}</td>
-                    <td className="reservationTableField">{this.props.topMovies[i].ticketsSold}</td>
+                res.push(<tr key={"row-"+i}>
+                    <td key={"name-"+i} className="reservationTableField">{this.props.topFilms[i].name}</td>
+                    <td key={"reserved_"+i} className="reservationTableField">{this.props.topFilms[i].ticketsReserverd}</td>
+                    <td key={"sold-"+i} className="reservationTableField">{this.props.topFilms[i].ticketsSold}</td>
                 </tr>)
         }
 
@@ -31,24 +31,27 @@ class TopMoviesWidget extends Component {
 
         return (
             <div className="offset-1 col-4">
-                <div className="topMoviesViewTitle">Top movies</div>
-                <div>
+                <div className="topMoviesViewTitle">Top Films</div>
+
+                <div className="topMoviesContainer">
                     {this.renderData()}
                 </div>
 
-                <PieChart
-                    data={[
-                        { title: 'Sold', value: this.props.ticketsReserved, color: '#E38627' },
-                        { title: 'Total Reserved', value: this.props.ticketsSold, color: '#C13C37' },
-                    ]}
-                />
+                { this.props.ticketsReserved > 0 && this.props.ticketsSold > 0 ?
+                    <PieChart
+                        data={[
+                            {title: 'Sold', value: this.props.ticketsReserved, color: '#E38627'},
+                            {title: 'Total Reserved', value: this.props.ticketsSold, color: '#C13C37'},
+                        ]}
+                    /> : null
+                }
             </div>
         );
     }
 }
 
 TopMoviesWidget.propTypes = {
-    topMovies: PropTypes.array.isRequired,
+    topFilms: PropTypes.array.isRequired,
     ticketsReserved: PropTypes.number.isRequired,
     ticketsSold: PropTypes.number.isRequired,
 };

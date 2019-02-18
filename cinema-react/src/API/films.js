@@ -8,7 +8,7 @@ export function getFilms(callback){
         .then((response) => {
             callback(true, parseFilms(response.data));
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error obtaining films");
             }
     });

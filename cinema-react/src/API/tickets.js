@@ -8,7 +8,7 @@ export function getTickets(callback){
         .then((response) => {
             callback(true, parseTickets(response.data));
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error getting tickets");
             }
     });
@@ -23,7 +23,7 @@ export function addTicket(presentationId, userId, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error adding the ticket");
             }
     });
@@ -87,7 +87,7 @@ export function getMyTickets(callback){
         .then((response) => {
             callback(true, parseTickets(response.data));
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error obtaining tickets");
             }
     });
@@ -131,7 +131,7 @@ export function deleteTicket(id, callback){
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error deleting the ticket");
             }
     });

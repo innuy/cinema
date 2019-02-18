@@ -8,7 +8,7 @@ export function getAuditoriums(callback){
         .then((response) => {
             callback(true, parseAuditoriums(response.data));
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error obtaining auditoriums");
             }
     });
@@ -43,7 +43,7 @@ export function getSingleAuditorium(id, callback){
         .then((response) => {
             callback(true, parseSingleAuditorium(response.data));
         }).catch((error) => {
-            if(!hasAuthorizationError(error)) {
+            if(error && error.response && !hasAuthorizationError(error)) {
                 callback(false, "There was an error with the connection");
             }
     });

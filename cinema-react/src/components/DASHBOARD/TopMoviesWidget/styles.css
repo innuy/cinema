@@ -6,3 +6,9 @@
     font-weight: bold;
     margin-top: 10px;
 }
+
+.topMoviesContainer{
+    margin-top: 5px;
+    text-align: center;
+    margin-bottom: 5px;
+}
