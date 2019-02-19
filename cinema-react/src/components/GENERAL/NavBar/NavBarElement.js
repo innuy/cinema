@@ -8,8 +8,8 @@ class NavBarElement extends Component {
     render() {
 
         return (
-            <button className="col-2 navBarElementContainer" onClick={() => {
-                this.props.handleClick(this.props.redirection);
+            <button className="navBarElementContainer" onClick={() => {
+                this.props.handleClick(this.props.redirection, this.props.extra);
             }}>
                 {this.props.text}
             </button>
@@ -21,6 +21,7 @@ NavBarElement.propTypes = {
     text: PropTypes.string.isRequired,
     redirection: PropTypes.string.isRequired,
     handleClick: PropTypes.func.isRequired,
+    extra: PropTypes.func
 };
 
 

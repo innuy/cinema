@@ -8,9 +8,8 @@ export function getTopFilms(callback){
         .then((response) => {
             callback(true, parseTopFilms(response.data));
         }).catch((error) => {
-            console.log(JSON.stringify(error));
             if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error obtaining auditoriums");
+                callback(false, "There was an error obtaining top films");
             }
     });
 }
@@ -18,12 +17,10 @@ export function getTopFilms(callback){
 export function getSoldRatio(callback){
     axios.get(urls.ticketsSold, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
-            console.log("e");
             callback(true, parseSoldRatioData(response.data));
         }).catch((error) => {
-            console.log(JSON.stringify(error));
             if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error obtaining auditoriums");
+                callback(false, "There was an error obtaining sold ratio");
             }
     });
 }
@@ -32,10 +29,11 @@ function parseTopFilms(topMovies){
     const res = [];
 
     for(let i = 0; i < topMovies.length; i++){
-        //TODO: PARSE TOP FILMS
         res.push({
             id: topMovies[i].movie._id,
             name: topMovies[i].movie.name,
+            ticketsReserved: topMovies[i].count,
+            ticketsSold: topMovies[i].count,
         })
     }
 
@@ -43,7 +41,6 @@ function parseTopFilms(topMovies){
 }
 
 function parseSoldRatioData(data){
-    console.log(JSON.stringify(data));
     return {
         reserved: data.reservedTickets,
         sold: data.soldTickets,
