@@ -21,6 +21,7 @@ const reservedTicketsSubQuery = [
 module.exports.getTopMovies = (req, res) => {
     let amount = req.query.amount;
     let getGreaterThanXDaysAgoIdFilter = {_id: {$gt: objectIdWithTimestamp(getDateXDaysAgo(30))}};
+
     Ticket.aggregate([
         {$match: getGreaterThanXDaysAgoIdFilter},
         {
@@ -72,13 +73,13 @@ module.exports.getTopMovies = (req, res) => {
         {$limit: amount},
 
     ])
-
         .then(tickets => res.send(tickets))
         .catch(err => errors.databaseError(err, res))
 };
 
 module.exports.getSoldRatio = (req, res) => {
     let getGreaterThanXDaysAgoIdFilter = {_id: {$gt: objectIdWithTimestamp(getDateXDaysAgo(30))}};
+
     Ticket.aggregate([
         {$match: getGreaterThanXDaysAgoIdFilter},
         {
@@ -93,7 +94,6 @@ module.exports.getSoldRatio = (req, res) => {
             }
         }
     ])
-
         .then(tickets => res.send({
             soldTickets: tickets[0].soldTickets[0].soldTickets,
             reservedTickets: tickets[0].reservedTickets[0].reservedTickets

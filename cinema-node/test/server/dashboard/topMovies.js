@@ -47,7 +47,7 @@ const testingTopMoviesAnswerData = [
 
 function getTopMoviesEmptyAmount(done) {
     request(app)
-        .get('/top-movies')
+        .get('/dashboard/top-movies')
         .query()
         .then(res => {
             setTimeout(() => {
@@ -64,7 +64,7 @@ function getTopMoviesEmptyAmount(done) {
 
 function getTopMoviesWithAmount(done) {
     request(app)
-        .get('/top-movies')
+        .get('/dashboard/top-movies')
         .query({amount: 5})
         .then(res => {
             setTimeout(() => {
@@ -81,7 +81,7 @@ function getTopMoviesWithAmount(done) {
 
 function getTopMoviesWrongAmount(done) {
     request(app)
-        .get('/top-movies')
+        .get('/dashboard/top-movies')
         .query({amount: -1})
         .then(res => {
             setTimeout(() => {
@@ -97,7 +97,7 @@ function getTopMoviesWrongAmount(done) {
 
 function getTopMoviesDbError(done) {
     request(app)
-        .get('/top-movies')
+        .get('/dashboard/top-movies')
         .query()
         .then(res => {
             setTimeout(() => {
@@ -112,7 +112,7 @@ function getTopMoviesDbError(done) {
 
 
 
-describe("Presentations Get Test", function () {
+describe("Top movies tests", function () {
     beforeEach(() => {
         app = require('../../../app');
     });
