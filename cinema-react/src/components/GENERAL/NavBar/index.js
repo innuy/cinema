@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import './styles.css';
 import NavBarElement from "./NavBarElement";
 import {navigate} from "../../../utils/navigation";
+import {deleteUserToken} from "../../../utils/cookieStorage";
 
 const ADMIN_NAV = [createNavItem("Films", "/films"), createNavItem("Auditoriums", "/auditoriums"),
     createNavItem("Presentations", "/presentations"), createNavItem("Tickets", "/tickets"),
-    createNavItem("Users", "/users"), createNavItem("Dashboard", "/dashboard")];
+    createNavItem("Users", "/users"), createNavItem("Dashboard", "/dashboard"), createNavItem("Logout", '/', deleteUserToken)];
 const USER_NAV = [createNavItem("Presentations", "/seePresentations"), createNavItem("Tickets", "/myTickets"),
-    createNavItem("My Info", '/myInfo')];
+    createNavItem("My Info", '/myInfo'), createNavItem("Logout", '/', deleteUserToken)];
 
 class NavBar extends Component {
 
@@ -20,7 +21,10 @@ class NavBar extends Component {
         this.navigate = this.navigate.bind(this);
     }
 
-    navigate(destination){
+    navigate(destination, extra){
+        if(extra){
+            extra();
+        }
         navigate(this.props.history, destination);
     }
 
@@ -31,7 +35,7 @@ class NavBar extends Component {
 
         for(let i = 0; i < navOptions.length; i++){
             result.push(<NavBarElement key={"nav_elem_" + i} text={navOptions[i].text} redirection={navOptions[i].redirection}
-                handleClick={this.navigate}/>);
+                handleClick={this.navigate} extra={navOptions[i].extra}/>);
         }
 
         return result;
@@ -47,10 +51,11 @@ class NavBar extends Component {
     }
 }
 
-function createNavItem(text, redirection){
+function createNavItem(text, redirection, extra = null){
     return {
         text,
-        redirection
+        redirection,
+        extra
     }
 }
 

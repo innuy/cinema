@@ -27,7 +27,6 @@ class TopFilmsWidgetContainer extends Component {
     getFilmsData(){
         getTopFilms((success, data) => {
             if(success){
-                console.log(data);
                 this.setState({
                     topFilms: data
                 });

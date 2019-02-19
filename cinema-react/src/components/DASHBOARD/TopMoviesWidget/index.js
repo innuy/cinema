@@ -15,11 +15,16 @@ class TopMoviesWidget extends Component {
     renderData(){
         const res = [];
 
+        res.push(<tr key={"row-title"}>
+            <td key={"name-title"} className="reservationTableField">FILM NAME</td>
+            <td key={"reserved_title"} className="reservationTableField">RES.</td>
+            <td key={"sold-title"} className="reservationTableField">SOLD</td>
+        </tr>)
         for(let i = 0; i < this.props.topFilms.length; i++){
 
                 res.push(<tr key={"row-"+i}>
                     <td key={"name-"+i} className="reservationTableField">{this.props.topFilms[i].name}</td>
-                    <td key={"reserved_"+i} className="reservationTableField">{this.props.topFilms[i].ticketsReserverd}</td>
+                    <td key={"reserved_"+i} className="reservationTableField">{this.props.topFilms[i].ticketsReserved}</td>
                     <td key={"sold-"+i} className="reservationTableField">{this.props.topFilms[i].ticketsSold}</td>
                 </tr>)
         }
@@ -33,9 +38,11 @@ class TopMoviesWidget extends Component {
             <div className="offset-1 col-4">
                 <div className="topMoviesViewTitle">Top Films</div>
 
-                <div className="topMoviesContainer">
-                    {this.renderData()}
-                </div>
+                <table className="topMoviesTable">
+                    <tbody className="topMoviesContainer">
+                        {this.renderData()}
+                    </tbody>
+                </table>
 
                 { this.props.ticketsReserved > 0 && this.props.ticketsSold > 0 ?
                     <PieChart
