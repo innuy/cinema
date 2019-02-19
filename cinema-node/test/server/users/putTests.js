@@ -4,6 +4,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 const should = chai.should();
 const request = require('supertest');
+const auth = require('../../../middlewares/auth');
 let app;
 
 require('../setup');
@@ -15,14 +16,14 @@ const testingUserWrongIdToSearch = '000000000000000000000001';
 
 const testingUpdateUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "test@test.com",
     role: "1",
 };
 
 const testingIncompleteUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     role: "1",
 };
 
@@ -113,23 +114,23 @@ describe("User Put Test", function () {
     });
 
     afterEach(() => {
-        User.findOneAndUpdate.restore();
+        User.findByIdAndUpdate.restore();
     });
 
     it('Successful - Update user', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves();
+        sinon.stub(User, 'findByIdAndUpdate').resolves();
         userPutTest(done);
     });
     it('Failed - Incomplete user data', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves();
+        sinon.stub(User, 'findByIdAndUpdate').resolves();
         userIncompletePutTest(done);
     });
     it('Failed - Wrong id', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').resolves(null);
+        sinon.stub(User, 'findByIdAndUpdate').resolves(null);
         userWrongIdPutTest(done);
     });
     it('Failed - Db id', (done) => {
-        sinon.stub(User, 'findOneAndUpdate').rejects();
+        sinon.stub(User, 'findByIdAndUpdate').rejects();
         userDbErrorPutTest(done);
     });
 });

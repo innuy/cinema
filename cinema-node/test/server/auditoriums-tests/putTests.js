@@ -95,32 +95,32 @@ describe("Auditorium Put Test", function () {
     });
 
     afterEach(() => {
-        Auditorium.findOneAndUpdate.restore();
+        Auditorium.findByIdAndUpdate.restore();
         Auditorium.findOne.restore();
         Seat.deleteMany.restore();
     });
 
     it('Successful - Update auditorium',(done) => {
         sinon.stub(Auditorium, 'findOne').resolves(testingUpdateAuditoriumData);
-        sinon.stub(Auditorium, 'findOneAndUpdate').resolves(testingUpdateAuditoriumData);
+        sinon.stub(Auditorium, 'findByIdAndUpdate').resolves(testingUpdateAuditoriumData);
         sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumPutTest(done);
     });
     it('Failed - Incomplete auditorium data',(done) => {
         sinon.stub(Auditorium, 'findOne').resolves();
-        sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Auditorium, 'findByIdAndUpdate').resolves();
         sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumIncompletePutTest(done);
     });
     it('Failed - Wrong id',(done) => {
         sinon.stub(Auditorium, 'findOne').resolves(null);
-        sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Auditorium, 'findByIdAndUpdate').resolves();
         sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumWrongIdPutTest(done);
     });
     it('Failed - Db error',(done) => {
         sinon.stub(Auditorium, 'findOne').rejects();
-        sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Auditorium, 'findByIdAndUpdate').resolves();
         sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumDbErrorPutTest(done);
     });

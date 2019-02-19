@@ -137,13 +137,10 @@ const auditoriumSizeUpdated = (auditorium, newAuditorium) => (auditorium.seatRow
     (auditorium.seatColumns !== newAuditorium.seatColumns);
 
 const updateAuditoriumDocument = (id, newAuditorium) => new Promise((resolve, reject) => {
-    const idFilter = {'_id': new ObjectID(id)};
-    const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: newAuditorium};
-    Auditorium.findOneAndUpdate(
-        idFilter,
+    Auditorium.findByIdAndUpdate(
+        id,
         parametersToSet,
-        setToReturnUpdatedValue,
     )
         .then(auditorium => {
             if (thereIsNoAuditorium(auditorium)) {

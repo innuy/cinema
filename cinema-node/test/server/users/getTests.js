@@ -15,6 +15,7 @@ const testingUserWrongId = '100000000000000000000001';
 
 const testingUserFilterData = {
     name: "Great User",
+    role: 2,
 };
 
 const testingUserWrongFilterData = {
@@ -105,6 +106,7 @@ function getUserWithWrongId(done) {
             console.log(err);
         });
 }
+
 
 describe("User Get Test", function () {
     beforeEach(() => {

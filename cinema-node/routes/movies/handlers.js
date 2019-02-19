@@ -37,14 +37,11 @@ module.exports.getById = (req, res) => {
 };
 
 module.exports.putById = (req, res) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
-    const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: req.body};
 
-    Movie.findOneAndUpdate(
-        id_filter,
-        parametersToSet,
-        setToReturnUpdatedValue,
+    Movie.findByIdAndUpdate(
+        req.params.id,
+        parametersToSet
     )
         .then(movie => {
             if (thereIsNoMovie(movie)) {
@@ -217,14 +214,11 @@ const getMovie = id => new Promise((resolve, reject) => {
 });
 
 const addImageLinkInMovie = (id, imageUrl) => new Promise((resolve, reject) => {
-    const id_filter = {'_id': new ObjectID(id)};
-    const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: {image: imageUrl}};
 
-    Movie.findOneAndUpdate(
-        id_filter,
+    Movie.findByIdAndUpdate(
+        id,
         parametersToSet,
-        setToReturnUpdatedValue,
     )
         .then(movie => {
             if (thereIsNoMovie(movie)) {

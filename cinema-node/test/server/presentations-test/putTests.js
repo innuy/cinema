@@ -183,23 +183,23 @@ describe("Presentation Put Test", function () {
     afterEach(() => {
         Movie.findOne.restore();
         Auditorium.findOne.restore();
-        Presentation.findOneAndUpdate.restore();
+        Presentation.findByIdAndUpdate.restore();
     });
 
     it('Successful - Update presentation', (done) => {
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves();
+        sinon.stub(Presentation, 'findByIdAndUpdate').resolves();
         presentationPutTest(done);
     });
     it('Failed - Incomplete presentation data', (done) => {
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves();
+        sinon.stub(Presentation, 'findByIdAndUpdate').resolves();
         presentationIncompletePutTest(done);
     });
     it('Failed - Wrong id', (done) => {
-        sinon.stub(Presentation, 'findOneAndUpdate').resolves(null);
+        sinon.stub(Presentation, 'findByIdAndUpdate').resolves(null);
         presentationWrongIdPutTest(done);
     });
     it('Failed - Db error', (done) => {
-        sinon.stub(Presentation, 'findOneAndUpdate').rejects();
+        sinon.stub(Presentation, 'findByIdAndUpdate').rejects();
         presentationDbErrorPutTest(done);
     });
 });

@@ -194,13 +194,10 @@ const thereIsNoPresentation = presentation => {
 };
 
 const updatePresentation = req => new Promise((resolve, reject) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
-    const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: req.body};
-    Presentation.findOneAndUpdate(
-        id_filter,
+    Presentation.findByIdAndUpdate(
+        req.params.id,
         parametersToSet,
-        setToReturnUpdatedValue,
     )
         .then(presentation => {
             if (thereIsNoPresentation(presentation)) {

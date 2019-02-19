@@ -103,11 +103,11 @@ describe("Ticket Put Test", function () {
     beforeEach(() => {
         sinon.stub(Seat, 'findById').resolves(testingSeatData);
         sinon.stub(Presentation, 'findById').resolves(testingPresentationData);
-        sinon.stub(Ticket, 'findOneAndUpdate').resolves(testingTicketData);
+        sinon.stub(Ticket, 'findByIdAndUpdate').resolves(testingTicketData);
         app = require('../../../app');
     });
     afterEach(() => {
-        Ticket.findOneAndUpdate.restore();
+        Ticket.findByIdAndUpdate.restore();
         Presentation.findById.restore();
         Seat.findById.restore()
     });
@@ -116,13 +116,13 @@ describe("Ticket Put Test", function () {
         ticketWithAlreadyStartedTicketPostTest(done);
     });
     it('Failed - Request with wrong ticket id ', (done) => {
-        Ticket.findOneAndUpdate.restore();
-        sinon.stub(Ticket, 'findOneAndUpdate').resolves(null);
+        Ticket.findByIdAndUpdate.restore();
+        sinon.stub(Ticket, 'findByIdAndUpdate').resolves(null);
         ticketWrongTicketIdPostTest(done);
     });
     it('Failed - Db error test', (done) => {
-        Ticket.findOneAndUpdate.restore();
-        sinon.stub(Ticket, 'findOneAndUpdate').rejects(Error("DB error"));
+        Ticket.findByIdAndUpdate.restore();
+        sinon.stub(Ticket, 'findByIdAndUpdate').rejects(Error("DB error"));
         ticketWithDbErrorPostTest(done);
     });
 });
