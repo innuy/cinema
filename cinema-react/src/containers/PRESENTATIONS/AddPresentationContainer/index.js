@@ -81,7 +81,7 @@ class AddPresentationContainer extends Component {
                 return (<div>
                     <NavBar isAdmin={true} history={this.history}/>
                     <PresentationDetails callback={this.addPresentation} films={this.state.films} auditoriums={this.state.auditoriums}
-                                         buttonText={"ADD"}/>
+                                         buttonText={"ADD"} newPresentation={true}/>
                     {this.state.errorVisible ? <ErrorAlert callback={() => {this.setState({errorVisible: false})}} text={'There was an error'}/> : null}
                 </div>);}} />
         );
