@@ -44,6 +44,7 @@ class PresentationDetailsContainer extends Component {
         this.hideError();
         getSinglePresentation(this.state.id, (success, presentation) => {
             if(success) {
+                console.log("presentation: " + JSON.stringify(presentation));
                 this.setState({
                     presentation
                 });
