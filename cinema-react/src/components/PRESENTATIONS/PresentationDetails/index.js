@@ -7,7 +7,6 @@ import './styles.css';
 
 class PresentationDetails extends Component {
 
-
     state = {
         presentation: {
             auditorium: null,
@@ -86,7 +85,6 @@ class PresentationDetails extends Component {
                 this.props.callback(this.state.presentation);
             }
         });
-
     }
 
     presentationHasErrors(){
@@ -106,8 +104,6 @@ class PresentationDetails extends Component {
 
     render() {
 
-
-
         return (
             <div>
                 <div className="presentationDetailsSeparator"/>
@@ -115,7 +111,7 @@ class PresentationDetails extends Component {
                 <div className="presentationDetailsContainer">
                     <div className="presentationDetailsPageTitle">PRESENTATION INFORMATION</div>
                     <div className="presentationDetailsSeparator"/>
-                    {this.state.presentation.film ? <div>
+                    {(this.state.presentation.film && this.props.films.length > 0) || this.props.newPresentation ? <div>
                         <div className="presentationDetailsTitle">Film:</div>
                         <select className="presentationInput" defaultValue={this.state.presentation.film} onChange={(data) => {
                             const presentation = this.state.presentation;
@@ -128,7 +124,7 @@ class PresentationDetails extends Component {
                         {this.state.errors.film ? <div className="presentationDetailsErrorMessage">There is an error in the film</div> : null}
                         <div className="presentationDetailsSeparator"/>
                     </div> : null}
-                    {this.state.presentation.auditorium ?
+                    {(this.state.presentation.auditorium && this.props.auditoriums.length > 0) || this.props.newPresentation ?
                         <div>
                             <div className="presentationDetailsTitle">Auditorium:</div>
                             <select className="presentationInput" defaultValue={this.state.presentation.auditorium} onChange={(data) => {
@@ -170,6 +166,9 @@ PresentationDetails.propTypes = {
     presentation: PropTypes.object,
     callback: PropTypes.func.isRequired,
     buttonText: PropTypes.string.isRequired,
+    auditoriums: PropTypes.array,
+    films: PropTypes.array,
+    newPresentation: PropTypes.bool.isRequired,
 };
 
 export default PresentationDetails;

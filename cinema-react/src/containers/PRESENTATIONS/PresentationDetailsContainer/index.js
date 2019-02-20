@@ -44,7 +44,6 @@ class PresentationDetailsContainer extends Component {
         this.hideError();
         getSinglePresentation(this.state.id, (success, presentation) => {
             if(success) {
-                console.log("presentation: " + JSON.stringify(presentation));
                 this.setState({
                     presentation
                 });
@@ -123,7 +122,8 @@ class PresentationDetailsContainer extends Component {
                 return (<div>
                             <NavBar isAdmin={true} history={this.history}/>
                             <PresentationDetails presentation={this.state.presentation} films={this.state.films}
-                                                 auditoriums={this.state.auditoriums} callback={this.editPresentation} buttonText={"EDIT"}/>
+                                                 auditoriums={this.state.auditoriums} callback={this.editPresentation}
+                                                 buttonText={"EDIT"} newPresentation={false}/>
                             {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                         </div>);}} />
         );
