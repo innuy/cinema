@@ -16,7 +16,8 @@ module.exports.getTopMovies = (req, res) => {
                 _id: {
                     presentation: "$presentation",
                 },
-                count: {$sum: 1}
+                reserved: {$sum: 1},
+                sold:{$sum: {$cond: [{$eq: ['$sold', true]}, 1, 0]}}
             }
         },
         {
@@ -32,13 +33,15 @@ module.exports.getTopMovies = (req, res) => {
                 _id: {
                     movie: "$presentationInfo.movie",
                 },
-                count: {$sum: "$$ROOT.count"}
+                reserved: {$sum: "$$ROOT.reserved"},
+                sold: {$sum: "$$ROOT.sold"}
             }
         },
         {
             $project: {
                 movie: {$arrayElemAt: ["$_id.movie", 0]},
-                count: 1,
+                reserved: 1,
+                sold: 1,
                 _id: 0,
             }
         },
@@ -53,10 +56,11 @@ module.exports.getTopMovies = (req, res) => {
         {
             $project: {
                 movie: {$arrayElemAt: ["$movie", 0]},
-                count: 1,
+                reserved: 1,
+                sold: 1,
             }
         },
-        {$sort: {count: -1}},
+        {$sort: {reserved: -1, sold: -1}},
         {$limit: amount},
 
     ])
