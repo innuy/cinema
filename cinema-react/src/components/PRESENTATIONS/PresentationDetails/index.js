@@ -32,13 +32,12 @@ class PresentationDetails extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if(newProps.presentation){
+        if(newProps.presentation && this.state.presentation.film == null){
             const standardPresentation = newProps.presentation;
             standardPresentation.startTime = this.parseDateValue(standardPresentation.startTime);
             this.setState({
                 presentation: standardPresentation,
             });
-
         }
     }
 
@@ -107,6 +106,8 @@ class PresentationDetails extends Component {
 
     render() {
 
+
+
         return (
             <div>
                 <div className="presentationDetailsSeparator"/>
@@ -114,29 +115,35 @@ class PresentationDetails extends Component {
                 <div className="presentationDetailsContainer">
                     <div className="presentationDetailsPageTitle">PRESENTATION INFORMATION</div>
                     <div className="presentationDetailsSeparator"/>
-                    <div className="presentationDetailsTitle">Film:</div>
-                    <select className="presentationInput" defaultValue={this.state.presentation.film} onChange={(data) => {
-                        const presentation = this.state.presentation;
-                        presentation.film = data.target.value;
-                        this.setState({
-                            presentation
-                        });}}>
-                        {this.renderFilms()}
-                    </select>
-                    {this.state.errors.film ? <div className="presentationDetailsErrorMessage">There is an error in the film</div> : null}
-                    <div className="presentationDetailsSeparator"/>
-                    <div className="presentationDetailsTitle">Auditorium:</div>
-                    <select className="presentationInput" defaultValue={this.state.presentation.auditorium} onChange={(data) => {
-                        const presentation = this.state.presentation;
-                        presentation.auditorium = data.target.value;
-                        this.setState({
-                            presentation
-                        });
-                    }}>
-                        {this.renderAuditoriums()}
-                    </select>
-                    {this.state.errors.auditorium ? <div className="presentationDetailsErrorMessage">There is an error in the auditorium</div> : null}
-                    <div className="presentationDetailsSeparator"/>
+                    {this.state.presentation.film ? <div>
+                        <div className="presentationDetailsTitle">Film:</div>
+                        <select className="presentationInput" defaultValue={this.state.presentation.film} onChange={(data) => {
+                            const presentation = this.state.presentation;
+                            presentation.film = data.target.value;
+                            this.setState({
+                                presentation
+                            });}}>
+                            {this.renderFilms()}
+                        </select>
+                        {this.state.errors.film ? <div className="presentationDetailsErrorMessage">There is an error in the film</div> : null}
+                        <div className="presentationDetailsSeparator"/>
+                    </div> : null}
+                    {this.state.presentation.auditorium ?
+                        <div>
+                            <div className="presentationDetailsTitle">Auditorium:</div>
+                            <select className="presentationInput" defaultValue={this.state.presentation.auditorium} onChange={(data) => {
+                                const presentation = this.state.presentation;
+                                presentation.auditorium = data.target.value;
+                                this.setState({
+                                    presentation
+                                });
+                            }}>
+                                {this.renderAuditoriums()}
+                            </select>
+                            {this.state.errors.auditorium ? <div className="presentationDetailsErrorMessage">There is an error in the auditorium</div> : null}
+                            <div className="presentationDetailsSeparator"/>
+                        </div> : null
+                    }
                     <div className="presentationDetailsTitle">Start time:</div>
                     <input className="presentationInput" type="datetime-local" value={this.state.presentation.startTime} onChange={(event) => {
                         const presentation = this.state.presentation;
