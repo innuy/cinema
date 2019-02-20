@@ -147,7 +147,7 @@ const isCreatingAdmin = user => user.role === auth.adminRoleKey;
 
 const isNotLogAsAdmin = userLogged => {
     if (userLogged === undefined)
-        return false;
+        return true;
     else
         return userLogged.role !== auth.adminRoleKey;
 };
