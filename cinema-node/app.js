@@ -25,14 +25,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 require('./db/models/users');
 require('./config/passport');
 
-
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 60000 },
-    resave: false,
-    saveUninitialized: false }
-    ));
-
 // Init router
 const routes = require('./routes');
 const router = express.Router();
