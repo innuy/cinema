@@ -83,8 +83,12 @@ class UserDetails extends Component {
             errors,
         }, () => {
             if(!this.userDataHasErrors()) {
+                let oldPassword = this.state.oldPassword;
+                if(!this.state.changePassword){
+                    oldPassword = null;
+                }
                 this.props.callback(this.state.user.id, this.state.user.email, this.state.user.password,
-                    this.state.user.firstName, this.state.user.lastName, this.state.user.role, this.state.oldPassword);
+                    this.state.user.firstName, this.state.user.lastName, this.state.user.role, oldPassword);
             }
         });
     }

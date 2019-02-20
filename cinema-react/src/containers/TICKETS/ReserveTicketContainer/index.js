@@ -48,7 +48,7 @@ class ReserveTicketContainer extends Component {
             if(success) {
                 if(ticketsData.length > 0) {
                     this.setState({
-                        ticketsData,
+                        tickets: ticketsData,
                         auditorium: ticketsData[0].auditorium,
                     });
                 }

@@ -83,20 +83,25 @@ class UserDetailsContainer extends Component {
     editUserInfo(id, email, password, firstName, lastName, role, oldPassword){
         editUser(id, email, firstName, lastName, role, (success, msg) => {
             if (success) {
-                changePassword(email, oldPassword, password, (passSuccess, passMsg) => {
-                    if(passSuccess){
-                        navigateBack(this.history);
-                    }
-                    else{
-                        if(passMsg) {
-                            this.setState({
-                                errorVisible: true,
-                                errorText: passMsg,
-                                errorCallback: this.hideError,
-                            });
+                if(oldPassword){
+                    changePassword(email, oldPassword, password, (passSuccess, passMsg) => {
+                        if(passSuccess){
+                            navigateBack(this.history);
                         }
-                    }
-                });
+                        else{
+                            if(passMsg) {
+                                this.setState({
+                                    errorVisible: true,
+                                    errorText: passMsg,
+                                    errorCallback: this.hideError,
+                                });
+                            }
+                        }
+                    });
+                }
+                else{
+                    navigateBack(this.history);
+                }
 
             } else {
                 if(msg) {
