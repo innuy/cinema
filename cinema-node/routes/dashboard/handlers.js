@@ -91,7 +91,7 @@ module.exports.getSoldRatio = (req, res) => {
 module.exports.getBusyTimes = (req, res) => {
     let getGreaterThanXDaysAgoIdFilter = {_id: {$gt: objectIdWithTimestamp(getDateXDaysAgo(30))}};
 
-    const promise = Ticket.aggregate([
+   Ticket.aggregate([
         {$match: getGreaterThanXDaysAgoIdFilter},
         {
             $group: {
@@ -111,15 +111,9 @@ module.exports.getBusyTimes = (req, res) => {
         },
         {
             $project: {
-                presentation: {$arrayElemAt: ["$presentationInfo", 0]},
-                count: 1,
-                _id: 0,
-            }
-        },
-        {
-            $project: {
-                h: {$hour: "$presentation.start"},
+                h: {$hour: {$arrayElemAt: ["$presentationInfo.start", 0]}},
                 tickets: "$count",
+                _id: 0,
             }
         },
         {
@@ -143,8 +137,7 @@ module.exports.getBusyTimes = (req, res) => {
 
     ])
         .then(tickets => {
-            let allDayTickets = [];
-            parseTickets(tickets, allDayTickets);
+            let allDayTickets = parseTickets(tickets);
             res.send(allDayTickets);
         })
         .catch(err => errors.databaseError(err, res));
@@ -172,16 +165,9 @@ function objectIdWithTimestamp(timestamp) {
     return constructedObjectId
 }
 
-function parseTickets(tickets, allDayTickets) {
-    let ticket = tickets.pop();
-    if (tickets.length !== 24) {
-        for (let i = 0; i < 24; i++) {
-            if (ticket === undefined || ticket.hour !== i) {
-                allDayTickets.push({hour: i, tickets: 0});
-            } else {
-                allDayTickets.push(ticket);
-                ticket = tickets.pop();
-            }
-        }
-    }
+function parseTickets(tickets) {
+    return [...Array(24).keys()].map((hour) => {
+        const data = tickets.find((ticket) => ticket.hour === hour);
+        return data ? data : {hour: hour, tickets: 0};
+    });
 }

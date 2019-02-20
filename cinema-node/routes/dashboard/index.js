@@ -25,6 +25,8 @@ module.exports = router => {
     );
 
     router.get('/dashboard/busy-times',
+        auth.required,
+        auth.adminOnly,
         handlers.getBusyTimes,
     );
 
