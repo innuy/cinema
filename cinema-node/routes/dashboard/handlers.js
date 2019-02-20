@@ -5,19 +5,6 @@ const Ticket = require("../../db/models/tickets");
 
 var ObjectID = require('mongodb').ObjectID;
 
-const soldTicketsSubQuery = [
-    {$match: {sold: true}},
-    {
-        $count: "soldTickets"
-    }
-];
-
-const reservedTicketsSubQuery = [
-    {
-        $count: "reservedTickets"
-    }
-];
-
 module.exports.getTopMovies = (req, res) => {
     let amount = req.query.amount;
     let getGreaterThanXDaysAgoIdFilter = {_id: {$gt: objectIdWithTimestamp(getDateXDaysAgo(30))}};
@@ -102,9 +89,65 @@ module.exports.getSoldRatio = (req, res) => {
 };
 
 module.exports.getBusyTimes = (req, res) => {
-    Movie.find(req.query)
-        .then(movie => res.send(movie))
-        .catch(err => errors.databaseError(err, res))
+    let getGreaterThanXDaysAgoIdFilter = {_id: {$gt: objectIdWithTimestamp(getDateXDaysAgo(30))}};
+
+    const promise = Ticket.aggregate([
+        {$match: getGreaterThanXDaysAgoIdFilter},
+        {
+            $group: {
+                _id: {
+                    presentation: "$presentation",
+                },
+                count: {$sum: 1}
+            }
+        },
+        {
+            $lookup: {
+                from: "presentations",
+                localField: "_id.presentation",
+                foreignField: "_id",
+                as: "presentationInfo"
+            }
+        },
+        {
+            $project: {
+                presentation: {$arrayElemAt: ["$presentationInfo", 0]},
+                count: 1,
+                _id: 0,
+            }
+        },
+        {
+            $project: {
+                h: {$hour: "$presentation.start"},
+                tickets: "$count",
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    hour: "$h"
+                },
+                total: {$sum: "$tickets"}
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                hour: "$_id.hour",
+                tickets: "$total",
+            }
+        },
+        {
+            $sort: {"hour": -1}
+        },
+
+    ])
+        .then(tickets => {
+            let allDayTickets = [];
+            parseTickets(tickets, allDayTickets);
+            res.send(allDayTickets);
+        })
+        .catch(err => errors.databaseError(err, res));
 };
 
 function getDateXDaysAgo(days) {
@@ -116,7 +159,7 @@ function getDateXDaysAgo(days) {
 
 function objectIdWithTimestamp(timestamp) {
     // Convert string date to Date object (otherwise assume timestamp is a date)
-    if (typeof(timestamp) == 'string') {
+    if (typeof (timestamp) == 'string') {
         timestamp = new Date(timestamp);
     }
 
@@ -127,4 +170,18 @@ function objectIdWithTimestamp(timestamp) {
     var constructedObjectId = ObjectID(hexSeconds + "0000000000000000");
 
     return constructedObjectId
+}
+
+function parseTickets(tickets, allDayTickets) {
+    let ticket = tickets.pop();
+    if (tickets.length !== 24) {
+        for (let i = 0; i < 24; i++) {
+            if (ticket === undefined || ticket.hour !== i) {
+                allDayTickets.push({hour: i, tickets: 0});
+            } else {
+                allDayTickets.push(ticket);
+                ticket = tickets.pop();
+            }
+        }
+    }
 }
