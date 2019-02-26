@@ -3,17 +3,20 @@ var express = require('express');
 var app = express();
 var port = 8000;
 
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+
 require('dotenv').config();
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const session = require('express-session');
 
 const {errors} = require('celebrate');
 var cors = require('cors');
 
 // Internal modules
 var db = require('./connectors/mongoDB');
-
 db.connectMongo().then(() => {
     console.log(db.isConnected());
 });
@@ -38,11 +41,20 @@ app.use(bodyParser.json());
 if(!isProduction) {
     app.use(errorHandler());
 }
-
 app.use(logger('dev'));
 
-app.use('/', routes(router));
+var path = require('path');
+const sendDataToDashboardNamespace = require("./websockets/dashboard").sendDataToDashboardNamespace;
+const sendTicketListToSocketStartingReservation = require("./websockets/ticketReservation").startingTicketReservation;
 
+app.get('/dashboardDemo', function(req, res) {
+    res.sendFile(path.join(__dirname + '/dashboardDemo.html'));
+});
+app.get('/reservingTicketsDemo', function(req, res) {
+    res.sendFile(path.join(__dirname + '/reservingTicketsDemo.html'));
+});
+
+app.use('/', routes(router));
 app.use('*', function(req, res){
     res.status(404);
     res.send({
@@ -52,10 +64,38 @@ app.use('*', function(req, res){
     });
 });
 
-app.listen(port, "0.0.0.0", () => {
+var dashboardNamespace = io.of('/dashboard');
+dashboardNamespace.on('connection', function(socket){
+
+    sendDataToDashboardNamespace();
+
+    console.log('a user join dashboard');
+    socket.on('dashboard', function(msg){
+        console.log('a user says: ' + msg);
+    });
+});
+
+var reservingTicketsNamespace = io.of('/reservingTickets');
+reservingTicketsNamespace.on('connection', function(socket){
+
+    console.log('a user join reservingTickets');
+    socket.on('startReservation', function (presentationId) {
+        socket.join('presentation-' + presentationId);
+        console.log(presentationId);
+        sendTicketListToSocketStartingReservation(presentationId, socket);
+
+
+        console.log('a user starts reservation of: ' + presentationId);
+    });
+});
+
+http.listen(8000, "0.0.0.0", function(){
     console.log('We are live on ' + port);
 });
 
 app.use(errors());
 
-module.exports = app;
+module.exports.app = app;
+module.exports.io = io;
+module.exports.dashboardNamespace = dashboardNamespace;
+module.exports.reservingTicketsNamespace = reservingTicketsNamespace;
