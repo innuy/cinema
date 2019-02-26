@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<style>
+    p {
+        color: red;
+        margin: 5px;
+        cursor: pointer;
+    }
+</style>
+<script>
+    const reservingTicketsSocketURL = 'http://localhost:8000/reservingTickets';
+    const presentationId = "5c3cd36ab76e074566d3f6da";
+    const basePresentationSocketURL = 'http://localhost:8000/presentation-';
+
+    // var io = io.connect();
+    $(function () {
+        var reservingTickets = io.connect(reservingTicketsSocketURL);
+
+        reservingTickets.emit('startReservation', presentationId);
+
+        reservingTickets.on('ticketList', function(msg){
+            $('#messages').append($('<h3>').text('New Presentation Data! ------------------------------'));
+            $('#messages').append($('<li>').text(JSON.stringify(msg)));
+        });
+        // io.on('dashboard', function(msg){
+        //     $('#messages').append($('<li>').text(JSON.stringify(msg)));
+        // });
+    });
+    function send() {
+        reservingTickets.emit('dashboard', 'i`m alive');
+    }
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Site</title>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+        body { padding-top:50px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="jumbotron" id="messages">
+        <h1>Testing ticket reservation with sockets</h1>
+        <h3>To see the dashboard data create a new ticket and new dashboard information will be send</h3>
+    </div>
+    <div id="send">
+        <button onclick="send()">Send message</button>
+    </div>
+</div>
+
+</body>
+
+</html>
