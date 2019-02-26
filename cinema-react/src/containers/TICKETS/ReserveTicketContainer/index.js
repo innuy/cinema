@@ -7,6 +7,7 @@ import {getSinglePresentation} from "../../../API/presentations";
 import {getTicketsOfPresentation, reserveTicket} from "../../../API/tickets";
 import {navigateBack} from "../../../utils/navigation";
 import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
+import {setReservingTicketsSocket} from "../../../API/socket";
 
 
 class ReserveTicketContainer extends Component {
@@ -44,7 +45,8 @@ class ReserveTicketContainer extends Component {
 
     getPresentationInfo(){
         this.hideError();
-        getTicketsOfPresentation(this.state.presentationId, (success, ticketsData) => {
+        setReservingTicketsSocket(this.state.presentationId, (success, ticketsData) => {
+        // getTicketsOfPresentation(this.state.presentationId, (success, ticketsData) => {
             if(success) {
                 if(ticketsData.length > 0) {
                     this.setState({

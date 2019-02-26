@@ -4,7 +4,7 @@ import {getUserToken} from "../utils/cookieStorage";
 import {hasAuthorizationError} from "../utils/errorHandler";
 
 export function getPresentations(callback){
-    axios.get(urls.presentations)
+    axios.get(urls.presentations, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             console.log(response);
             callback(true, parsePresentations(response.data));
@@ -65,7 +65,7 @@ function parseSinglePresentation(presentation){
 }
 
 export function getSinglePresentation(id, callback){
-    axios.get(urls.presentations + "/" + id)
+    axios.get(urls.presentations + "/" + id, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true, parseSinglePresentation(response.data[0]));
         }).catch((error) => {
@@ -79,7 +79,7 @@ export function addPresentation(presentation, callback){
         movie: presentation.film,
         auditorium: presentation.auditorium,
         start: presentation.startTime,
-    })
+    }, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
@@ -93,7 +93,7 @@ export function editPresentation(presentation, callback){
         "movie": presentation.film,
         "auditorium": presentation.auditorium,
         "start": presentation.startTime,
-    })
+    }, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
@@ -104,7 +104,7 @@ export function editPresentation(presentation, callback){
 }
 
 export function deletePresentation(id, callback){
-    axios.delete(urls.presentations + "/" + id)
+    axios.delete(urls.presentations + "/" + id, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {

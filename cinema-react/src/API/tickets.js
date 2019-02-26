@@ -4,7 +4,7 @@ import {getUserToken} from "../utils/cookieStorage";
 import {hasAuthorizationError} from "../utils/errorHandler";
 
 export function getTickets(callback){
-    axios.get(urls.tickets)
+    axios.get(urls.tickets, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true, parseTickets(response.data));
         }).catch((error) => {
@@ -19,7 +19,7 @@ export function addTicket(presentationId, userId, callback){
     axios.post(urls.films, {
         presentationId,
         userId,
-    })
+    }, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
@@ -29,7 +29,7 @@ export function addTicket(presentationId, userId, callback){
     });
 }
 
-function parseTickets(tickets){
+export function parseTickets(tickets){
     const res = [];
 
     for(let i = 0; i < tickets.length; i++){
@@ -64,7 +64,7 @@ function parseTickets(tickets){
 }
 
 export function getSingleTicket(id, callback){
-    axios.get(urls.tickets + "/" + id)
+    axios.get(urls.tickets + "/" + id, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true, parseTickets([response.data])[0]);
         }).catch((error) => {
@@ -74,7 +74,7 @@ export function getSingleTicket(id, callback){
 
 
 export function getTicketsOfPresentation(presentationId, callback){
-    axios.get(urls.tickets + "/?presentation=" + presentationId)
+    axios.get(urls.tickets + "/?presentation=" + presentationId, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true, parseTickets(response.data));
         }).catch((error) => {
@@ -83,7 +83,7 @@ export function getTicketsOfPresentation(presentationId, callback){
 }
 
 export function getMyTickets(callback){
-    axios.get(urls.tickets)
+    axios.get(urls.tickets, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true, parseTickets(response.data));
         }).catch((error) => {
@@ -99,7 +99,7 @@ export function reserveTicket(presentationId, row, column, callback){
         presentation: presentationId,
         seatRow: row,
         seatColumn: column
-    })
+    }, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then(() => {
             callback(true);
         }).catch((error) => {
@@ -118,7 +118,7 @@ export function editTicket(ticket, callback){
         presentation: ticket.presentation.id,
         seat: ticket.seat.id,
         sold: ticket.sold,
-    })
+    }, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
@@ -127,7 +127,7 @@ export function editTicket(ticket, callback){
 }
 
 export function deleteTicket(id, callback){
-    axios.delete(urls.tickets + "/" + id)
+    axios.delete(urls.tickets + "/" + id, {headers: {"Authorization": 'Token '+ getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
