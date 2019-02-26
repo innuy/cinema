@@ -17,3 +17,17 @@
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+.redSquare{
+    width: 15px;
+    height: 10px;
+    border: black solid 1px;
+    background-color: #C13C37;
+}
+
+.orangeSquare{
+    width: 15px;
+    height: 10px;
+    border: black solid 1px;
+    background-color: #E38627;
+}

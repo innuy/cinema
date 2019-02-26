@@ -9,7 +9,7 @@ class TopFilmsWidgetContainer extends Component {
     state = {
         topFilms: [],
         ticketsReserved: 0,
-        ticketsSold: 0
+        ticketsSold: 0,
     };
 
     constructor(props){

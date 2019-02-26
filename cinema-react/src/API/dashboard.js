@@ -25,6 +25,18 @@ export function getSoldRatio(callback){
     });
 }
 
+export function getBusyTimes(callback){
+    axios.get(urls.busyTimes, {headers: {"Authorization": 'Token '+ getUserToken()}})
+        .then((response) => {
+            callback(true, parseBusyTimesData(response.data));
+        }).catch((error) => {
+            if(error && error.response && !hasAuthorizationError(error)) {
+                callback(false, "There was an error obtaining busy times");
+            }
+    });
+}
+
+
 function parseTopFilms(topMovies){
     const res = [];
 
@@ -32,8 +44,8 @@ function parseTopFilms(topMovies){
         res.push({
             id: topMovies[i].movie._id,
             name: topMovies[i].movie.name,
-            ticketsReserved: topMovies[i].count,
-            ticketsSold: topMovies[i].count,
+            ticketsReserved: topMovies[i].reserved,
+            ticketsSold: topMovies[i].sold,
         })
     }
 
@@ -45,4 +57,18 @@ function parseSoldRatioData(data){
         reserved: data.reservedTickets,
         sold: data.soldTickets,
     }
+}
+
+function parseBusyTimesData(data){
+
+    const res = [];
+
+    for(let i = 0; i < data.length; i++){
+        res.push({
+            hour: data[i].hour,
+            tickets: data[i].tickets,
+        })
+    }
+
+    return res;
 }

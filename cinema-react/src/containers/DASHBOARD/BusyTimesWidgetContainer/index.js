@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
 import BusyTimesWidget from "../../../components/DASHBOARD/BusyTimesWidget";
+import {getBusyTimes} from "../../../API/dashboard";
 
 class BusyTimesWidgetContainer extends Component {
 
     state = {
-        busyTimes: [{x:1, y:2}, {x:2, y:4}],
+        busyTimes: [],
     };
 
     constructor(props){
@@ -19,7 +20,16 @@ class BusyTimesWidgetContainer extends Component {
     }
 
     getBusyTimesData(){
-        /* TODO: GET DATA FOR MOVIES */
+        getBusyTimes((success, data) => {
+            if(success){
+                this.setState({
+                    busyTimes: data,
+                })
+            }
+            else{
+                //TODO: HANDLE ERROR
+            }
+        })
     }
 
 

@@ -44,13 +44,24 @@ class TopMoviesWidget extends Component {
                     </tbody>
                 </table>
 
+
                 { this.props.ticketsReserved > 0 && this.props.ticketsSold > 0 ?
-                    <PieChart
-                        data={[
-                            {title: 'Sold', value: this.props.ticketsReserved, color: '#E38627'},
-                            {title: 'Total Reserved', value: this.props.ticketsSold, color: '#C13C37'},
-                        ]}
-                    /> : null
+                    <div>
+                        <PieChart
+                            data={[
+                                {title: 'Total Reserved', value: this.props.ticketsReserved, color: '#E38627'},
+                                {title: 'Sold', value: this.props.ticketsSold, color: '#C13C37'},
+                            ]}
+                        />
+                        <div className="orangeSquare"/>
+                        <div>
+                            ONLY RESERVED: ORANGE
+                        </div>
+                        <div className="redSquare"/>
+                        <div>
+                            SOLD & RESERVED: RED
+                        </div>
+                    </div> : null
                 }
             </div>
         );
