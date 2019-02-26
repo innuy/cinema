@@ -19,7 +19,7 @@ const testingSoldRatioAnswerData = [{
 }];
 
 function getSoldRatio(done) {
-    request(app)
+    request(app.app)
         .get('/dashboard/sold-ratio')
         .query()
         .then(res => {
@@ -35,7 +35,7 @@ function getSoldRatio(done) {
 }
 
 function getSoldRatioDbError(done) {
-    request(app)
+    request(app.app)
         .get('/dashboard/sold-ratio')
         .then(res => {
             setTimeout(() => {
@@ -48,7 +48,7 @@ function getSoldRatioDbError(done) {
         })
 }
 
-describe("Sold ratio test", function () {
+describe("Dashboard - Sold ratio test", function () {
     beforeEach(() => {
         app = require('../../../app');
     });

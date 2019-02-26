@@ -29,7 +29,7 @@ const wrongPasswordUserData = {
 };
 
 function putCurrentUserTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/current')
         .send(userData)
         .set('Authorization', token)
@@ -46,7 +46,7 @@ function putCurrentUserTest(done) {
 }
 
 function putCurrentUserWrongTokenTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/current')
         .send(userData)
         .set('Authorization', wrongToken)
@@ -63,7 +63,7 @@ function putCurrentUserWrongTokenTest(done) {
 }
 
 function putCurrentUserWrongEmailTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/current')
         .send(userData)
         .set('Authorization', token)
@@ -80,7 +80,7 @@ function putCurrentUserWrongEmailTest(done) {
 }
 
 function putCurrentUserDbErrorTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/current')
         .send(userData)
         .set('Authorization', token)

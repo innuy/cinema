@@ -61,7 +61,7 @@ const testingSeatData = {
 
 function ticketPostTest(done) {
     timeout(10000);
-    request(app)
+    request(app.app)
         .post('/tickets')
         .send(testingTicketData)
         .then(res => {
@@ -77,7 +77,7 @@ function ticketPostTest(done) {
 }
 
 function ticketEmptyPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/tickets')
         .send()
         .then(res => {
@@ -92,7 +92,7 @@ function ticketEmptyPostTest(done) {
 }
 
 function ticketWrongInformationPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/tickets')
         .send(testingTicketDataWithWrongInformation)
         .then(res => {
@@ -107,7 +107,7 @@ function ticketWrongInformationPostTest(done) {
 }
 
 function ticketDbErrorPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/tickets')
         .send(testingTicketData)
         .then(res => {
@@ -123,7 +123,7 @@ function ticketDbErrorPostTest(done) {
 }
 
 function ticketWrongPresentationIdPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/tickets')
         .send(testingTicketDataWithPresentationWrongInformation)
         .then(res => {
@@ -138,7 +138,7 @@ function ticketWrongPresentationIdPostTest(done) {
 }
 
 function tickeWithAlreadyStartedPresentationPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/tickets')
         .send(testingTicketDataWithSeatWrongInformation)
         .then(res => {

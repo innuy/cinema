@@ -46,7 +46,7 @@ const seatModel = {
 
 function getTicketWithFilters(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets')
         .query(ticketFilter)
         .then(res => {
@@ -68,7 +68,7 @@ function getTicketWithFilters(done) {
 
 function getTicketWithSeatIdFilters(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets')
         .query(ticketSeatIdFilter)
         .then(res => {
@@ -89,7 +89,7 @@ function getTicketWithSeatIdFilters(done) {
 
 function getTicketWithSeatRowAndColumnFilters(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets')
         .query(ticketSeatRowAndColumnFilter)
         .then(res => {
@@ -110,7 +110,7 @@ function getTicketWithSeatRowAndColumnFilters(done) {
 
 function getTicketWithFiltersWithId(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets/' + testTicketId)
         .then(res => {
             setTimeout(() => {
@@ -129,7 +129,7 @@ function getTicketWithFiltersWithId(done) {
 
 function getTicketWithWrongId(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets/' + testTicketId)
         .then(res => {
             setTimeout(() => {

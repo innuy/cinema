@@ -4,7 +4,9 @@ const assert = require("chai").assert;
 const should = require("chai").should();
 const request = require('supertest');
 let app;
-
+let dashboardNamespace;
+let dashboardSocket;
+let reservingTicketsSocket;
 require('../setup');
 
 const Ticket = require("../../../db/models/tickets");
@@ -55,7 +57,7 @@ const testingPresentationData = {
 };
 
 function ticketWithAlreadyStartedTicketPostTest(done) {
-    request(app)
+    request(app.app)
         .put('/tickets/' + testingTicketIdToSearch)
         .send(testingTicketDataWithTicketWrongInformation)
         .then(res => {
@@ -70,7 +72,7 @@ function ticketWithAlreadyStartedTicketPostTest(done) {
 }
 
 function ticketWithDbErrorPostTest(done) {
-    request(app)
+    request(app.app)
         .put('/tickets/' + testingTicketIdToSearch)
         .send(testingTicketDataWithTicketWrongInformation)
         .then(res => {
@@ -85,7 +87,7 @@ function ticketWithDbErrorPostTest(done) {
 }
 
 function ticketWrongTicketIdPostTest(done) {
-    request(app)
+    request(app.app)
         .put('/tickets/' + testingTicketWrongId)
         .send(testingTicketDataWithSeatWrongInformation)
         .then(res => {
@@ -104,12 +106,22 @@ describe("Ticket Put Test", function () {
         sinon.stub(Seat, 'findById').resolves(testingSeatData);
         sinon.stub(Presentation, 'findById').resolves(testingPresentationData);
         sinon.stub(Ticket, 'findByIdAndUpdate').resolves(testingTicketData);
+        sinon.stub(Ticket, 'findById').resolves(testingTicketData);
         app = require('../../../app');
+
+        dashboardNamespace = app.dashboardNamespace;
+        dashboardSocket = require('../../../websockets/dashboard');
+        reservingTicketsSocket = require('../../../websockets/ticketReservation');
+        sinon.stub(dashboardSocket, 'sendDataToDashboardNamespace').resolves('ok');
+        sinon.stub(reservingTicketsSocket, 'sendTicketListToCurrentPresentationRoom').resolves('ok');
     });
     afterEach(() => {
         Ticket.findByIdAndUpdate.restore();
+        Ticket.findById.restore();
         Presentation.findById.restore();
-        Seat.findById.restore()
+        Seat.findById.restore();
+        dashboardSocket.sendDataToDashboardNamespace.restore();
+        reservingTicketsSocket.sendTicketListToCurrentPresentationRoom.restore();
     });
 
     it('Successful - Update ticket', (done) => {

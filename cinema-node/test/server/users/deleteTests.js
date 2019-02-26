@@ -18,7 +18,7 @@ const testingUserData = {
 };
 
 function userDeleteTestById(done) {
-    request(app)
+    request(app.app)
         .del('/users/' + testingUserIdToDelete)
         .send()
         .then((res) => {
@@ -34,7 +34,7 @@ function userDeleteTestById(done) {
 }
 
 function userWrongIdDeleteTest(done) {
-    request(app)
+    request(app.app)
         .del('/users/' + testingUserWrongIdToDelete)
         .send()
         .then((res) => {

@@ -26,7 +26,7 @@ const testingIncompleteAuditoriumData = {
 };
 
 function auditoriumPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {
@@ -42,7 +42,7 @@ function auditoriumPutTest(done) {
 }
 
 function auditoriumIncompletePutTest(done) {
-    request(app)
+    request(app.app)
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingIncompleteAuditoriumData)
         .then(res => {
@@ -58,7 +58,7 @@ function auditoriumIncompletePutTest(done) {
 }
 
 function auditoriumWrongIdPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/auditoriums/' + testingAuditoriumWrongIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {
@@ -74,7 +74,7 @@ function auditoriumWrongIdPutTest(done) {
 }
 
 function auditoriumDbErrorPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {

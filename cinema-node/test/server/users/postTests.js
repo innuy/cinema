@@ -30,7 +30,7 @@ const adminData = {
 };
 
 function createUserTest(done) {
-    request(app)
+    request(app.app)
         .post('/users')
         .send(userData)
         .then(res => {
@@ -46,7 +46,7 @@ function createUserTest(done) {
 }
 
 function createUserWithEmptyRequestTest(done) {
-    request(app)
+    request(app.app)
         .post('/users')
         .send()
         .then(res => {
@@ -61,7 +61,7 @@ function createUserWithEmptyRequestTest(done) {
 }
 
 function createUserWithWrongNameTest(done) {
-    request(app)
+    request(app.app)
         .post('/users')
         .send({name: 1})
         .then(res => {
@@ -76,7 +76,7 @@ function createUserWithWrongNameTest(done) {
 }
 
 function createUserDbErrorTest(done) {
-    request(app)
+    request(app.app)
         .post('/users')
         .send(userData)
         .then(res => {
@@ -91,7 +91,7 @@ function createUserDbErrorTest(done) {
 }
 
 function adminCreatingAdminTest(done) {
-    request(app)
+    request(app.app)
         .post('/users')
         .send(adminData)
         .set('Authorization', adminToken)
@@ -107,7 +107,7 @@ function adminCreatingAdminTest(done) {
 }
 
 function userCreatingAdminTest(done) {
-    request(app)
+    request(app.app)
         .post('/users')
         .send(adminData)
         .set('Authorization', userToken)

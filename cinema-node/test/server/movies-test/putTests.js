@@ -31,7 +31,7 @@ const testingIncompleteMovieData = {
 };
 
 function moviePutTest(done) {
-    request(app)
+    request(app.app)
         .put('/movies/' + testingMovieIdToSearch)
         .send(testingUpdateMovieData)
         .then(res => {
@@ -47,7 +47,7 @@ function moviePutTest(done) {
 }
 
 function movieIncompletePutTest(done) {
-    request(app)
+    request(app.app)
         .put('/movies/' + testingMovieIdToSearch)
         .send(testingIncompleteMovieData)
         .then(res => {
@@ -63,7 +63,7 @@ function movieIncompletePutTest(done) {
 }
 
 function movieWrongIdPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/movies/' + testingMovieWrongIdToSearch)
         .send(testingUpdateMovieData)
         .then(res => {
@@ -79,7 +79,7 @@ function movieWrongIdPutTest(done) {
 }
 
 function movieDbErrorPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/movies/' + testingMovieIdToSearch)
         .send(testingUpdateMovieData)
         .then(res => {

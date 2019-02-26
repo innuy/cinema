@@ -22,7 +22,7 @@ const testingMovieWrongFilterData = {
 };
 
 function getMovieListWithFilters(done) {
-    request(app)
+    request(app.app)
         .get('/movies')
         .query(testingMovieFilterData)
         .then(res => {
@@ -42,7 +42,7 @@ function getMovieListWithFilters(done) {
 }
 
 function getMovieListWithoutFilters(done) {
-    request(app)
+    request(app.app)
         .get('/movies')
         .query()
         .then(res => {
@@ -59,7 +59,7 @@ function getMovieListWithoutFilters(done) {
 }
 
 function getMovieListWithWrongFilters(done) {
-    request(app)
+    request(app.app)
         .get('/movies')
         .query(testingMovieWrongFilterData)
         .then(res => {
@@ -75,7 +75,7 @@ function getMovieListWithWrongFilters(done) {
 }
 
 function getMovieById(done) {
-    request(app)
+    request(app.app)
         .get('/movies/' + testingMovieIdToSearch)
         .query()
         .then(res => {
@@ -91,7 +91,7 @@ function getMovieById(done) {
 }
 
 function getMovieWithWrongId(done) {
-    request(app)
+    request(app.app)
         .get('/movies/' + testingMovieWrongId)
         .query()
         .then(res => {

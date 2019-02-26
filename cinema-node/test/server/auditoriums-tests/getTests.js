@@ -23,7 +23,7 @@ const testingAuditoriumWrongFilterData = {
 };
 
 function getAuditoriumListWithFilters(done) {
-    request(app)
+    request(app.app)
         .get('/auditoriums?number=2')
         .then((res) => {
             setTimeout(() => {
@@ -42,7 +42,7 @@ function getAuditoriumListWithFilters(done) {
 }
 
 function getAuditoriumsListWithoutFilters(done) {
-    request(app)
+    request(app.app)
         .get('/auditoriums')
         .query()
         .then(res => {
@@ -62,7 +62,7 @@ function getAuditoriumsListWithoutFilters(done) {
 }
 
 function getAuditoriumsListWithWrongFilters(done) {
-    request(app)
+    request(app.app)
         .get('/auditoriums')
         .query(testingAuditoriumWrongFilterData)
         .then(res => {
@@ -78,7 +78,7 @@ function getAuditoriumsListWithWrongFilters(done) {
 }
 
 function getAuditoriumsById(done) {
-    request(app)
+    request(app.app)
         .get('/auditoriums/' + testingAuditoriumIdToSearch)
         .query()
         .then(res => {
@@ -95,7 +95,7 @@ function getAuditoriumsById(done) {
 }
 
 function getAuditoriumsByIdWithWrongId(done) {
-    request(app)
+    request(app.app)
         .get('/auditoriums/' + testingAuditoriumWrongId)
         .query()
         .then(res => {

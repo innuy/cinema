@@ -19,7 +19,7 @@ const token = 'Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5hY2hvQG
 const wrongToken = 'Token 111111111111111111111111111111eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5hY2hvQGFkbWluLmNvbSIsImlkIjoiNWM2MWNiYTMxNmRlZDA2YzNlZjFkMzE0IiwiZXhwIjoxNTU1MDk3MzMwLCJyb2xlIjoyLCJpYXQiOjE1NDk5MTMzMzB9.ecCfUNsvCHIIQ_U6s5KH2HoAr56iwCBnC29R2oi0bKw'
 
 function getCurrentUserTest(done) {
-    request(app)
+    request(app.app)
         .get('/users/current')
         .set('Authorization', token)
         .then(res => {
@@ -35,7 +35,7 @@ function getCurrentUserTest(done) {
 }
 
 function getCurrentUserWrongTokenTest(done) {
-    request(app)
+    request(app.app)
         .get('/users/current')
         .set('Authorization', wrongToken)
         .then(res => {

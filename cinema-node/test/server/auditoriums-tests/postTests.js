@@ -30,7 +30,7 @@ const seat = {
 
 function auditoriumPostTest(done) {
     this.timeout(5000);
-    request(app)
+    request(app.app)
         .post('/auditoriums')
         .send(auditorium)
         .then(res => {
@@ -46,7 +46,7 @@ function auditoriumPostTest(done) {
 }
 
 function auditoriumEmptyPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/auditoriums')
         .send()
         .then(res => {
@@ -61,7 +61,7 @@ function auditoriumEmptyPostTest(done) {
 }
 
 function auditoriumWrongNumberPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/auditoriums')
         .send({number: "one"})
         .then(res => {
@@ -76,7 +76,7 @@ function auditoriumWrongNumberPostTest(done) {
 }
 
 function auditoriumSeatCreationIncompleteTest(done) {
-    request(app)
+    request(app.app)
         .post('/auditoriums')
         .send(auditorium)
         .then(res => {

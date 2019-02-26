@@ -42,7 +42,7 @@ const wrongPasswordUserData = {
 };
 
 function passwordUpdatedTest(done) {
-    request(app)
+    request(app.app)
         .patch('/users')
         .send(passwordUpdateRequest)
         .then(res => {
@@ -58,7 +58,7 @@ function passwordUpdatedTest(done) {
 }
 
 function passwordUpdatedEmptyTest(done) {
-    request(app)
+    request(app.app)
         .patch('/users')
         .send({})
         .then(res => {
@@ -73,7 +73,7 @@ function passwordUpdatedEmptyTest(done) {
 }
 
 function passwordUpdatedWrongEmailTest(done) {
-    request(app)
+    request(app.app)
         .patch('/users')
         .send(wrongEmailUserData)
         .then(res => {
@@ -88,7 +88,7 @@ function passwordUpdatedWrongEmailTest(done) {
 }
 
 function passwordUpdatedWrongPasswordTest(done) {
-    request(app)
+    request(app.app)
         .patch('/users')
         .send(wrongPasswordUserData)
         .then(res => {
@@ -103,7 +103,7 @@ function passwordUpdatedWrongPasswordTest(done) {
 }
 
 function passwordUpdatedWrongAuthenticationTest(done) {
-    request(app)
+    request(app.app)
         .patch('/users')
         .send(passwordUpdateRequest)
         .then(res => {
@@ -118,7 +118,7 @@ function passwordUpdatedWrongAuthenticationTest(done) {
 }
 
 function passwordUpdatedAuthenticationErrorsTest(done) {
-    request(app)
+    request(app.app)
         .patch('/users')
         .send(passwordUpdateRequest)
         .then(res => {
@@ -133,7 +133,7 @@ function passwordUpdatedAuthenticationErrorsTest(done) {
 }
 
 function passwordUpdatedDbErrorTest(done) {
-    request(app)
+    request(app.app)
         .patch('/users')
         .send(passwordUpdateRequest)
         .then(res => {

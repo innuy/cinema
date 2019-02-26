@@ -28,7 +28,7 @@ const testingMovieData = {
 };
 
 function moviePostTest(done) {
-    request(app)
+    request(app.app)
         .post('/movies')
         .send(testingMovieData)
         .then(res => {
@@ -44,7 +44,7 @@ function moviePostTest(done) {
 }
 
 function movieEmptyPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/movies')
         .send()
         .then(res => {
@@ -59,7 +59,7 @@ function movieEmptyPostTest(done) {
 }
 
 function movieWrongNamePostTest(done) {
-    request(app)
+    request(app.app)
         .post('/movies')
         .send({name: 1})
         .then(res => {

@@ -33,7 +33,7 @@ const testingPresentationWrongFilterData = {
 };
 
 function getPresentationListWithFilters(done) {
-    request(app)
+    request(app.app)
         .get('/presentations')
         .query(testingPresentationFilterData)
         .then(res => {
@@ -53,7 +53,7 @@ function getPresentationListWithFilters(done) {
 }
 
 function getPresentationsListWithoutFilters(done) {
-    request(app)
+    request(app.app)
         .get('/presentations')
         .then(res => {
             setTimeout(() => {
@@ -72,7 +72,7 @@ function getPresentationsListWithoutFilters(done) {
 }
 
 function getPresentationsListWithWrongFilters(done) {
-    request(app)
+    request(app.app)
         .get('/presentations')
         .query(testingPresentationWrongFilterData)
         .then(res => {
@@ -88,7 +88,7 @@ function getPresentationsListWithWrongFilters(done) {
 }
 
 function getPresentationsById(done) {
-    request(app)
+    request(app.app)
         .get('/presentations/' + testingPresentationIdToSearch)
         .query()
         .then(res => {
@@ -105,7 +105,7 @@ function getPresentationsById(done) {
 }
 
 function getPresentationsWithWrongId(done) {
-    request(app)
+    request(app.app)
         .get('/presentations/' + testingPresentationWrongId)
         .query()
         .then(res => {
