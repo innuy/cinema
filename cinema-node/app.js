@@ -66,13 +66,9 @@ app.use('*', function(req, res){
 
 var dashboardNamespace = io.of('/dashboard');
 dashboardNamespace.on('connection', function(socket){
-
     sendDataToDashboardNamespace();
 
     console.log('a user join dashboard');
-    socket.on('dashboard', function(msg){
-        console.log('a user says: ' + msg);
-    });
 });
 
 var reservingTicketsNamespace = io.of('/reservingTickets');
@@ -80,11 +76,9 @@ reservingTicketsNamespace.on('connection', function(socket){
 
     console.log('a user join reservingTickets');
     socket.on('startReservation', function (presentationId) {
-        socket.join('presentation-' + presentationId);
-        console.log(presentationId);
         sendTicketListToSocketStartingReservation(presentationId, socket);
 
-
+        socket.join('presentation-' + presentationId);
         console.log('a user starts reservation of: ' + presentationId);
     });
 });

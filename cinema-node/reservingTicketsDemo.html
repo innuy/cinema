@@ -13,9 +13,8 @@
 <script>
     const reservingTicketsSocketURL = 'http://localhost:8000/reservingTickets';
     const presentationId = "5c3cd36ab76e074566d3f6da";
-    const basePresentationSocketURL = 'http://localhost:8000/presentation-';
+    var io = io.connect();
 
-    // var io = io.connect();
     $(function () {
         var reservingTickets = io.connect(reservingTicketsSocketURL);
 
@@ -25,13 +24,7 @@
             $('#messages').append($('<h3>').text('New Presentation Data! ------------------------------'));
             $('#messages').append($('<li>').text(JSON.stringify(msg)));
         });
-        // io.on('dashboard', function(msg){
-        //     $('#messages').append($('<li>').text(JSON.stringify(msg)));
-        // });
     });
-    function send() {
-        reservingTickets.emit('dashboard', 'i`m alive');
-    }
 </script>
 
 <head>
@@ -49,9 +42,6 @@
     <div class="jumbotron" id="messages">
         <h1>Testing ticket reservation with sockets</h1>
         <h3>To see the dashboard data create a new ticket and new dashboard information will be send</h3>
-    </div>
-    <div id="send">
-        <button onclick="send()">Send message</button>
     </div>
 </div>
 

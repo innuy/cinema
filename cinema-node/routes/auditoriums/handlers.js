@@ -22,6 +22,7 @@ module.exports.create = (req, res) => {
 
 module.exports.get = (req, res) => {
     Auditorium.find(req.query)
+        .sort([['number', 'ascending']])
         .then(auditorium => res.send(auditorium))
         .catch(err => errors.databaseError(err, res))
 };

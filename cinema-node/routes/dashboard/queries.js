@@ -107,7 +107,10 @@ module.exports.queryBusyTimes = timeRangeInDays => new Promise((resolve, reject)
         },
         {
             $project: {
-                h: {$hour: {$arrayElemAt: ["$presentationInfo.start", 0]}},
+                h: {$hour: {
+                    date: {$arrayElemAt: ["$presentationInfo.start", 0]},
+                    timezone: 'America/Montevideo'
+                } },
                 tickets: "$count",
                 _id: 0,
             }

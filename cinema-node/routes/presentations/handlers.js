@@ -73,7 +73,8 @@ module.exports.get = (req, res) => {
             }
         },
         {$project: {ticketsSoldArray: 0}},
-        getAuditoriumDetailsSubQuery
+        getAuditoriumDetailsSubQuery,
+        {$sort: { movie:1, start: -1}}
     ])
         .then(presentation => res.send(presentation))
         .catch(err => errors.databaseError(err, res));

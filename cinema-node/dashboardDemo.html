@@ -25,13 +25,7 @@
             $('#messages').append($('<li>').text('busyTimes'));
             $('#messages').append($('<li>').text(JSON.stringify(msg.busyTimes)));
         });
-        io.on('dashboard', function(msg){
-            $('#messages').append($('<li>').text(JSON.stringify(msg)));
-        });
     });
-    function send() {
-        dashboard.emit('dashboard', 'i`m alive');
-    }
 </script>
 
 <head>
@@ -49,9 +43,6 @@
     <div class="jumbotron" id="messages">
         <h1>Testing Dashboard with sockets</h1>
         <h3>To see the dashboard data create a new ticket and new dashboard information will be send</h3>
-    </div>
-    <div id="send">
-        <button onclick="send()">Send message</button>
     </div>
 </div>
 
