@@ -113,7 +113,9 @@ describe("Ticket Put Test", function () {
         dashboardSocket = require('../../../websockets/dashboard');
         reservingTicketsSocket = require('../../../websockets/ticketReservation');
         sinon.stub(dashboardSocket, 'sendDataToDashboardNamespace').resolves('ok');
-        sinon.stub(reservingTicketsSocket, 'sendTicketListToCurrentPresentationRoom').resolves('ok');
+        sinon.stub(reservingTicketsSocket, 'sendTicketListToCurrentPresentationRoom')
+            .withArgs(testingPresentationId)
+            .resolves('ok');
     });
     afterEach(() => {
         Ticket.findByIdAndUpdate.restore();
