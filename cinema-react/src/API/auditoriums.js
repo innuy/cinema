@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {urls} from '../utils/urls';
-import {getUserToken} from "../utils/cookieStorage";
 import {hasAuthorizationError} from "../utils/errorHandler";
 
 export function getAuditoriums(callback){

@@ -74,7 +74,6 @@ export function getSinglePresentation(id, callback){
 }
 
 export function addPresentation(presentation, callback){
-
     axios.post(urls.presentations, {
         movie: presentation.film,
         auditorium: presentation.auditorium,

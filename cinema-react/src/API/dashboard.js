@@ -37,7 +37,7 @@ export function getBusyTimes(callback){
 }
 
 
-function parseTopFilms(topMovies){
+export function parseTopFilms(topMovies){
     const res = [];
 
     for(let i = 0; i < topMovies.length; i++){
@@ -59,7 +59,7 @@ function parseSoldRatioData(data){
     }
 }
 
-function parseBusyTimesData(data){
+export function parseBusyTimesData(data){
 
     const res = [];
 

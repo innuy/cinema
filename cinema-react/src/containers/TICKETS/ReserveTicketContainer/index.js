@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import NavBar from "../../../components/GENERAL/NavBar";
 import ReserveTicket from "../../../components/TICKETS/ReserveTicket";
 import {getSinglePresentation} from "../../../API/presentations";
-import {getTicketsOfPresentation, reserveTicket} from "../../../API/tickets";
+import {reserveTicket} from "../../../API/tickets";
 import {navigateBack} from "../../../utils/navigation";
 import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 import {setReservingTicketsSocket} from "../../../API/socket";

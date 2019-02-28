@@ -1,14 +1,19 @@
 import openSocket from 'socket.io-client';
 import {urls} from "../utils/urls";
-import axios from "axios";
+import {parseBusyTimesData, parseTopFilms} from "./dashboard";
 import {parseTickets} from "./tickets";
 
 export function setDashboardSocket(callback) {
     const  dashboardSocket = openSocket(urls.dashboardNamespace);
 
     dashboardSocket.on('dashboard', function(response){
-        // callback(true, parseTickets(response.data));
-    //    TODO: parse dashboard data. Add structure to divide the messages
+
+        const topFilms = response.topMovies;
+        const ticketsSold = response.soldRatio.soldTickets;
+        const ticketsReserved = response.soldRatio.reservedTickets - ticketsSold;
+        const busyTimes = response.busyTimes;
+
+        callback(true, parseTopFilms(topFilms),ticketsReserved,ticketsSold, parseBusyTimesData(busyTimes));
     });
 //    TODO: error handling
 }
@@ -23,4 +28,3 @@ export function setReservingTicketsSocket(presentationId, callback) {
     });
 //    TODO: error handling
 }
-
