@@ -3,7 +3,7 @@ const errors = require("./errors");
 const Auditorium = require('../../db/models/auditoriums');
 const Presentation = require("../../db/models/presentations");
 const Ticket = require("../../db/models/tickets");
-
+const auth = require('../../middlewares/auth');
 
 var ObjectID = require('mongodb').ObjectID;
 const Tools = require('./tools');
@@ -55,7 +55,7 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.get = (req, res) => {
-    const filter = getFilterFromQuery(req.query);
+    const filter = getFilter(req);
     Presentation.aggregate([
         {$match: filter},
         {
@@ -176,15 +176,30 @@ const createPresentation = newPresentation => new Promise((resolve, reject) => {
         .catch(err => reject(err));
 });
 
-const getFilterFromQuery = query => {
+const getFilter = req => {
+    const query = req.query;
     if (query.movie !== undefined) {
         query.movie = ObjectID(query.movie);
     }
     if (query.auditorium !== undefined) {
         query.auditorium = ObjectID(query.auditorium);
     }
+
+    const userLogged = req.requestingUser;
+    if(isNotLogAsAdmin(userLogged)){
+        const now = new Date();
+        query.start = {$gte: now};
+    }
     return query;
 };
+
+const isNotLogAsAdmin = userLogged => {
+    if (userLogged === undefined)
+        return true;
+    else
+        return userLogged.role !== auth.adminRoleKey;
+};
+
 
 const thereIsNoPresentation = presentation => {
     if (Array.isArray(presentation))
