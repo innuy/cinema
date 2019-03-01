@@ -1,5 +1,5 @@
 export function parseTime(time){
-    const date = new Date(time);
+    const date = new Date(Date.parse(time));
 
     let month = date.getMonth() + 1;
     let hours = date.getHours();

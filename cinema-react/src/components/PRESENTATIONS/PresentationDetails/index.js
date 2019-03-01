@@ -92,12 +92,12 @@ class PresentationDetails extends Component {
     }
 
     parseDateValue(startTime){
-        const date = new Date(startTime);
+        const date = new Date(Date.parse(startTime));
 
         let month = (date.getMonth()+1) > 9 ? (date.getMonth()+1) : "0" + (date.getMonth()+1);
         let day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
-        let hours = date.getUTCHours() > 9 ? date.getUTCHours() : "0" + date.getUTCHours();
-        let minutes = date.getUTCMinutes() > 9 ? date.getUTCMinutes() : "0" + date.getUTCMinutes();
+        let hours = date.getHours() > 9 ? date.getHours() : "0" + date.getHours();
+        let minutes = date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes();
 
         return date.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes;
     }
