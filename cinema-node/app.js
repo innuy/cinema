@@ -47,13 +47,6 @@ var path = require('path');
 const sendDataToDashboardNamespace = require("./websockets/dashboard").sendDataToDashboardNamespace;
 const sendTicketListToSocketStartingReservation = require("./websockets/ticketReservation").startingTicketReservation;
 
-app.get('/dashboardDemo', function(req, res) {
-    res.sendFile(path.join(__dirname + '/dashboardDemo.html'));
-});
-app.get('/reservingTicketsDemo', function(req, res) {
-    res.sendFile(path.join(__dirname + '/reservingTicketsDemo.html'));
-});
-
 app.use('/', routes(router));
 app.use('*', function(req, res){
     res.status(404);
