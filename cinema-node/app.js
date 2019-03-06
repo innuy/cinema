@@ -1,12 +1,11 @@
 // External modules
 var express = require('express');
 var app = express();
-var port = 8000;
+var port = process.env.PORT || 8000; // to use the heroku assigned port
 
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
 
 require('dotenv').config();
 const logger = require('morgan');
@@ -76,7 +75,7 @@ reservingTicketsNamespace.on('connection', function(socket){
     });
 });
 
-http.listen(8000, "0.0.0.0", function(){
+http.listen(port, "0.0.0.0", function(){
     console.log('We are live on ' + port);
 });
 
