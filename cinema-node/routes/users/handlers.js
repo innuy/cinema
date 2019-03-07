@@ -13,9 +13,10 @@ module.exports.create = (req, res) => {
         return errors.needAdminAccessError('To create an administrator user you must be a logged administrator', res)
     }
     finalUser.setPassword(user.password);
+    finalUser.token = finalUser.generateJWT();
 
     finalUser.save()
-        .then(() => res.send(finalUser))
+        .then(() => res.json({ user: finalUser.toAuthJSON() }))
         .catch(err => errors.databaseError(err, res));
 };
 
