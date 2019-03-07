@@ -31,8 +31,9 @@ export function signUp(email, password, firstName, lastName, callback){
         role: USER_ROLES.USER,
     })
         .then((response) => {
+            const userData = parseSingleUser(response.data.user);
+            saveUserToken(userData.token);
             callback(true);
-            //saveUserToken() //TODO: ADD USER TOKEN ON SIGNUP
         }).catch((error) => {
             callback(false, "There was an error with the connection");
     });
