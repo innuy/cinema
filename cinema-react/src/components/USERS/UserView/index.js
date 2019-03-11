@@ -26,7 +26,7 @@ class UserView extends Component {
         return (
             <div>
                 <div className="userViewTitle">All Users</div>
-                <div className="row userViewContainer justify-content-center">
+                <div className="row display-flex userViewContainer justify-content-around">
                     {this.renderUsers()}
                 </div>
                 <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">
