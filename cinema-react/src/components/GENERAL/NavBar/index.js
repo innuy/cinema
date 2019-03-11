@@ -48,14 +48,14 @@ class NavBar extends Component {
 
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light navBarContainer">
-                <span className="navbar-brand" >Innuy</span>
+                <span className="navbar-brand">Innuy</span>
                 <button className="navbar-toggler mr-2" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="true" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"/>
                 </button>
-                <div className="collapse navbar-collapse " id="navbarSupportedContent">
-                    <ul className="navbar-nav align-items-start">
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul className="navbar-nav">
                         {this.renderElements()}
                     </ul>
                 </div>
