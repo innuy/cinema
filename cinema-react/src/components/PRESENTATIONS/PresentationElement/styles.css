@@ -1,14 +1,13 @@
 .presentationElementContainer{
-    margin: 10pt;
-    padding-top: 10pt;
-    padding-bottom: 10pt;
+    margin-bottom: 2.5vh;
+    padding: 1rem;
     background-color: var(--background);
 }
 
 .presentationElementDelete{
-    width: 6%;
+    width: 1rem;
     margin-left: 95%;
-    margin-top: -5%;
+    margin-top: -0.5rem;
 }
 
 .presentationElementMainText{

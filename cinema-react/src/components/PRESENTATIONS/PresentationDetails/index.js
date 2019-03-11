@@ -105,15 +105,16 @@ class PresentationDetails extends Component {
     render() {
 
         return (
-            <div>
+            <div className="justify-content-center">
                 <div className="presentationDetailsSeparator"/>
                 <div className="presentationDetailsSeparator"/>
-                <div className="presentationDetailsContainer">
-                    <div className="presentationDetailsPageTitle">PRESENTATION INFORMATION</div>
+                <div className="container presentationDetailsContainer">
+                    <div className="presentationDetailsPageTitle">Presentation Information</div>
                     <div className="presentationDetailsSeparator"/>
+
                     {(this.state.presentation.film && this.props.films.length > 0) || this.props.newPresentation ? <div>
-                        <div className="presentationDetailsTitle">Film:</div>
-                        <select className="presentationInput" defaultValue={this.state.presentation.film} onChange={(data) => {
+                        <label className="presentationDetailsTitle" >Film:</label>
+                        <select className="custom-select presentationInput" defaultValue={this.state.presentation.film} onChange={(data) => {
                             const presentation = this.state.presentation;
                             presentation.film = data.target.value;
                             this.setState({
@@ -127,7 +128,7 @@ class PresentationDetails extends Component {
                     {(this.state.presentation.auditorium && this.props.auditoriums.length > 0) || this.props.newPresentation ?
                         <div>
                             <div className="presentationDetailsTitle">Auditorium:</div>
-                            <select className="presentationInput" defaultValue={this.state.presentation.auditorium} onChange={(data) => {
+                            <select className="custom-select presentationInput" defaultValue={this.state.presentation.auditorium} onChange={(data) => {
                                 const presentation = this.state.presentation;
                                 presentation.auditorium = data.target.value;
                                 this.setState({
@@ -141,7 +142,7 @@ class PresentationDetails extends Component {
                         </div> : null
                     }
                     <div className="presentationDetailsTitle">Start time:</div>
-                    <input className="presentationInput" type="datetime-local" value={this.state.presentation.startTime} onChange={(event) => {
+                    <input className="custom-select presentationInput" type="datetime-local" value={this.state.presentation.startTime} onChange={(event) => {
                         const presentation = this.state.presentation;
                         presentation.startTime = event.target.value;
                         this.setState({

@@ -27,7 +27,7 @@ class PresentationView extends Component {
         return (
             <div>
                 <div className="presentationViewTitle">All Presentations</div>
-                <div className="row presentationViewContainer justify-content-center">
+                <div className="row display-flex presentationViewContainer justify-content-around">
                     {this.renderPresentations()}
                 </div>
                 {this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">
