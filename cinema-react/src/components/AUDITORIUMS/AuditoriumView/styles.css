@@ -1,6 +1,8 @@
 .auditoriumViewContainer{
     flex-direction: row;
     background-color: var(--secondBackground);
+    float: none;
+    margin: 2vh auto;
 }
 
 .auditoriumViewTitle{
@@ -9,4 +11,13 @@
     color: var(--headerText);
     width: 100%;
     text-align: center;
+}
+
+.row.display-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.row.display-flex > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
 }
