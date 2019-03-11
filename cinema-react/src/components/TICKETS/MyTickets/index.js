@@ -28,7 +28,7 @@ class MyTickets extends Component {
         return (
             <div>
                 <div className="ticketViewTitle">Your Tickets</div>
-                <div className="row ticketViewContainer justify-content-center">
+                <div className="row display-flex userViewContainer justify-content-around">
                     {this.renderTickets()}
                 </div>
             </div>

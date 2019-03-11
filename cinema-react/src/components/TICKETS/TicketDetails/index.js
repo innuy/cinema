@@ -90,17 +90,22 @@ class TicketDetails extends Component {
     render() {
 
         return (
-            <div>
+            <div className="justify-content-center">
                 <div className="ticketDetailsSeparator"/>
                 <div className="ticketDetailsSeparator"/>
-                <div className="ticketDetailsContainer">
-                    <div className="ticketDetailsPageTitle">TICKET INFORMATION</div>
+                <div className="container ticketDetailsContainer">
+                    <div className="ticketDetailsPageTitle">Ticket Information</div>
+
                     <div className="ticketDetailsSeparator"/>
-                    <select className="ticketDetailsSelect" onChange={(data) => {
+
+                    <div className="input-group mb-3">
+                    <select className="custom-select ticketDetailsSelect" onChange={(data) => {
                         this.updateInformation(data.target.value);
                     }}>
                         {this.renderPresentations()}
                     </select>
+                    </div>
+
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsTitle">Film:</div>
                     <div className="ticketInput">{this.state.ticket.film.name}</div>

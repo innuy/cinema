@@ -31,7 +31,7 @@ class TicketView extends Component {
         return (
             <div>
                 <div className="ticketViewTitle">All Tickets</div>
-                <div className="row ticketViewContainer justify-content-center">
+                <div className="row display-flex ticketViewContainer justify-content-around">
                     {this.renderTickets()}
                 </div>
                 {/*this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">

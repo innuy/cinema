@@ -1,7 +1,7 @@
 .ticketDetailsContainer{
-    width: fit-content;
-    margin-left: 5%;
-    padding-right: 10px;
+    /*width: fit-content;*/
+    /*margin-left: 5%;*/
+    /*padding-right: 10px;*/
     background-color: var(--background);
 }
 
@@ -30,7 +30,7 @@
 }
 
 .ticketDetailsSelect{
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 }
 
 .ticketInput{
