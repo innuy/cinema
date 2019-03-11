@@ -13,19 +13,22 @@ class SeatElement extends Component {
 
         let image = null;
 
-        if(this.props.selected){
+        if (this.props.selected) {
             image = seatSelected;
-        }
-        else if(this.props.taken){
+        } else if (this.props.taken) {
             image = seatTaken;
-        }
-        else{
+        } else {
             image = seat;
         }
 
         return (
-            <div className='seatElementContainer' onClick={() => {if(!this.props.taken) {this.props.selectionCallback(this.props.row, this.props.column)}}}>
-                <img className='seatElementImage' alt={"Seat row:" + this.props.row +", column: " + this.props.column} src={image}/>
+            <div className='seatElementContainer col ' onClick={() => {
+                if (!this.props.taken) {
+                    this.props.selectionCallback(this.props.row, this.props.column)
+                }
+            }}>
+                <img className='seatElementImage' alt={"Seat row:" + this.props.row + ", column: " + this.props.column}
+                     src={image}/>
             </div>
         );
     }
