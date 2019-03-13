@@ -15,13 +15,13 @@
 
 .ticketDetailsTitleContainer{
     width: 100%;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 }
 
 .ticketDetailsTitle{
     color: var(--subText);
     font-weight: bold;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 }
 
 .ticketDetailsTitleButton{
@@ -31,12 +31,6 @@
 
 .ticketDetailsSelect{
     /*margin-left: 10px;*/
-}
-
-.ticketInput{
-    width: 100%;
-    color: var(--text);
-    margin-left: 10px;
 }
 
 .ticketDetailsSeparator{
