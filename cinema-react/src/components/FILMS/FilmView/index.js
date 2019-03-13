@@ -31,7 +31,7 @@ class FilmView extends Component {
         return (
             <div>
                 <div className="filmViewTitle">All Films</div>
-                <div className="row filmViewContainer justify-content-center">
+                <div className="row display-flex filmViewContainer justify-content-around">
                     {this.renderFilms()}
                 </div>
                 {this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">
