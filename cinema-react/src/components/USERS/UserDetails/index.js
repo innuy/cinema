@@ -143,9 +143,14 @@ class UserDetails extends Component {
         } else {
             return (
                 <div>
-                    <div className="userDataTitle">Change password?</div>
-                    <input className="userDataInput" type="checkbox" checked={this.state.changePassword}
-                           onChange={this.handleChangePasswordCheck}/>
+                    <div className="custom-control custom-switch ">
+                        <input type="checkbox" className="custom-control-input" id="resetPasswordSwitch"
+                               checked={this.state.changePassword}
+                               onChange={this.handleChangePasswordCheck}/>
+                        <label className="custom-control-label userDataTitle" htmlFor="resetPasswordSwitch">Change
+                            password?</label>
+                    </div>
+
                     {this.state.changePassword ?
                         <div className="container">
                             <div className="form-group">
@@ -189,7 +194,8 @@ class UserDetails extends Component {
                             </div>
                         </div> : null
                     }
-                </div>)
+                </div>
+            )
         }
     }
 
@@ -233,7 +239,6 @@ class UserDetails extends Component {
 
                     {/*<div className="userDataSeparator"/>*/}
 
-
                     <div className="form-group">
                         <label className="userDataTitle">Last name:</label>
                         <input className="form-control" value={this.state.user.lastName} onChange={(event) => {
@@ -249,9 +254,15 @@ class UserDetails extends Component {
 
                     {this.props.isAdmin ? <div>
                         <div className="userDataSeparator"/>
-                        <div className="userDataTitle">Is admin?</div>
-                        <input className="userDataInput" type="checkbox"
-                               checked={this.state.user.role === USER_ROLES.ADMIN} onChange={this.handleIsAdminChange}/>
+
+                        <div className="custom-control custom-switch">
+                            <input type="checkbox" className="custom-control-input" id="isAdminSwitch"
+                                   checked={this.state.user.role === USER_ROLES.ADMIN}
+                                   onChange={this.handleIsAdminChange}/>
+                            <label className="custom-control-label userDataTitle" htmlFor="isAdminSwitch">Is
+                                admin?</label>
+                        </div>
+
                     </div> : null}
 
                     <div className="userDataSeparator"/>

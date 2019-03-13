@@ -23,8 +23,8 @@
 
 .userDataTitle{
     /*margin-left: 5%;*/
-    color: var(--subText);
-    font-weight: bold;
+    /*color: var(--subText);*/
+    /*font-weight: bold;*/
 }
 
 .userDataTitleButton{
@@ -33,9 +33,9 @@
 }
 
 .userDataInput{
-    width: 90%;
-    margin-left: 5%;
-    color: var(--text);
+    width: 90%;/*
+    margin-left: 5%;*/
+    /*color: var(--text);*/
 }
 
 .userDataSeparator{
