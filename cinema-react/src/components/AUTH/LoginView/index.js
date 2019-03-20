@@ -19,7 +19,7 @@ class LoginView extends Component {
     render() {
 
         return (
-            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div className="container">
                 <div className="loginDetailsPageTitle">LOGIN</div>
                 <div className="loginDetailsContainer">
                     <div className="loginDetailsSeparator"/>
