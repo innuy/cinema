@@ -31,3 +31,15 @@
     border: black solid 1px;
     background-color: #E38627;
 }
+
+.soldReservedPieChart{
+    font-size: 35px;
+    max-height: 500px;
+    min-height: 200px;
+}
+
+.topMoviesChart{
+    font-size: 35px;
+    max-height: 500px;
+    min-height: 200px;
+}
