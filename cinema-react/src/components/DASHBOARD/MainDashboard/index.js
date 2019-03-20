@@ -44,7 +44,7 @@ class MainDashboard extends Component {
         return (
             <div>
                 <div className="dashboardViewTitle">Dashboard</div>
-                <div className="row">
+                <div className="container">
                     <TopFilmsWidgetContainer topFilms={this.state.topFilms} ticketsReserved={this.state.ticketsReserved} ticketsSold={this.state.ticketsSold}/>
                     <BusyTimesWidgetContainer busyTimes={this.state.busyTimes}/>
                 </div>

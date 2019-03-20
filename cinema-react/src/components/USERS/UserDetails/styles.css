@@ -1,6 +1,4 @@
 .userDataContainer{
-    /*width: 40%;*/
-    /*margin-left: 30%;*/
     background-color: var(--background);
 }
 
@@ -22,9 +20,6 @@
 }
 
 .userDataTitle{
-    /*margin-left: 5%;*/
-    /*color: var(--subText);*/
-    /*font-weight: bold;*/
 }
 
 .userDataTitleButton{
@@ -33,9 +28,7 @@
 }
 
 .userDataInput{
-    width: 90%;/*
-    margin-left: 5%;*/
-    /*color: var(--text);*/
+    width: 90%;
 }
 
 .userDataSeparator{

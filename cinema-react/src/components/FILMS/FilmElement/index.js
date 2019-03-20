@@ -49,7 +49,6 @@ class FilmElement extends Component {
                         <div className=" filmElementBody">
 
                             <div className="card-body">
-                                {/*<div className="filmElementSecondaryText card-text">{this.props.film.summary}</div>*/}
                                 <div
                                     className="filmElementSecondaryText card-text">DURATION: {this.props.film.duration}</div>
                                 <div

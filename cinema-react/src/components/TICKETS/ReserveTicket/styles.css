@@ -17,3 +17,7 @@
 .reserveTicketButton {
     text-align: center;
 }
+
+.auditoriumContainer {
+    max-height: 80%;
+}

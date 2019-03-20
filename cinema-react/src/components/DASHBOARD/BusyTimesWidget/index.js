@@ -13,7 +13,7 @@ class BusyTimesWidget extends Component {
     render() {
 
         let config = {
-            "theme": "none",
+            "theme": "light",
             "type": "serial",
             "dataProvider": this.props.busyTimes,
             "valueAxes": [{

@@ -73,7 +73,7 @@ class ReserveTicket extends Component {
             <div>
                 <div className="container align-items-center">
                     <div
-                        className="reserveTicketSeatContainer col-xs-12 col-sm-6 offset-sm-3 col-md-8 offset-md-2 col-lg-8 offset-lg-2 /*col-xl-4 offset-xl-4*/">
+                        className="reserveTicketSeatContainer col-xs-12 col-sm-6 offset-sm-3 col-md-8 offset-md-2 col-lg-8 offset-lg-2 ">
                         {this.renderSeats()}
                     </div>
                 </div>

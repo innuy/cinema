@@ -1,7 +1,4 @@
 .ticketDetailsContainer{
-    /*width: fit-content;*/
-    /*margin-left: 5%;*/
-    /*padding-right: 10px;*/
     background-color: var(--background);
 }
 
@@ -15,13 +12,11 @@
 
 .ticketDetailsTitleContainer{
     width: 100%;
-    /*margin-left: 10px;*/
 }
 
 .ticketDetailsTitle{
     color: var(--subText);
     font-weight: bold;
-    /*margin-left: 10px;*/
 }
 
 .ticketDetailsTitleButton{
@@ -30,7 +25,6 @@
 }
 
 .ticketDetailsSelect{
-    /*margin-left: 10px;*/
 }
 
 .ticketDetailsSeparator{

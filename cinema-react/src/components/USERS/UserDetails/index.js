@@ -237,8 +237,6 @@ class UserDetails extends Component {
                             <div className="userDataErrorMessage">There is an error in the first name</div> : null}
                     </div>
 
-                    {/*<div className="userDataSeparator"/>*/}
-
                     <div className="form-group">
                         <label className="userDataTitle">Last name:</label>
                         <input className="form-control" value={this.state.user.lastName} onChange={(event) => {

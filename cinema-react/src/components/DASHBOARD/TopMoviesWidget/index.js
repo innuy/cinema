@@ -17,7 +17,6 @@ class TopMoviesWidget extends Component {
             "labelText": "[[percents]]%",
             "legend": {
                 "position": "bottom",
-                // "marginRight": 0,
                 "autoMargins": true
             },
             "dataProvider": [
@@ -40,7 +39,6 @@ class TopMoviesWidget extends Component {
             "dataProvider": this.props.topFilms,
             "valueAxes": [{
                 // "stackType": "3d",
-                // "unit": "%",
                 "position": "left",
                 "title": "Tickets",
             }],
@@ -73,7 +71,6 @@ class TopMoviesWidget extends Component {
             <div className="row">
                 {this.props.ticketsReserved > 0 && this.props.ticketsSold > 0 ?
                     <div className="col-xs-12 col-sm-12 col-md-4 ">
-                        {/*<div className="container">*/}
                             <div className="busyTimesViewTitle">Sold - Reserved</div>
 
                             <AmCharts.React
@@ -84,12 +81,10 @@ class TopMoviesWidget extends Component {
                                 }}
                                 options={soldReservedRatioOptions}
                             />
-                        {/*</div>*/}
                     </div> : null
                 }
 
                 <div className="col-xs-12 col-sm-12 col-md-8 ">
-                    {/*<div className="container">*/}
                         <div className="topMoviesViewTitle">Top Films</div>
 
                         <AmCharts.React
@@ -100,7 +95,6 @@ class TopMoviesWidget extends Component {
                             }}
                             options={topMoviesOptions}
                         />
-                    {/*</div>*/}
                 </div>
             </div>
         );

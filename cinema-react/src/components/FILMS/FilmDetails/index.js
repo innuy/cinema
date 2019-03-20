@@ -59,8 +59,6 @@ class FilmDetails extends Component {
             }
         }
 
-        {/*<div key={"castInput_title"} className="filmDetailsTitleContainer row">*/
-        }
         res.push(
                 <button className="filmDetailsTitleButton col-12"
                         onClick={() => {
@@ -73,7 +71,6 @@ class FilmDetails extends Component {
                 </button>
 
         );
-        // </div>
 
         return res;
     }
