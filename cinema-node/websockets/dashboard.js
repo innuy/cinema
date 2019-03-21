@@ -9,18 +9,25 @@ const sendDataToDashboardNamespace = async () => {
     let dashboardData;
     let dashboardNamespace = app.dashboardNamespace;
 
-    let dashboardDataArray = await Promise.all([
-        dashboardQueries.queryTopMovies(timeRangeInDays, 10),
-        dashboardQueries.querySoldRatio(timeRangeInDays),
-        dashboardQueries.queryBusyTimes(timeRangeInDays),
-    ]);
+    try {
 
-    dashboardData = new Object();
-    dashboardData.topMovies = dashboardDataArray[0];
-    dashboardData.soldRatio = dashboardDataArray[1];
-    dashboardData.busyTimes = dashboardDataArray[2];
+        let dashboardDataArray = await Promise.all([
+            dashboardQueries.queryTopMovies(timeRangeInDays, 10),
+            dashboardQueries.querySoldRatio(timeRangeInDays),
+            dashboardQueries.queryBusyTimes(timeRangeInDays),
+        ])
 
-    dashboardNamespace.emit('dashboard', dashboardData);
+        dashboardData = {};
+        dashboardData.topMovies = dashboardDataArray[0];
+        dashboardData.soldRatio = dashboardDataArray[1];
+        dashboardData.busyTimes = dashboardDataArray[2];
+
+        dashboardNamespace.emit('dashboard', dashboardData);
+
+    }
+    catch(err){
+        dashboardNamespace.emit('dashboard', err);
+    }
 };
 
 module.exports.sendDataToDashboardNamespace = sendDataToDashboardNamespace;
