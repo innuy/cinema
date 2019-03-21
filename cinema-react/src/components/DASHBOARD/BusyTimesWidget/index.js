@@ -46,7 +46,8 @@ class BusyTimesWidget extends Component {
             "categoryField": "hour",
             "categoryAxis": {
                 "axisAlpha": 0,
-                "minHorizontalGap": 60
+                "minHorizontalGap": 60,
+                "autoWrap": true,
             },
             "export": {
                 "enabled": true

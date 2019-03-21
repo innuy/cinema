@@ -17,11 +17,12 @@ class TopMoviesWidget extends Component {
             "labelText": "[[percents]]%",
             "legend": {
                 "position": "bottom",
-                "autoMargins": true
+                "autoMargins": true,
+                "autoWrap": true,
             },
             "dataProvider": [
-                {title: 'Sold', value: this.props.ticketsSold},
                 {title: 'Reserved', value: this.props.ticketsReserved},
+                {title: 'Sold', value: this.props.ticketsSold},
             ],
             "valueField": "value",
             "titleField": "title",
@@ -38,31 +39,34 @@ class TopMoviesWidget extends Component {
             "type": "serial",
             "dataProvider": this.props.topFilms,
             "valueAxes": [{
-                // "stackType": "3d",
+                "stackType": "3d",
                 "position": "left",
                 "title": "Tickets",
             }],
             "startDuration": 1,
             "graphs": [{
-                "balloonText": "Sold: <b>[[value]]</b>",
-                "fillAlphas": 0.9,
-                "lineAlpha": 0,
-                "title": "Sold",
-                "type": "column",
-                "valueField": "ticketsSold"
-            }, {
+                "fontSize": 60,
                 "balloonText": "Reserved: <b>[[value]]</b>",
                 "fillAlphas": 0.9,
                 "lineAlpha": 0,
                 "title": "Reserved",
                 "type": "column",
                 "valueField": "ticketsReserved"
+            }, {
+                "balloonText": "Sold: <b>[[value]]</b>",
+                "fillAlphas": 0.9,
+                "lineAlpha": 0,
+                "title": "Sold",
+                "type": "column",
+                "valueField": "ticketsSold"
             }],
             "plotAreaFillAlphas": 0.1,
             // "depth3D": 60,
             // "angle": 30,
             "categoryField": "name",
             "categoryAxis": {
+                "fontSize": 10,
+                "autoWrap": true,
                 "gridPosition": "start"
             },
         };
@@ -71,30 +75,30 @@ class TopMoviesWidget extends Component {
             <div className="row">
                 {this.props.ticketsReserved > 0 && this.props.ticketsSold > 0 ?
                     <div className="col-xs-12 col-sm-12 col-md-4 ">
-                            <div className="busyTimesViewTitle">Sold - Reserved</div>
+                        <div className="busyTimesViewTitle">Sold - Reserved</div>
 
-                            <AmCharts.React
-                                className="soldReservedPieChart"
-                                style={{
-                                    width: "100%",
-                                    height: "45vmax",
-                                }}
-                                options={soldReservedRatioOptions}
-                            />
+                        <AmCharts.React
+                            className="soldReservedPieChart"
+                            style={{
+                                width: "100%",
+                                height: "25vmax",
+                            }}
+                            options={soldReservedRatioOptions}
+                        />
                     </div> : null
                 }
 
                 <div className="col-xs-12 col-sm-12 col-md-8 ">
-                        <div className="topMoviesViewTitle">Top Films</div>
+                    <div className="topMoviesViewTitle">Top Films</div>
 
-                        <AmCharts.React
-                            className="topMoviesChart"
-                            style={{
-                                width: "100%",
-                                height: "45vmax",
-                            }}
-                            options={topMoviesOptions}
-                        />
+                    <AmCharts.React
+                        className="topMoviesChart"
+                        style={{
+                            width: "100%",
+                            height: "25vmax",
+                        }}
+                        options={topMoviesOptions}
+                    />
                 </div>
             </div>
         );

@@ -14,7 +14,7 @@ class MainDashboard extends Component {
         busyTimes: [],
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.getDashboardData = this.getDashboardData.bind(this);
@@ -24,17 +24,16 @@ class MainDashboard extends Component {
         this.getDashboardData();
     }
 
-    getDashboardData(){
+    getDashboardData() {
         setDashboardSocket((success, topFilms, ticketsReserved, ticketsSold, busyTimes) => {
-            if(success){
+            if (success) {
                 this.setState({
                     topFilms: topFilms,
                     ticketsReserved: ticketsReserved,
                     ticketsSold: ticketsSold,
                     busyTimes: busyTimes
                 });
-            }
-            else{
+            } else {
                 //TODO: HANDLE ERROR
             }
         });
@@ -45,7 +44,8 @@ class MainDashboard extends Component {
             <div>
                 <div className="dashboardViewTitle">Dashboard</div>
                 <div className="container">
-                    <TopFilmsWidgetContainer topFilms={this.state.topFilms} ticketsReserved={this.state.ticketsReserved} ticketsSold={this.state.ticketsSold}/>
+                    <TopFilmsWidgetContainer topFilms={this.state.topFilms} ticketsReserved={this.state.ticketsReserved}
+                                             ticketsSold={this.state.ticketsSold}/>
                     <BusyTimesWidgetContainer busyTimes={this.state.busyTimes}/>
                 </div>
             </div>
@@ -54,8 +54,6 @@ class MainDashboard extends Component {
     }
 }
 
-MainDashboard.propTypes = {
-
-};
+MainDashboard.propTypes = {};
 
 export default MainDashboard;
