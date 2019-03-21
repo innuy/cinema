@@ -8,45 +8,7 @@ export const USER_ROLES = {
     ADMIN: 2,
 };
 
-export function getUsers(callback){
-    axios.get(urls.users, {headers: {"Authorization": 'Token '+ getUserToken()}})
-        .then((response) => {
-            callback(true, parseUsers(response.data));
-        }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error obtaining users data");
-            }
-    });
-}
-
-export function getSingleUser(id, callback){
-    let url = urls.users;
-    if(id){
-        url += "/" + id;
-    }
-    axios.get(url, {headers: {"Authorization": 'Token '+ getUserToken()}})
-        .then((response) => {
-            callback(true, parseSingleUser(response.data[0]));
-        }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error obtaining user data");
-            }
-    });
-}
-
-export function getMyUserData(callback){
-
-    axios.get(urls.currentUser, {headers: {"Authorization": 'Token '+ getUserToken()}})
-        .then((response) => {
-            callback(true, parseSingleUser(response.data.user));
-        }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error obtaining your user data");
-            }
-    });
-}
-
-export function addUser(email, password, firstName, lastName, role, callback){
+export function addUser(email, password, firstName, lastName, role, callback) {
 
     axios.post(urls.users, {
         email,
@@ -54,79 +16,117 @@ export function addUser(email, password, firstName, lastName, role, callback){
         surname: lastName,
         role,
         password
-    }, {headers: {"Authorization": 'Token '+ getUserToken()}})
+    }, {headers: {"Authorization": 'Token ' + getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error adding the user");
-            }
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error adding the user");
+        }
     });
 }
 
-export function editUser(id, email, firstName, lastName, role, callback){
+export function getUsers(callback) {
+    axios.get(urls.users, {headers: {"Authorization": 'Token ' + getUserToken()}})
+        .then((response) => {
+            callback(true, parseUsers(response.data));
+        }).catch((error) => {
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error obtaining users data");
+        }
+    });
+}
+
+export function getMyUserData(callback) {
+
+    axios.get(urls.currentUser, {headers: {"Authorization": 'Token ' + getUserToken()}})
+        .then((response) => {
+            callback(true, parseSingleUser(response.data.user));
+        }).catch((error) => {
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error obtaining your user data");
+        }
+    });
+}
+
+export function getSingleUser(id, callback) {
+    let url = urls.users;
+    if (id) {
+        url += "/" + id;
+    }
+    axios.get(url, {headers: {"Authorization": 'Token ' + getUserToken()}})
+        .then((response) => {
+            callback(true, parseSingleUser(response.data[0]));
+        }).catch((error) => {
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error obtaining user data");
+        }
+    });
+}
+
+export function editMyUserData(email, firstName, lastName, callback) {
+    axios.put(urls.currentUser, {
+        email,
+        name: firstName,
+        surname: lastName,
+    }, {headers: {"Authorization": 'Token ' + getUserToken()}})
+        .then((response) => {
+            callback(true);
+        }).catch((error) => {
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error editing your data");
+        }
+    });
+}
+
+export function editUser(id, email, firstName, lastName, role, callback) {
     axios.put(urls.users + "/" + id, {
         email,
         name: firstName,
         surname: lastName,
         role,
-    }, {headers: {"Authorization": 'Token '+ getUserToken()}})
+    }, {headers: {"Authorization": 'Token ' + getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error editing the user's data");
-            }
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error editing the user's data");
+        }
     });
 }
 
-export function editMyUserData(email, firstName, lastName, callback){
-    axios.put(urls.currentUser, {
-        email,
-        name: firstName,
-        surname: lastName,
-    }, {headers: {"Authorization": 'Token '+ getUserToken()}})
+export function deleteUser(id, callback) {
+    axios.delete(urls.users + "/" + id, {headers: {"Authorization": 'Token ' + getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error editing your data");
-            }
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error with deleting the user");
+        }
     });
 }
 
-export function deleteUser(id, callback){
-    axios.delete(urls.users + "/" + id, {headers: {"Authorization": 'Token '+ getUserToken()}})
-        .then((response) => {
-            callback(true);
-        }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error with deleting the user");
-            }
-    });
-}
-
-export function changePassword(email, oldPassword, newPassword, callback){
+export function changePassword(email, oldPassword, newPassword, callback) {
     axios.patch(urls.users, {
         user: {
             email,
             password: oldPassword,
         },
         newPassword
-    },{headers: {"Authorization": 'Token '+ getUserToken()}})
+    }, {headers: {"Authorization": 'Token ' + getUserToken()}})
         .then((response) => {
             callback(true);
         }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error modifying the password");
-            }
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error modifying the password");
+        }
     });
 }
 
-function parseUsers(users){
+function parseUsers(users) {
     const res = [];
 
-    for(let i = 0; i < users.length; i++){
+    for (let i = 0; i < users.length; i++) {
         res.push({
             id: users[i]._id,
             email: users[i].email,
@@ -140,9 +140,9 @@ function parseUsers(users){
     return res;
 }
 
-export function parseSingleUser(user){
+export function parseSingleUser(user) {
 
-    const res = {
+    return {
         id: user._id,
         email: user.email,
         token: user.token,
@@ -150,7 +150,5 @@ export function parseSingleUser(user){
         lastName: user.surname,
         role: (user.role === USER_ROLES.ADMIN ? USER_ROLES.ADMIN : USER_ROLES.USER),
     };
-
-    return res;
 }
 
