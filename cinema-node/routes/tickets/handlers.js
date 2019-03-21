@@ -6,7 +6,7 @@ const Ticket = require("../../db/models/tickets");
 const sendTicketListToCurrentPresentationRoom = require("../../websockets/ticketReservation").sendTicketListToCurrentPresentationRoom;
 const sendDataToDashboardNamespace = require("../../websockets/dashboard").sendDataToDashboardNamespace;
 
-var ObjectID = require('mongodb').ObjectID;
+let ObjectID = require('mongodb').ObjectID;
 const populateGetQuery = [
     {path: 'presentation', populate: {path: 'movie'}},
     {path: 'presentation', populate: {path: 'auditorium'}},
@@ -128,12 +128,12 @@ module.exports.deleteById = (req, res) => {
         });
 };
 
-module.exports.getTicketByPresentationId = presentationId =>  new Promise((resolve, reject) => {
+module.exports.getTicketByPresentationId = presentationId => new Promise((resolve, reject) => {
     console.log(presentationId);
     Ticket.find({presentation: presentationId})
         .populate(populateGetQuery)
         .then(tickets => resolve(tickets))
-        .catch(err=>reject(err));
+        .catch(err => reject(err));
 });
 
 const getPresentationById = presentationId => new Promise((resolve, reject) => {
@@ -277,7 +277,7 @@ const getSeatIdWithRowAndColumn = ticket => new Promise((resolve, reject) => {
 });
 
 const checkPresentationAndUpdateTicket = (seat, ticketToUpdate) => new Promise((resolve, reject) => {
-    var seatAuditoriumId = seat.auditorium;
+    let seatAuditoriumId = seat.auditorium;
     Presentation.findById(ticketToUpdate.presentation)
         .then(presentation => {
             if (thereIsNo(presentation)) {
@@ -294,7 +294,6 @@ const checkPresentationAndUpdateTicket = (seat, ticketToUpdate) => new Promise((
 });
 
 const updateTickets = (ticketId, newTicket) => new Promise((resolve, reject) => {
-    const id_filter = {'_id': new ObjectID(ticketId)};
     const parametersToSet = {$set: newTicket};
     Ticket.findByIdAndUpdate(
         ticketId,

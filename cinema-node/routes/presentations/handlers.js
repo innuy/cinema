@@ -74,7 +74,7 @@ module.exports.get = (req, res) => {
         },
         {$project: {ticketsSoldArray: 0}},
         getAuditoriumDetailsSubQuery,
-        {$sort: { movie:1, start: -1}}
+        {$sort: {movie: 1, start: -1}}
     ])
         .then(presentation => res.send(presentation))
         .catch(err => errors.databaseError(err, res));
@@ -134,12 +134,11 @@ module.exports.putById = (req, res) => {
 };
 
 module.exports.deleteById = (req, res) => {
-    const presentationFilter = {'_id': new ObjectID(req.params.id)};
     checkPresentation(req.params.id)
         .then(presentation => {
             return Promise.all([
-                deletePresentationById(presentationFilter),
-                deleteTicketWithFilter(presentationFilter),
+                deletePresentationById(req.params.id),
+                deleteTicketWithFilter(req.params.id),
             ])
 
         })
@@ -187,7 +186,7 @@ const getFilter = req => {
     }
 
     const userLogged = req.requestingUser;
-    if(isNotLogAsAdmin(userLogged)){
+    if (isNotLogAsAdmin(userLogged)) {
         const now = new Date();
         query.start = {$gte: now};
     }
@@ -237,15 +236,17 @@ const checkPresentation = id => new Promise((resolve, reject) => {
         .catch(err => reject(err))
 });
 
-const deletePresentationById = id_filter => new Promise((resolve, reject) => {
-    Presentation.findOneAndDelete(id_filter)
+const deletePresentationById = id => new Promise((resolve, reject) => {
+    const filter = {'_id': new ObjectID(id)};
+    Presentation.findOneAndDelete(filter)
         .then(dbResponse => {
             resolve(dbResponse);
         })
         .catch(err => reject(err))
 });
 
-const deleteTicketWithFilter = filter => new Promise((resolve, reject) => {
+const deleteTicketWithFilter = id => new Promise((resolve, reject) => {
+    const filter = {'presentation': new ObjectID(id)};
     Ticket.deleteMany(filter)
         .then(dbResponse => {
             resolve(dbResponse);

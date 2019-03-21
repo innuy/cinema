@@ -207,10 +207,10 @@ const deletePresentationsAndRelatedTickets = presentationsList => {
     const deleteTicketPromiseArray = [];
 
     presentationsList.forEach(presentation => {
-        const ticketFilter = {presentation: presentation._id};
         const presentationFilter = {'_id': new ObjectID(presentation._id)};
-        deleteTicketPromiseArray.push(deleteTicketWithFilter(ticketFilter));
         deleteTicketPromiseArray.push(deletePresentationsWithFilter(presentationFilter));
+        const ticketFilter = {presentation: presentation._id};
+        deleteTicketPromiseArray.push(deleteTicketWithFilter(ticketFilter));
     });
 
     return Promise.all(deleteTicketPromiseArray);
