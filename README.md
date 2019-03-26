@@ -12,3 +12,15 @@ For all auditoriums, presentations and movies there are statistics using the tic
 ## API documentation
 
 [Postman API Documentation](https://documenter.getpostman.com/view/6221146/Rzn9sg5Z)
+
+## Demo users
+
+### User
+email: user@test.com
+
+password: testuser
+
+### Administrator
+email: admin@test.com
+
+password: testadmin
