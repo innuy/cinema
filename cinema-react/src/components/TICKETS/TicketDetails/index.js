@@ -54,7 +54,9 @@ class TicketDetails extends Component {
             ticket.auditorium = auditoriumResult;
         }
 
-        ticket.startTime = this.props.presentations[index].startTime.toLocaleString('en-GB');
+        ticket.startTime = new Date(this.props.presentations[index].startTime);
+        ticket.startTime = ticket.startTime.toISOString().substring(0, 23);
+
         ticket.presentation = this.props.presentations[index].id;
 
         this.setState({
@@ -89,6 +91,10 @@ class TicketDetails extends Component {
     }
 
     render() {
+
+        let date = new Date(this.state.ticket.startTime);
+        date = date.toISOString().substring(0, 23);
+
         return (
             <div className="justify-content-center">
                 <div className="ticketDetailsSeparator"/>
@@ -125,12 +131,16 @@ class TicketDetails extends Component {
 
                     <div className="ticketDetailsSeparator"/>
 
-                    <div className="form-group">
-                        <label className="ticketDetailsTitle">Start time:</label>
-                        <fieldset disabled>
-                            <input className="ticketInput form-control" value={this.state.ticket.startTime}  />
-                        </fieldset>
-                    </div>
+                    <fieldset disabled>
+                        <input className="custom-select form-control ticketInput" type="datetime-local"
+                               value={date} onChange={(event) => {
+                            const ticket = this.state.ticket;
+                            ticket.startTime = event.target.value;
+                            this.setState({
+                                ticket
+                            });
+                        }}/>
+                    </fieldset>
 
                     <div className="ticketDetailsSeparator"/>
 
@@ -145,9 +155,10 @@ class TicketDetails extends Component {
                         <input type="checkbox" className="custom-control-input" id="isAdminSwitch"
                                checked={this.state.ticket.sold}
                                onChange={this.handlePaidChange}/>
-                        <label className="custom-control-label ticketDetailsTitle" htmlFor="isAdminSwitch">Has it been paid?</label>
+                        <label className="custom-control-label ticketDetailsTitle" htmlFor="isAdminSwitch">Has it been
+                            paid?</label>
                     </div>
-                    
+
 
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
