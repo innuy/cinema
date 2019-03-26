@@ -1,15 +1,15 @@
-.filmDetailsCastElementContainer{
+.filmDetailsCastElementContainer {
     background-color: var(--secondBackground);
     border-top: solid #cccccc 1px;
 }
 
-.filmCastInput{
+.filmCastInput {
     width: 96%;
     color: var(--text);
     border-color: transparent;
 }
 
-.filmCastDelete{
+.filmCastDelete {
     max-width: 2%;
     margin-left: 1%;
     margin-right: 1%;

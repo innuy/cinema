@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import PresentationView from "../../../components/PRESENTATIONS/PresentationView";
 import {getPresentations} from "../../../API/presentations";
@@ -25,7 +25,7 @@ class SeePresentationContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.refreshPresentations = this.refreshPresentations.bind(this);
@@ -42,15 +42,14 @@ class SeePresentationContainer extends Component {
         this.refreshFilms();
     }
 
-    refreshPresentations(){
+    refreshPresentations() {
         getPresentations((success, data) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     presentations: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -61,15 +60,14 @@ class SeePresentationContainer extends Component {
         });
     }
 
-    refreshAuditoriums(){
+    refreshAuditoriums() {
         getAuditoriums((success, data) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     auditoriums: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -80,15 +78,14 @@ class SeePresentationContainer extends Component {
         });
     }
 
-    refreshFilms(){
+    refreshFilms() {
         getFilms((success, data) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     films: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -99,11 +96,11 @@ class SeePresentationContainer extends Component {
         });
     }
 
-    reserveTicket(presentationId){
+    reserveTicket(presentationId) {
         navigate(this.history, '/reserveTicket/' + presentationId)
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -113,11 +110,13 @@ class SeePresentationContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <PresentationView presentations={this.state.presentations} films={this.state.films} auditoriums={this.state.auditoriums}
+                    <PresentationView presentations={this.state.presentations} films={this.state.films}
+                                      auditoriums={this.state.auditoriums}
                                       reserveTicket={this.reserveTicket} isAdmin={this.state.isAdmin}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

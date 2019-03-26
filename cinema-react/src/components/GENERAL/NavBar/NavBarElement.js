@@ -9,9 +9,9 @@ class NavBarElement extends Component {
 
         return (
             <li className="nav-item navBarElementContainer" onClick={() => {
-                    this.props.handleClick(this.props.redirection, this.props.extra);
-                }}>
-                    {this.props.text}
+                this.props.handleClick(this.props.redirection, this.props.extra);
+            }}>
+                {this.props.text}
             </li>
         );
     }

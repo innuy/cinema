@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FirstView from "../../components/FirstView";
 
 
 class FirstProcess extends Component {
 
-    state = {
-
-    };
+    state = {};
 
     render() {
         return (
-            <FirstView />
+            <FirstView/>
         );
     }
 }

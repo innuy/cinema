@@ -4,7 +4,7 @@ import {deleteUserToken, saveUserToken} from "../utils/cookieStorage";
 import {parseSingleUser, USER_ROLES} from "./users";
 
 
-export function login(email, password, callback){
+export function login(email, password, callback) {
     deleteUserToken();
     axios.post(urls.login, {
         user: {
@@ -17,11 +17,11 @@ export function login(email, password, callback){
             saveUserToken(userData.token);
             callback(true, userData);
         }).catch((error) => {
-            callback(false, "There was an error logging in");
+        callback(false, "There was an error logging in");
     });
 }
 
-export function signUp(email, password, firstName, lastName, callback){
+export function signUp(email, password, firstName, lastName, callback) {
     deleteUserToken();
     axios.post(urls.users, {
         email,
@@ -35,6 +35,6 @@ export function signUp(email, password, firstName, lastName, callback){
             saveUserToken(userData.token);
             callback(true);
         }).catch((error) => {
-            callback(false, "There was an error with the connection");
+        callback(false, "There was an error with the connection");
     });
 }

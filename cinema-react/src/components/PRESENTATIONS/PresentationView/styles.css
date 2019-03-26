@@ -5,7 +5,7 @@
     margin: 2vh auto;
 }
 
-.presentationViewTitle{
+.presentationViewTitle {
     font-weight: bolder;
     font-size: 20px;
     color: var(--headerText);
@@ -17,6 +17,7 @@
     display: flex;
     flex-wrap: wrap;
 }
+
 .row.display-flex > [class*='col-'] {
     display: flex;
     flex-direction: column;

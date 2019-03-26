@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import AuditoriumView from "../../../components/AUDITORIUMS/AuditoriumView";
 import {getAuditoriums, deleteAuditorium} from "../../../API/auditoriums";
@@ -21,7 +21,7 @@ class AuditoriumContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.deleteAuditorium = this.deleteAuditorium.bind(this);
@@ -35,17 +35,16 @@ class AuditoriumContainer extends Component {
         this.refreshAuditoriums();
     }
 
-    refreshAuditoriums(){
+    refreshAuditoriums() {
         this.hideError();
         getAuditoriums((success, data) => {
 
-            if(success) {
+            if (success) {
                 this.setState({
                     auditoriums: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -56,17 +55,16 @@ class AuditoriumContainer extends Component {
         });
     }
 
-    addAuditorium(){
+    addAuditorium() {
         navigate(this.history, 'addAuditorium');
     }
 
-    deleteAuditorium(id){
+    deleteAuditorium(id) {
         deleteAuditorium(id, (success, msg) => {
-            if(success) {
+            if (success) {
                 this.refreshAuditoriums();
-            }
-            else{
-                if(msg) {
+            } else {
+                if (msg) {
                     this.setState({
                         errorVisible: true,
                         errorText: msg,
@@ -77,12 +75,12 @@ class AuditoriumContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
-    navigateToDetails(id){
-        navigate(this.history, 'auditorium/'+id);
+    navigateToDetails(id) {
+        navigate(this.history, 'auditorium/' + id);
     }
 
     render() {
@@ -91,11 +89,13 @@ class AuditoriumContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <AuditoriumView auditoriums={this.state.auditoriums} addAuditorium={this.addAuditorium} deleteAuditorium={this.deleteAuditorium}
+                    <AuditoriumView auditoriums={this.state.auditoriums} addAuditorium={this.addAuditorium}
+                                    deleteAuditorium={this.deleteAuditorium}
                                     isAdmin={this.state.isAdmin} navigateToDetails={this.navigateToDetails}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

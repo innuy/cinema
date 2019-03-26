@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import FilmView from "../../../components/FILMS/FilmView";
 import {getFilms, deleteFilm} from "../../../API/films";
@@ -11,7 +11,7 @@ import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 class FilmContainer extends Component {
 
     state = {
-        films: [{},{},{}],
+        films: [{}, {}, {}],
         isAdmin: true,
 
         errorVisible: false,
@@ -21,7 +21,7 @@ class FilmContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.deleteFilm = this.deleteFilm.bind(this);
@@ -35,17 +35,16 @@ class FilmContainer extends Component {
         this.refreshFilms();
     }
 
-    refreshFilms(){
+    refreshFilms() {
         this.hideError();
         getFilms((success, data) => {
 
-            if(success) {
+            if (success) {
                 this.setState({
                     films: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -56,17 +55,16 @@ class FilmContainer extends Component {
         });
     }
 
-    addFilm(){
+    addFilm() {
         navigate(this.history, '/addFilm');
     }
 
-    deleteFilm(id){
+    deleteFilm(id) {
         deleteFilm(id, (success, data) => {
-            if(success) {
+            if (success) {
                 this.refreshFilms();
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -77,12 +75,12 @@ class FilmContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
-    navigateToDetails(id){
-        navigate(this.history, 'film/'+id);
+    navigateToDetails(id) {
+        navigate(this.history, 'film/' + id);
     }
 
     render() {
@@ -91,10 +89,12 @@ class FilmContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <FilmView films={this.state.films} addFilm={this.addFilm} deleteFilm={this.deleteFilm} navigateToDetails={this.navigateToDetails} isAdmin={this.state.isAdmin}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                    <FilmView films={this.state.films} addFilm={this.addFilm} deleteFilm={this.deleteFilm}
+                              navigateToDetails={this.navigateToDetails} isAdmin={this.state.isAdmin}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

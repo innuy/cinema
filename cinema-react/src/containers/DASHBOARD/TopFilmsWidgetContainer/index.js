@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import TopMoviesWidget from "../../../components/DASHBOARD/TopMoviesWidget";
 import PropTypes from "prop-types";
@@ -8,7 +8,8 @@ class TopFilmsWidgetContainer extends Component {
 
     render() {
         return (
-            <TopMoviesWidget topFilms={this.props.topFilms} ticketsReserved={this.props.ticketsReserved} ticketsSold={this.props.ticketsSold}/>
+            <TopMoviesWidget topFilms={this.props.topFilms} ticketsReserved={this.props.ticketsReserved}
+                             ticketsSold={this.props.ticketsSold}/>
         );
     }
 }

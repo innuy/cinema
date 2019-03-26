@@ -4,26 +4,26 @@ import {parseBusyTimesData, parseTopFilms} from "./dashboard";
 import {parseTickets} from "./tickets";
 
 export function setDashboardSocket(callback) {
-    const  dashboardSocket = openSocket(urls.dashboardNamespace);
+    const dashboardSocket = openSocket(urls.dashboardNamespace);
 
-    dashboardSocket.on('dashboard', function(response){
+    dashboardSocket.on('dashboard', function (response) {
 
         const topFilms = response.topMovies;
         const ticketsSold = response.soldRatio.soldTickets;
         const ticketsReserved = response.soldRatio.reservedTickets - ticketsSold;
         const busyTimes = response.busyTimes;
 
-        callback(true, parseTopFilms(topFilms),ticketsReserved,ticketsSold, parseBusyTimesData(busyTimes));
+        callback(true, parseTopFilms(topFilms), ticketsReserved, ticketsSold, parseBusyTimesData(busyTimes));
     });
 //    TODO: error handling
 }
 
 export function setReservingTicketsSocket(presentationId, callback) {
-    const  reservingTicketsSocket = openSocket(urls.reservingTicketsNamespace);
+    const reservingTicketsSocket = openSocket(urls.reservingTicketsNamespace);
 
     reservingTicketsSocket.emit('startReservation', presentationId);
 
-    reservingTicketsSocket.on('ticketList', function(response){
+    reservingTicketsSocket.on('ticketList', function (response) {
         callback(true, parseTickets(response));
     });
 //    TODO: error handling

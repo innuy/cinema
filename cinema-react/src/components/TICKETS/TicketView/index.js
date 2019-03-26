@@ -7,23 +7,23 @@ import './styles.css';
 
 class TicketView extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.renderTickets = this.renderTickets.bind(this);
     }
 
-    renderTickets(){
+    renderTickets() {
         const result = [];
 
-        for(let i = 0; i < this.props.tickets.length; i++){
-            result.push(<TicketElement key={"ticket_"+i} ticket={this.props.tickets[i]} navigateToDetails={this.props.navigateToDetails}
+        for (let i = 0; i < this.props.tickets.length; i++) {
+            result.push(<TicketElement key={"ticket_" + i} ticket={this.props.tickets[i]}
+                                       navigateToDetails={this.props.navigateToDetails}
                                        deleteTicket={this.props.deleteTicket} isAdmin={this.props.isAdmin}/>);
         }
 
         return result
     }
-
 
 
     render() {

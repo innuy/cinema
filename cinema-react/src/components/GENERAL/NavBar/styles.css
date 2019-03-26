@@ -1,8 +1,8 @@
-.navBarContainer{
+.navBarContainer {
     background-color: var(--background);
 }
 
-.navBarElementContainer{
+.navBarElementContainer {
     border-style: none;
     padding-left: 15px;
     padding-right: 15px;

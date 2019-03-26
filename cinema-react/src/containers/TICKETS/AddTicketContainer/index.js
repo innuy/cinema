@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import TicketDetails from "../../../components/TICKETS/TicketDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -25,7 +25,7 @@ class AddTicketContainer extends Component {
         errorCallback: null,
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.addTicket = this.addTicket.bind(this);
@@ -42,15 +42,14 @@ class AddTicketContainer extends Component {
         this.obtainInfo();
     }
 
-    obtainInfo(){
+    obtainInfo() {
         getPresentations((success, data) => {
-            if(success){
+            if (success) {
                 this.setState({
                     presentations: data
                 });
-            }
-            else{
-                if(data){
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -61,13 +60,12 @@ class AddTicketContainer extends Component {
         });
 
         getFilms((success, data) => {
-            if(success){
+            if (success) {
                 this.setState({
                     films: data
                 });
-            }
-            else{
-                if(data){
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -78,13 +76,12 @@ class AddTicketContainer extends Component {
         });
 
         getAuditoriums((success, data) => {
-            if(success){
+            if (success) {
                 this.setState({
                     auditoriums: data
                 });
-            }
-            else{
-                if(data){
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -95,13 +92,12 @@ class AddTicketContainer extends Component {
         });
     }
 
-    addTicket(presentationId, userId){
+    addTicket(presentationId, userId) {
         addTicket(presentationId, userId, (success, msg) => {
-            if(success){
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
-                if(msg){
+            } else {
+                if (msg) {
                     this.setState({
                         errorVisible: true,
                         errorText: msg,
@@ -112,7 +108,7 @@ class AddTicketContainer extends Component {
         });
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -121,11 +117,13 @@ class AddTicketContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <TicketDetails presentations={this.state.presentations} auditoriums={this.state.auditoriums}
-                                           films={this.state.films} callback={this.addTicket} buttonText={"ADD"}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <TicketDetails presentations={this.state.presentations} auditoriums={this.state.auditoriums}
+                                   films={this.state.films} callback={this.addTicket} buttonText={"ADD"}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

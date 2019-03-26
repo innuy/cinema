@@ -15,7 +15,7 @@ class TicketElement extends Component {
                 if (this.props.isAdmin) {
                     this.props.navigateToDetails(this.props.ticket.id);
                 }
-                }}>
+            }}>
                 <div className="d-flex flex-column h-100 ticketElementContainer">
                     <div>
                         {this.props.isAdmin ?

@@ -1,29 +1,29 @@
-.ticketElementContainer{
+.ticketElementContainer {
     margin-bottom: 2.5vh;
     padding: 1rem;
     background-color: var(--background);
 }
 
-.ticketElementDelete{
+.ticketElementDelete {
     width: 1rem;
     margin-left: 95%;
     margin-top: -0.5rem;
 }
 
-.ticketElementMainText{
+.ticketElementMainText {
     font-size: 14px;
     font-weight: bold;
     color: var(--subText);
 }
 
-.ticketElementSecondaryText{
+.ticketElementSecondaryText {
     font-size: 10px;
     font-weight: bold;
     margin-top: 5px;
     color: var(--text);
 }
 
-.ticketElementImage{
+.ticketElementImage {
     width: 70%;
     margin-left: 15%;
 }

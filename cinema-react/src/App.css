@@ -1,50 +1,50 @@
 :root {
-  --background: #D7CDCC;
-  --secondBackground: #FFFFFF;
-  --headerText: #9C528B;
-  --subText: #59656F;
-  --text: #1D1E2C;
-  --dangerText: #ff0000;
+    --background: #D7CDCC;
+    --secondBackground: #FFFFFF;
+    --headerText: #9C528B;
+    --subText: #59656F;
+    --text: #1D1E2C;
+    --dangerText: #ff0000;
 }
 
 .App {
-  text-align: center;
+    text-align: center;
 }
 
-html{
-  background-color: var(--background);
+html {
+    background-color: var(--background);
 }
 
-body{
-  background-color: var(--secondBackground);
+body {
+    background-color: var(--secondBackground);
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 
-.rowFullWidth{
-  margin-left: 0 !important;
-  margin-right: 0 !important;
+.rowFullWidth {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }

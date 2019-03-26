@@ -27,7 +27,7 @@ class FilmElement extends Component {
 
         return (
             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-11">
-                <div  className="filmElementContainer d-flex flex-column h-100 card"
+                <div className="filmElementContainer d-flex flex-column h-100 card"
                      onClick={() => {
                          if (!!this.props.navigateToDetails) {
                              this.props.navigateToDetails(this.props.film.id);

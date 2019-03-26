@@ -9,13 +9,17 @@ import './styles.css';
 
 class PresentationView extends Component {
 
-    renderPresentations(){
+    renderPresentations() {
         const elementList = [];
 
-        for(let i = 0; i < this.props.presentations.length; i++){
-            elementList.push(<PresentationElement key={"presentation_"+i} films={this.props.films} auditoriums={this.props.auditoriums}
-                                                  navigateToDetails={this.props.navigateToDetails} presentation={this.props.presentations[i]}
-                                                  reserveTicket={this.props.reserveTicket} deletePresentation={this.props.deletePresentation} isAdmin={this.props.isAdmin}/>);
+        for (let i = 0; i < this.props.presentations.length; i++) {
+            elementList.push(<PresentationElement key={"presentation_" + i} films={this.props.films}
+                                                  auditoriums={this.props.auditoriums}
+                                                  navigateToDetails={this.props.navigateToDetails}
+                                                  presentation={this.props.presentations[i]}
+                                                  reserveTicket={this.props.reserveTicket}
+                                                  deletePresentation={this.props.deletePresentation}
+                                                  isAdmin={this.props.isAdmin}/>);
         }
 
         return elementList;

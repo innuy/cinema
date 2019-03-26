@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import UserView from "../../../components/USERS/UserView";
 import {getUsers, deleteUser} from "../../../API/users";
@@ -20,7 +20,7 @@ class UserContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.hideError = this.hideError.bind(this);
@@ -34,15 +34,14 @@ class UserContainer extends Component {
         this.refreshUsers();
     }
 
-    refreshUsers(){
+    refreshUsers() {
         getUsers((success, data) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     users: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -53,17 +52,16 @@ class UserContainer extends Component {
         });
     }
 
-    addUser(){
+    addUser() {
         navigate(this.history, 'addUser');
     }
 
-    deleteUser(id){
+    deleteUser(id) {
         deleteUser(id, (success, data) => {
-            if(success) {
+            if (success) {
                 this.refreshUsers();
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -74,12 +72,12 @@ class UserContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
-    navigateToDetails(id){
-        navigate(this.history, 'user/'+id);
+    navigateToDetails(id) {
+        navigate(this.history, 'user/' + id);
     }
 
     render() {
@@ -89,10 +87,11 @@ class UserContainer extends Component {
                 return (<div>
                     <NavBar isAdmin={true} history={this.history}/>
                     <UserView users={this.state.users} addUser={this.addUser} deleteUser={this.deleteUser}
-                                    navigateToDetails={this.navigateToDetails}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                              navigateToDetails={this.navigateToDetails}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

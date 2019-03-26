@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import BusyTimesWidget from "../../../components/DASHBOARD/BusyTimesWidget";
 import PropTypes from "prop-types";
 
 class BusyTimesWidgetContainer extends Component {
     render() {
-        return <BusyTimesWidget busyTimes={this.props.busyTimes} />;
+        return <BusyTimesWidget busyTimes={this.props.busyTimes}/>;
     }
 }
 

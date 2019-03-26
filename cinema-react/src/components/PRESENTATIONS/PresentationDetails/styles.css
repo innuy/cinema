@@ -1,8 +1,8 @@
-.presentationDetailsContainer{
+.presentationDetailsContainer {
     background-color: var(--background);
 }
 
-.presentationDetailsPageTitle{
+.presentationDetailsPageTitle {
     color: var(--headerText);
     font-size: 20px;
     width: 100%;
@@ -10,30 +10,30 @@
     font-weight: bolder;
 }
 
-.presentationDetailsErrorMessage{
+.presentationDetailsErrorMessage {
     color: var(--dangerText);
 }
 
-.presentationDetailsTitleContainer{
+.presentationDetailsTitleContainer {
     width: 100%;
 }
 
-.presentationDetailsTitle{
+.presentationDetailsTitle {
     color: var(--subText);
     font-weight: bold;
 }
 
-.presentationDetailsTitleButton{
+.presentationDetailsTitleButton {
     width: 10%;
     float: right;
 }
 
-.presentationInput{
+.presentationInput {
     width: 100%;
     color: var(--text);
 }
 
-.presentationDetailsSeparator{
+.presentationDetailsSeparator {
     height: 15px;
     width: 100%;
 }

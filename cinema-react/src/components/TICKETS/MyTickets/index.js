@@ -7,17 +7,17 @@ import './styles.css';
 
 class MyTickets extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.renderTickets = this.renderTickets.bind(this);
     }
 
-    renderTickets(){
+    renderTickets() {
         const result = [];
 
-        for(let i = 0; i < this.props.tickets.length; i++){
-            result.push(<TicketElement key={"ticket_"+i} ticket={this.props.tickets[i]} isAdmin={false}/>);
+        for (let i = 0; i < this.props.tickets.length; i++) {
+            result.push(<TicketElement key={"ticket_" + i} ticket={this.props.tickets[i]} isAdmin={false}/>);
         }
 
         return result

@@ -8,13 +8,13 @@ import './styles.css';
 
 class UserView extends Component {
 
-    renderUsers(){
+    renderUsers() {
         const result = [];
 
-        for(let i = 0; i < this.props.users.length; i++){
-            result.push(<UserElement key={"user_"+i} user={this.props.users[i]}
-                                           deleteUser={this.props.deleteUser} isAdmin={this.props.isAdmin}
-                                           navigateToDetails={this.props.navigateToDetails}/>);
+        for (let i = 0; i < this.props.users.length; i++) {
+            result.push(<UserElement key={"user_" + i} user={this.props.users[i]}
+                                     deleteUser={this.props.deleteUser} isAdmin={this.props.isAdmin}
+                                     navigateToDetails={this.props.navigateToDetails}/>);
         }
 
         return result

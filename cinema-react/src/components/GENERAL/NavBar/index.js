@@ -42,8 +42,6 @@ class NavBar extends Component {
         return result;
     }
 
-// <div className="col-12  rowFullWidth row justify-content-center">
-// </div>
     render() {
 
         return (

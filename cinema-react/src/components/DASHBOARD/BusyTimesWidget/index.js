@@ -58,7 +58,7 @@ class BusyTimesWidget extends Component {
             <div className="container">
                 <div className="busyTimesViewTitle">Busy Times</div>
                 <AmCharts.React
-                    className="my-class"
+                    className="myClass"
                     style={{
                         width: "100%",
                         height: "35vh"

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// import PieChart from 'react-minimal-pie-chart';
 
 import './styles.css';
 

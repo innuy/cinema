@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import NavBar from "../../../components/GENERAL/NavBar";
 
 import {Route} from "react-router-dom";
@@ -23,7 +23,7 @@ class UserDetailsContainer extends Component {
         unauthorizedVisible: false,
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.editUserInfo = this.editUserInfo.bind(this);
@@ -33,7 +33,7 @@ class UserDetailsContainer extends Component {
     }
 
     componentWillMount() {
-        if(this.props.match.params.id){
+        if (this.props.match.params.id) {
             this.setState({
                 id: this.props.match.params.id,
             }, () => {
@@ -42,16 +42,15 @@ class UserDetailsContainer extends Component {
         }
     }
 
-    obtainUserData(){
+    obtainUserData() {
         this.hideError();
         getSingleUser(this.state.id, (success, data) => {
-            if (success){
+            if (success) {
                 this.setState({
                     user: data
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -62,15 +61,14 @@ class UserDetailsContainer extends Component {
         });
     }
 
-    obtainMyUserData(){
+    obtainMyUserData() {
         this.hideError();
         getMyUserData((success, user) => {
-            if (success){
+            if (success) {
                 this.setState({
                     user
                 });
-            }
-            else{
+            } else {
                 this.setState({
                     errorVisible: true,
                     errorText: "There was an error obtaining your details",
@@ -80,16 +78,15 @@ class UserDetailsContainer extends Component {
         });
     }
 
-    editUserInfo(id, email, password, firstName, lastName, role, oldPassword){
+    editUserInfo(id, email, password, firstName, lastName, role, oldPassword) {
         editUser(id, email, firstName, lastName, role, (success, msg) => {
             if (success) {
-                if(oldPassword){
+                if (oldPassword) {
                     changePassword(email, oldPassword, password, (passSuccess, passMsg) => {
-                        if(passSuccess){
+                        if (passSuccess) {
                             navigateBack(this.history);
-                        }
-                        else{
-                            if(passMsg) {
+                        } else {
+                            if (passMsg) {
                                 this.setState({
                                     errorVisible: true,
                                     errorText: passMsg,
@@ -98,13 +95,12 @@ class UserDetailsContainer extends Component {
                             }
                         }
                     });
-                }
-                else{
+                } else {
                     navigateBack(this.history);
                 }
 
             } else {
-                if(msg) {
+                if (msg) {
                     this.setState({
                         errorVisible: true,
                         errorText: msg,
@@ -115,7 +111,7 @@ class UserDetailsContainer extends Component {
         });
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -127,8 +123,10 @@ class UserDetailsContainer extends Component {
                 return (<div>
                     <NavBar isAdmin={true} history={this.history}/>
                     <UserDetails user={this.state.user} callback={this.editUserInfo} isAdmin={true} isNewUser={false}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                </div>);}} />
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

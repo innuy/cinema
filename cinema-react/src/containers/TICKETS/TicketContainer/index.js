@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import TicketView from "../../../components/TICKETS/TicketView";
 import {getTickets, deleteTicket} from "../../../API/tickets";
@@ -21,7 +21,7 @@ class TicketContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.deleteTicket = this.deleteTicket.bind(this);
@@ -34,16 +34,15 @@ class TicketContainer extends Component {
         this.refreshTickets();
     }
 
-    refreshTickets(){
+    refreshTickets() {
         getTickets((success, data) => {
 
-            if(success) {
+            if (success) {
                 this.setState({
                     tickets: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -54,18 +53,17 @@ class TicketContainer extends Component {
         });
     }
 
-    addTicket(){
+    addTicket() {
         navigate(this.history, '/addTicket');
     }
 
-    deleteTicket(id){
+    deleteTicket(id) {
         deleteTicket(id, (success, msg) => {
-            if(success) {
+            if (success) {
                 this.refreshTickets();
 
-            }
-            else{
-                if(msg) {
+            } else {
+                if (msg) {
                     this.setState({
                         errorVisible: true,
                         errorText: msg,
@@ -77,12 +75,12 @@ class TicketContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
-    navigateToDetails(id){
-        navigate(this.history, 'tickets/'+id);
+    navigateToDetails(id) {
+        navigate(this.history, 'tickets/' + id);
     }
 
     render() {
@@ -90,12 +88,14 @@ class TicketContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                            <TicketView tickets={this.state.tickets} addTicket={this.addTicket} navigateToDetails={this.navigateToDetails}
-                                        deleteTicket={this.deleteTicket} isAdmin={this.state.isAdmin}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                        </div>);
-            }} />
+                    <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
+                    <TicketView tickets={this.state.tickets} addTicket={this.addTicket}
+                                navigateToDetails={this.navigateToDetails}
+                                deleteTicket={this.deleteTicket} isAdmin={this.state.isAdmin}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

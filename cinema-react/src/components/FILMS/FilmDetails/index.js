@@ -60,16 +60,15 @@ class FilmDetails extends Component {
         }
 
         res.push(
-                <button className="filmDetailsTitleButton col-12"
-                        onClick={() => {
-                            const film = this.state.film;
-                            film.cast.push("");
-                            this.setState({
-                                film
-                            });
-                        }}>Add member
-                </button>
-
+            <button className="filmDetailsTitleButton col-12"
+                    onClick={() => {
+                        const film = this.state.film;
+                        film.cast.push("");
+                        this.setState({
+                            film
+                        });
+                    }}>Add member
+            </button>
         );
 
         return res;

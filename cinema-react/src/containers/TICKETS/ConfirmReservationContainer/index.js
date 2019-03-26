@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import {getTickets} from "../../../API/tickets";
 import NavBar from "../../../components/GENERAL/NavBar";
@@ -20,7 +20,7 @@ class ConfirmReservationContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.refreshTickets = this.refreshTickets.bind(this);
@@ -30,17 +30,16 @@ class ConfirmReservationContainer extends Component {
         this.refreshTickets();
     }
 
-    refreshTickets(){
+    refreshTickets() {
         this.hideError();
         getTickets((success, data) => {
 
-            if(success) {
+            if (success) {
                 this.setState({
                     tickets: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -51,11 +50,11 @@ class ConfirmReservationContainer extends Component {
         });
     }
 
-    confirmTicket(){
+    confirmTicket() {
 
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -66,9 +65,10 @@ class ConfirmReservationContainer extends Component {
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
                     <ConfirmReservation confirmTicket={this.confirmTicket} tickets={this.state.tickets}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

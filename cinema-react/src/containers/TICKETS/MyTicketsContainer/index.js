@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import {getMyTickets} from "../../../API/tickets";
 import NavBar from "../../../components/GENERAL/NavBar";
@@ -20,7 +20,7 @@ class MyTicketsContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.refreshTickets = this.refreshTickets.bind(this);
@@ -31,16 +31,15 @@ class MyTicketsContainer extends Component {
         this.refreshTickets();
     }
 
-    refreshTickets(){
+    refreshTickets() {
         getMyTickets((success, data) => {
 
-            if(success) {
+            if (success) {
                 this.setState({
                     tickets: data,
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -51,7 +50,7 @@ class MyTicketsContainer extends Component {
         });
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -62,9 +61,10 @@ class MyTicketsContainer extends Component {
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
                     <MyTickets tickets={this.state.tickets}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

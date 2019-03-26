@@ -1,11 +1,11 @@
-.userViewContainer{
+.userViewContainer {
     flex-direction: row;
     background-color: var(--secondBackground);
     float: none;
     margin: 2vh auto;
 }
 
-.userViewTitle{
+.userViewTitle {
     font-weight: bolder;
     font-size: 20px;
     color: var(--headerText);
@@ -17,6 +17,7 @@
     display: flex;
     flex-wrap: wrap;
 }
+
 .row.display-flex > [class*='col-'] {
     display: flex;
     flex-direction: column;

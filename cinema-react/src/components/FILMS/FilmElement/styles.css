@@ -1,26 +1,27 @@
-.filmElementContainer{
+.filmElementContainer {
     margin: 2vh;
     background-color: var(--background);
 }
-.filmElementBody{
-     padding: 1pt;
-     background-color: var(--background);
- }
 
-.filmElementDelete{
+.filmElementBody {
+    padding: 1pt;
+    background-color: var(--background);
+}
+
+.filmElementDelete {
     width: 1em;
     margin-left: 95%;
 }
 
-.filmElementMainText{
+.filmElementMainText {
     font-size: 20px;
     color: var(--subText);
 }
 
-.filmElementSecondaryText{
+.filmElementSecondaryText {
     margin-top: 5px;
     color: var(--text);
 }
 
-.filmElementImage{
+.filmElementImage {
 }

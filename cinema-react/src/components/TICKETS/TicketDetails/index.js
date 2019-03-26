@@ -165,7 +165,6 @@ class TicketDetails extends Component {
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <OptionButton onClick={() => {
-                        //TODO: CHECK ALL DATA IS PRESENT
                         this.props.callback(this.state.ticket);
                     }} text={this.props.buttonText}/>
                     <div className="ticketDetailsSeparator"/>

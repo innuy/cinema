@@ -1,11 +1,11 @@
-.filmViewContainer{
+.filmViewContainer {
     flex-direction: row;
     background-color: var(--secondBackground);
     float: none;
     margin: 2vh auto;
 }
 
-.filmViewTitle{
+.filmViewTitle {
     font-weight: bolder;
     font-size: 20px;
     color: var(--headerText);
