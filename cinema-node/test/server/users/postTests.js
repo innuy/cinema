@@ -12,7 +12,6 @@ const auth = require('../../../middlewares/auth');
 
 const userToken = 'Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5hY2hvN0B0ZXN0LmNvbSIsImlkIjoiNWM2MTk3OTJmYjE3NzMzZGI4NGVmMTRkIiwiZXhwIjoxNTU1MzM2ODk1LCJyb2xlIjoxLCJpYXQiOjE1NTAxNTI4OTV9.YPpv-2Jvr-BOaskBIHTlMTVqDmS730a6XBIyZJboIuw'
 const adminToken = 'Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5hY2hvQGFkbWluLmNvbSIsImlkIjoiNWM2MWNiYTMxNmRlZDA2YzNlZjFkMzE0IiwiZXhwIjoxNTU1MDk3MzMwLCJyb2xlIjoyLCJpYXQiOjE1NDk5MTMzMzB9.ecCfUNsvCHIIQ_U6s5KH2HoAr56iwCBnC29R2oi0bKw'
-const wrongToken = 'Token 111111111111111111111111111111eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik5hY2hvQGFkbWluLmNvbSIsImlkIjoiNWM2MWNiYTMxNmRlZDA2YzNlZjFkMzE0IiwiZXhwIjoxNTU1MDk3MzMwLCJyb2xlIjoyLCJpYXQiOjE1NDk5MTMzMzB9.ecCfUNsvCHIIQ_U6s5KH2HoAr56iwCBnC29R2oi0bKw'
 
 const userData = {
     name: "Great",

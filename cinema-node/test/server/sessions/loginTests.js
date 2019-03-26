@@ -1,5 +1,4 @@
 const sinon = require('sinon');
-const expect = require("chai").expect;
 const assert = require("chai").assert;
 const should = require("chai").should();
 const request = require('supertest');
@@ -101,7 +100,9 @@ function userWrongPasswordTest(done) {
 
 describe("User login Test", function () {
     beforeEach(() => {
-        this.authenticate = sinon.stub(passport, 'authenticate').returns(() => {return 1});
+        this.authenticate = sinon.stub(passport, 'authenticate').returns(() => {
+            return 1
+        });
         sinon.stub(User, 'create').resolves(userData);
         sinon
             .stub(User.prototype, 'save')

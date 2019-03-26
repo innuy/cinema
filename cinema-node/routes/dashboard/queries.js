@@ -63,7 +63,8 @@ module.exports.queryTopMovies = (timeRangeInDays, amount) => new Promise((resolv
 });
 
 module.exports.querySoldRatio = timeRangeInDays => new Promise((resolve, reject) => {
-    let getGreaterThanXDaysAgoIdFilter = {_id: {$gt: objectIdWithTimestamp(getDateXDaysAgo(timeRangeInDays))}};
+    let getGreaterThanXDaysAgoIdFilter =
+        {_id: {$gt: objectIdWithTimestamp(getDateXDaysAgo(timeRangeInDays))}};
     Ticket.aggregate([
         {$match: getGreaterThanXDaysAgoIdFilter},
         {
@@ -107,10 +108,12 @@ module.exports.queryBusyTimes = timeRangeInDays => new Promise((resolve, reject)
         },
         {
             $project: {
-                h: {$hour: {
-                    date: {$arrayElemAt: ["$presentationInfo.start", 0]},
-                    timezone: 'America/Montevideo'
-                } },
+                h: {
+                    $hour: {
+                        date: {$arrayElemAt: ["$presentationInfo.start", 0]},
+                        timezone: 'America/Montevideo'
+                    }
+                },
                 tickets: "$count",
                 _id: 0,
             }

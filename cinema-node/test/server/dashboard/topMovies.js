@@ -111,7 +111,6 @@ function getTopMoviesDbError(done) {
 }
 
 
-
 describe("Dashboard - Top movies tests", function () {
     beforeEach(() => {
         app = require('../../../app');

@@ -1,8 +1,8 @@
 const sinon = require('sinon');
-const expect = require("chai").expect;
 const assert = require("chai").assert;
 const should = require("chai").should();
 const request = require('supertest');
+
 let app;
 let dashboardNamespace;
 let dashboardSocket;

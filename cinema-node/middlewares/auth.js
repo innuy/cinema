@@ -4,10 +4,11 @@ const User = require('../db/models/users');
 
 const userRoleKey = 1;
 const adminRoleKey = 2;
-const getTokenFromHeaders = (req) => {
-    const { headers: { authorization } } = req;
 
-    if(authorization && authorization.split(' ')[0] ==='Token') {
+const getTokenFromHeaders = (req) => {
+    const {headers: {authorization}} = req;
+
+    if (authorization && authorization.split(' ')[0] === 'Token') {
         return authorization.split(' ')[1];
     }
     return null;
@@ -15,10 +16,9 @@ const getTokenFromHeaders = (req) => {
 
 const adminOnly = (req, res, next) => {
     const user = req.requestingUser;
-    if (user.role === adminRoleKey){
+    if (user.role === adminRoleKey) {
         next();
-    }
-    else{
+    } else {
         errors.notFoundError(res);
     }
 };

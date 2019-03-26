@@ -10,12 +10,12 @@ require('../setup');
 const Tickets = require("../../../db/models/tickets");
 
 const testingSoldRatioAnswerData = [{
-    soldTickets:[
-        {soldTickets:4}
-        ],
-    reservedTickets:[
-        {reservedTickets:35}
-        ]
+    soldTickets: [
+        {soldTickets: 4}
+    ],
+    reservedTickets: [
+        {reservedTickets: 35}
+    ]
 }];
 
 function getSoldRatio(done) {

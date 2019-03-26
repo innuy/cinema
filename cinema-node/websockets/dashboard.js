@@ -1,4 +1,3 @@
-
 let app;
 app = require('../app');
 let dashboardQueries = require('../routes/dashboard/queries');
@@ -10,12 +9,11 @@ const sendDataToDashboardNamespace = async () => {
     let dashboardNamespace = app.dashboardNamespace;
 
     try {
-
         let dashboardDataArray = await Promise.all([
             dashboardQueries.queryTopMovies(timeRangeInDays, 10),
             dashboardQueries.querySoldRatio(timeRangeInDays),
             dashboardQueries.queryBusyTimes(timeRangeInDays),
-        ])
+        ]);
 
         dashboardData = {};
         dashboardData.topMovies = dashboardDataArray[0];
@@ -24,8 +22,7 @@ const sendDataToDashboardNamespace = async () => {
 
         dashboardNamespace.emit('dashboard', dashboardData);
 
-    }
-    catch(err){
+    } catch (err) {
         dashboardNamespace.emit('dashboard', err);
     }
 };

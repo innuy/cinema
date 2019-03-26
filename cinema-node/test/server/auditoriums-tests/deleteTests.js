@@ -47,6 +47,7 @@ function auditoriumDeleteTestbyId(done) {
             console.log(err);
         })
 }
+
 function auditoriumNotFoundTest(done) {
     request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
@@ -62,6 +63,7 @@ function auditoriumNotFoundTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumPresentationNotFoundTest(done) {
     request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
@@ -77,6 +79,7 @@ function auditoriumPresentationNotFoundTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorFindingPresentationTest(done) {
     request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
@@ -92,6 +95,7 @@ function auditoriumDbErrorFindingPresentationTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorDeletingAuditoriumTest(done) {
     request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
@@ -107,6 +111,7 @@ function auditoriumDbErrorDeletingAuditoriumTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorDeletingSeatsTest(done) {
     request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
@@ -122,6 +127,7 @@ function auditoriumDbErrorDeletingSeatsTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorDeletingTicketsTest(done) {
     request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
@@ -137,6 +143,7 @@ function auditoriumDbErrorDeletingTicketsTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorDeletingPresentationTest(done) {
     request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
@@ -152,6 +159,7 @@ function auditoriumDbErrorDeletingPresentationTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumWrongIdDeleteTest(done) {
     request(app.app)
         .del('/auditoriums/' + testingAuditoriumWrongIdToDelete)

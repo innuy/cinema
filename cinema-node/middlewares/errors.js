@@ -1,4 +1,3 @@
-
 module.exports.notFoundError = res => {
     res.status(404);
     res.send({

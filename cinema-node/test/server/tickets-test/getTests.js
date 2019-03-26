@@ -1,5 +1,4 @@
 const sinon = require('sinon');
-const expect = require("chai").expect;
 const assert = require("chai").assert;
 const should = require("chai").should();
 const request = require('supertest');
@@ -146,7 +145,7 @@ describe("Ticket Get Test", function () {
     beforeEach(() => {
         sinon.stub(Ticket, 'find').returns({
             populate: sinon.stub().callsFake(function fakeFn() {
-                return new Promise((resolve,reject)=>{
+                return new Promise((resolve, reject) => {
                     resolve([ticketModel])
                 })
             })
@@ -187,7 +186,7 @@ describe("Ticket Get by Id Test", function () {
     it('Failed - Wrong id', (done) => {
         sinon.stub(Ticket, 'findById').returns({
             populate: sinon.stub().callsFake(function fakeFn() {
-                return new Promise((resolve,reject)=>{
+                return new Promise((resolve, reject) => {
                     resolve(null);
                 })
             })
@@ -197,7 +196,7 @@ describe("Ticket Get by Id Test", function () {
     it('Successful - Get ticket by id', (done) => {
         sinon.stub(Ticket, 'findById').returns({
             populate: sinon.stub().callsFake(function fakeFn() {
-                return new Promise((resolve,reject)=>{
+                return new Promise((resolve, reject) => {
                     resolve(ticketModel);
                 })
             })

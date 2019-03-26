@@ -1,4 +1,3 @@
-
 let app;
 app = require('../app');
 let getTicketByPresentationId;

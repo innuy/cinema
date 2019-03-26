@@ -39,7 +39,6 @@ const theDarkKnight = {
         "psychological and physical tests of his ability to fight injustice.",
     director: "Christopher Nolan"
 };
-
 const twelveAngryMen = {
     name: "12 Angry Men",
     image: "image link",
