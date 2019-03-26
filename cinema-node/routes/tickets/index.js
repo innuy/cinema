@@ -24,7 +24,6 @@ module.exports = router => {
 
     router.get('/tickets/:id',
         auth.required,
-        auth.adminOnly,
         validation.getById,
         handlers.getById,
     );
