@@ -5,6 +5,13 @@ import OptionButton from "../../GENERAL/OptionButton";
 
 import './styles.css';
 
+function correctTimeZone(localDatetime) {
+    let a = new Date(localDatetime);
+    a.setHours(a.getHours() - a.getTimezoneOffset() / 60);
+
+    return a.toISOString().substring(0, 23);
+}
+
 class PresentationDetails extends Component {
 
     state = {
@@ -150,9 +157,10 @@ class PresentationDetails extends Component {
                     }
                     <div className="presentationDetailsTitle">Start time:</div>
                     <input className="custom-select presentationInput" type="datetime-local"
-                           value={this.state.presentation.startTime} onChange={(event) => {
+                           value={this.state.presentation.startTime} onChange={(data) => {
                         const presentation = this.state.presentation;
-                        presentation.startTime = event.target.value;
+                        let localDatetime = data.target.value;
+                        presentation.startTime = correctTimeZone(localDatetime);
                         this.setState({
                             presentation
                         });
