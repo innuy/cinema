@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import LineChart from 'react-linechart';
 
 import './styles.css';
 
@@ -22,7 +21,7 @@ class BusyTimesWidget extends Component {
             }],
             "graphs": [{
                 "useNegativeColorIfDown": true,
-                "balloonText": "[[category]]<br><b>value: [[value]]</b>",
+                "balloonText": "[[category]]h<br>reserved: [[value]]",
                 "bullet": "round",
                 "bulletBorderAlpha": 1,
                 "bulletBorderColor": "#FFFFFF",

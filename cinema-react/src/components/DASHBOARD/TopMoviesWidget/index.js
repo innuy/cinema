@@ -31,8 +31,6 @@ class TopMoviesWidget extends Component {
             // "angle": 30,
         };
 
-        console.log(this.props.topFilms);
-
         let topMoviesOptions = {
             "theme": "light",
             "type": "serial",
@@ -72,7 +70,7 @@ class TopMoviesWidget extends Component {
 
         return (
             <div className="row">
-                {this.props.ticketsReserved > 0 && this.props.ticketsSold > 0 ?
+                {this.props.ticketsReserved > 0 || this.props.ticketsSold > 0 ?
                     <div className="col-xs-12 col-sm-12 col-md-4 ">
                         <div className="busyTimesViewTitle">Sold - Reserved</div>
 
