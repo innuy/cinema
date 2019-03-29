@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import OptionButton from "../../GENERAL/OptionButton";
 
 import './styles.css';
-import {USER_ROLES} from "../../../API/users";
 
 class TicketDetails extends Component {
 
@@ -21,7 +20,6 @@ class TicketDetails extends Component {
 
     constructor(props) {
         super(props);
-
         this.updateInformation = this.updateInformation.bind(this);
         this.handlePaidChange = this.handlePaidChange.bind(this);
     }
@@ -54,9 +52,7 @@ class TicketDetails extends Component {
             ticket.auditorium = auditoriumResult;
         }
 
-        ticket.startTime = new Date(this.props.presentations[index].startTime);
-        ticket.startTime = ticket.startTime.toISOString().substring(0, 23);
-
+        ticket.startTime = this.props.presentations[index].startTime;
         ticket.presentation = this.props.presentations[index].id;
 
         this.setState({
@@ -103,7 +99,8 @@ class TicketDetails extends Component {
                     <div className="ticketDetailsPageTitle">Ticket Information</div>
                     <div className="ticketDetailsSeparator"/>
 
-                    <div className="input-group mb-3 form-group">
+                    <div className="form-group">
+                        <label className="ticketDetailsTitle">Presentation list:</label>
                         <select className="custom-select ticketDetailsSelect form-control" onChange={(data) => {
                             this.updateInformation(data.target.value);
                         }}>
