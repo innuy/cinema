@@ -2,17 +2,17 @@ import Cookies from 'universal-cookie';
 
 const userTokenId = "userToken";
 
-export function getUserToken(){
+export function getUserToken() {
     const cookies = new Cookies();
     return cookies.get(userTokenId);
 }
 
-export function saveUserToken(token){
+export function saveUserToken(token) {
     const cookies = new Cookies();
-    cookies.set(userTokenId, token, { path: '/' });
+    cookies.set(userTokenId, token, {path: '/'});
 }
 
-export function deleteUserToken(){
+export function deleteUserToken() {
     const cookies = new Cookies();
-    cookies.set(userTokenId, "", { path: '/' });
+    cookies.set(userTokenId, "", {path: '/'});
 }

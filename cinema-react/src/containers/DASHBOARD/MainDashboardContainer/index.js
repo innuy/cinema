@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import NavBar from "../../../components/GENERAL/NavBar";
 import MainDashboard from "../../../components/DASHBOARD/MainDashboard";
@@ -7,9 +7,7 @@ import MainDashboard from "../../../components/DASHBOARD/MainDashboard";
 
 class MainDashboardContainer extends Component {
 
-    state = {
-
-    };
+    state = {};
 
     history = null;
 
@@ -26,7 +24,7 @@ class MainDashboardContainer extends Component {
                     <NavBar isAdmin={true} history={this.history}/>
                     <MainDashboard/>
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

@@ -9,17 +9,17 @@ import './styles.css';
 
 class FilmView extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.renderFilms = this.renderFilms.bind(this);
     }
 
-    renderFilms(){
+    renderFilms() {
         const result = [];
 
-        for(let i = 0; i < this.props.films.length; i++){
-            result.push(<FilmElement key={"movie_"+i} film={this.props.films[i]} deleteFilm={this.props.deleteFilm}
+        for (let i = 0; i < this.props.films.length; i++) {
+            result.push(<FilmElement key={"movie_" + i} film={this.props.films[i]} deleteFilm={this.props.deleteFilm}
                                      navigateToDetails={this.props.navigateToDetails} isAdmin={this.props.isAdmin}/>);
         }
 
@@ -31,7 +31,7 @@ class FilmView extends Component {
         return (
             <div>
                 <div className="filmViewTitle">All Films</div>
-                <div className="row filmViewContainer justify-content-center">
+                <div className="row display-flex filmViewContainer justify-content-around">
                     {this.renderFilms()}
                 </div>
                 {this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">

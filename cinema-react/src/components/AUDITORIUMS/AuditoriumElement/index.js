@@ -8,13 +8,13 @@ import './styles.css';
 
 class AuditoriumElement extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-    handleDelete(event){
+    handleDelete(event) {
         event.stopPropagation();
         this.props.deleteAuditorium(this.props.auditorium.id);
     }
@@ -22,13 +22,21 @@ class AuditoriumElement extends Component {
     render() {
 
         return (
-            <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 auditoriumElementContainer" onClick={() => {
+            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-11" onClick={() => {
                 this.props.navigateToDetails(this.props.auditorium.id);
             }}>
-                {this.props.isAdmin ? <img alt={"Delete auditorium"} className="auditoriumElementDelete" src={cross} onClick={this.handleDelete}/> : null}
-                <div className="auditoriumElementMainText">{this.props.auditorium.number}</div>
-                <div className="auditoriumElementSecondaryText">ROWS: {this.props.auditorium.numberOfRows}</div>
-                <div className="auditoriumElementSecondaryText">COLUMNS: {this.props.auditorium.numberOfColumns}</div>
+                <div className="d-flex flex-column h-100 auditoriumElementContainer">
+                    <div>
+                        {this.props.isAdmin ?
+                            <img alt={"Delete auditorium"} className="auditoriumElementDelete" src={cross}
+                                 onClick={this.handleDelete}/> : null}
+                    </div>
+                    <div className="auditoriumElementMainText">{this.props.auditorium.number}</div>
+                    <div className="auditoriumElementSecondaryText">ROWS: {this.props.auditorium.numberOfRows}</div>
+                    <div
+                        className="auditoriumElementSecondaryText">COLUMNS: {this.props.auditorium.numberOfColumns}
+                    </div>
+                </div>
             </div>
         );
     }

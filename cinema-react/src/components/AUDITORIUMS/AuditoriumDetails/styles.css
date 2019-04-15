@@ -1,10 +1,8 @@
-.auditoriumDetailsContainer{
-    width: 40%;
-    margin-left: 5%;
+.auditoriumDetailsContainer {
     background-color: var(--background);
 }
 
-.auditoriumDetailsPageTitle{
+.auditoriumDetailsPageTitle {
     color: var(--headerText);
     font-size: 20px;
     width: 100%;
@@ -12,30 +10,30 @@
     font-weight: bolder;
 }
 
-.auditoriumDetailsErrorMessage{
+.auditoriumDetailsErrorMessage {
     color: var(--dangerText);
 }
 
-.auditoriumDetailsTitleContainer{
+.auditoriumDetailsTitleContainer {
     width: 100%;
 }
 
-.auditoriumDetailsTitle{
+.auditoriumDetailsTitle {
     color: var(--subText);
     font-weight: bold;
 }
 
-.auditoriumDetailsTitleButton{
+.auditoriumDetailsTitleButton {
     width: 10%;
     float: right;
 }
 
-.auditoriumInput{
+.auditoriumInput {
     width: 100%;
     color: var(--text);
 }
 
-.auditoriumDetailsSeparator{
+.auditoriumDetailsSeparator {
     height: 15px;
     width: 100%;
 }

@@ -9,11 +9,11 @@ import './styles.css';
 
 class AuditoriumView extends Component {
 
-    renderAuditoriums(){
+    renderAuditoriums() {
         const result = [];
 
-        for(let i = 0; i < this.props.auditoriums.length; i++){
-            result.push(<AuditoriumElement key={"auditorium_"+i} auditorium={this.props.auditoriums[i]}
+        for (let i = 0; i < this.props.auditoriums.length; i++) {
+            result.push(<AuditoriumElement key={"auditorium_" + i} auditorium={this.props.auditoriums[i]}
                                            deleteAuditorium={this.props.deleteAuditorium} isAdmin={this.props.isAdmin}
                                            navigateToDetails={this.props.navigateToDetails}/>);
         }
@@ -27,7 +27,7 @@ class AuditoriumView extends Component {
         return (
             <div>
                 <div className="auditoriumViewTitle">All Auditoriums</div>
-                <div className="row auditoriumViewContainer justify-content-center">
+                <div className="row display-flex auditoriumViewContainer justify-content-around">
                     {this.renderAuditoriums()}
                 </div>
                 {this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">

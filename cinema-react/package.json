@@ -12,9 +12,14 @@
     "react-linechart": "^1.1.12",
     "react-minimal-pie-chart": "^3.3.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1",
+    "react-scripts": "^2.1.8",
     "socket.io-client": "^2.2.0",
     "universal-cookie": "^3.0.7"
+  },
+  "devDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "@amcharts/amcharts3-react": "^3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

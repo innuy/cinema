@@ -1,14 +1,12 @@
-.navBarContainer{
+.navBarContainer {
     background-color: var(--background);
-    height: 40pt;
 }
 
-.navBarElementContainer{
+.navBarElementContainer {
     border-style: none;
     padding-left: 15px;
     padding-right: 15px;
     color: var(--headerText);
     background-color: transparent;
     font-weight: bold;
-    width: 13%;
 }

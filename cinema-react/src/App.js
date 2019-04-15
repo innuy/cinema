@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Switch, Route} from 'react-router-dom';
 
 import './App.css';
 
@@ -35,54 +35,53 @@ class App extends Component {
     componentDidMount() {
         setInterval(() => {
             this.setState(() => {
-                return { unseen: "does not display" }
+                return {unseen: "does not display"}
             });
         }, 1500);
     }
 
-  render() {
+    render() {
 
-    return (
-
-        <div>
-            <Switch>
-                <Route exact path='/' component={LoginContainer}/>
-                <Route exact path='/signup' component={SignUpContainer}/>
-                {/*ADMIN SCREENS*/}
-                <Route exact path='/films' component={FilmContainer}/>
-                <Route exact path='/addFilm' component={AddFilmContainer}/>
-                <Route exact path='/film/:id' component={FilmDetailsContainer}/>
-                <Route exact path='/auditoriums' component={AuditoriumContainer}/>
-                <Route exact path='/addAuditorium' component={AddAuditoriumContainer}/>
-                <Route exact path='/auditorium/:id' component={AuditoriumDetailsContainer}/>
-                <Route exact path='/presentations' component={PresentationContainer}/>
-                <Route exact path='/addPresentation' component={AddPresentationContainer}/>
-                <Route exact path='/presentation/:id' component={PresentationDetailsContainer}/>
-                <Route exact path='/tickets' component={TicketContainer}/>
-                <Route exact path='/addTicket' component={AddTicketContainer}/>
-                <Route exact path='/tickets/:id' component={TicketDetailsContainer}/>
-                <Route exact path='/confirmReservation' component={ConfirmReservationContainer}/>
-                <Route exact path='/users' component={UserContainer}/>
-                <Route exact path='/addUser' component={AddUserContainer}/>
-                <Route exact path='/user/:id' component={UserDetailsContainer}/>
-                <Route exact path='/dashboard' component={MainDashboardContainer}/>
-                {/*USER SCREENS*/}
-                <Route exact path='/seePresentations' component={SeePresentationContainer}/>
-                <Route exact path='/myTickets' component={MyTicketsContainer}/>
-                <Route exact path='/reserveTicket/:id' component={ReserveTicketContainer}/>
-                <Route exact path='/myInfo' component={MyUserDetailsContainer}/>
-            </Switch>
-            {isUnauthorized ? <UnauthorizedAlert/> : null }
-        </div>
-    );
-  }
+        return (
+            <div>
+                <Switch>
+                    <Route exact path='/' component={LoginContainer}/>
+                    <Route exact path='/signup' component={SignUpContainer}/>
+                    {/*ADMIN SCREENS*/}
+                    <Route exact path='/films' component={FilmContainer}/>
+                    <Route exact path='/addFilm' component={AddFilmContainer}/>
+                    <Route exact path='/film/:id' component={FilmDetailsContainer}/>
+                    <Route exact path='/auditoriums' component={AuditoriumContainer}/>
+                    <Route exact path='/addAuditorium' component={AddAuditoriumContainer}/>
+                    <Route exact path='/auditorium/:id' component={AuditoriumDetailsContainer}/>
+                    <Route exact path='/presentations' component={PresentationContainer}/>
+                    <Route exact path='/addPresentation' component={AddPresentationContainer}/>
+                    <Route exact path='/presentation/:id' component={PresentationDetailsContainer}/>
+                    <Route exact path='/tickets' component={TicketContainer}/>
+                    <Route exact path='/addTicket' component={AddTicketContainer}/>
+                    <Route exact path='/tickets/:id' component={TicketDetailsContainer}/>
+                    <Route exact path='/confirmReservation' component={ConfirmReservationContainer}/>
+                    <Route exact path='/users' component={UserContainer}/>
+                    <Route exact path='/addUser' component={AddUserContainer}/>
+                    <Route exact path='/user/:id' component={UserDetailsContainer}/>
+                    <Route exact path='/dashboard' component={MainDashboardContainer}/>
+                    {/*USER SCREENS*/}
+                    <Route exact path='/seePresentations' component={SeePresentationContainer}/>
+                    <Route exact path='/myTickets' component={MyTicketsContainer}/>
+                    <Route exact path='/reserveTicket/:id' component={ReserveTicketContainer}/>
+                    <Route exact path='/myInfo' component={MyUserDetailsContainer}/>
+                </Switch>
+                {isUnauthorized ? <UnauthorizedAlert/> : null}
+            </div>
+        );
+    }
 }
 
-export function unauthorizedAccess(){
+export function unauthorizedAccess() {
     isUnauthorized = true;
 }
 
-export function resetAuthorization(){
+export function resetAuthorization() {
     isUnauthorized = false;
 }
 

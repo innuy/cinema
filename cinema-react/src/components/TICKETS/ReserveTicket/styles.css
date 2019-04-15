@@ -1,20 +1,23 @@
-.reserveTicketSeatContainer{
+.reserveTicketSeatContainer {
     margin-top: 20px;
 }
 
 .reserveTicketSeatRow {
-    text-align: center;
+    text-align: justify-all;
     width: 100%;
     justify-content: center;
 }
 
-.reserveTicketButtonContainer{
+.reserveTicketButtonContainer {
     margin-top: 20px;
     justify-content: center;
     padding-bottom: 20px;
 }
 
-.reserveTicketButton{
+.reserveTicketButton {
     text-align: center;
-    width: 10%;
+}
+
+.auditoriumContainer {
+    max-height: 80%;
 }

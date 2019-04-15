@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import AuditoriumDetails from "../../../components/AUDITORIUMS/AuditoriumDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -20,7 +20,7 @@ class AuditoriumDetailsContainer extends Component {
         errorCallback: null,
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.editAuditorium = this.editAuditorium.bind(this);
@@ -37,16 +37,15 @@ class AuditoriumDetailsContainer extends Component {
         });
     }
 
-    obtainAuditoriumData(){
+    obtainAuditoriumData() {
         this.hideError();
         getSingleAuditorium(this.state.id, (success, data) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     auditorium: data
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -57,13 +56,12 @@ class AuditoriumDetailsContainer extends Component {
         });
     }
 
-    editAuditorium(newAuditorium){
+    editAuditorium(newAuditorium) {
         editAuditorium(newAuditorium, (success, msg) => {
-            if(success){
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
-                if(msg){
+            } else {
+                if (msg) {
                     this.setState({
                         errorVisible: true,
                         errorText: msg,
@@ -74,7 +72,7 @@ class AuditoriumDetailsContainer extends Component {
         });
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -83,10 +81,13 @@ class AuditoriumDetailsContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <AuditoriumDetails auditorium={this.state.auditorium} isEdit={true} callback={this.editAuditorium} buttonText={"EDIT"}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <AuditoriumDetails auditorium={this.state.auditorium} isEdit={true} callback={this.editAuditorium}
+                                       buttonText={"EDIT"}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

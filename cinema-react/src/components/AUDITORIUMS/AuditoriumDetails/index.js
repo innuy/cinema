@@ -7,7 +7,7 @@ import './styles.css';
 
 class AuditoriumDetails extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.auditoriumHasErrors = this.auditoriumHasErrors.bind(this);
@@ -21,7 +21,7 @@ class AuditoriumDetails extends Component {
             numberOfRows: 0,
         },
 
-        errors:{
+        errors: {
             number: false,
             numberOfColumns: false,
             numberOfRows: false,
@@ -29,14 +29,14 @@ class AuditoriumDetails extends Component {
     };
 
     componentWillReceiveProps(newProps) {
-        if(newProps.auditorium){
+        if (newProps.auditorium) {
             this.setState({
                 auditorium: newProps.auditorium,
             })
         }
     }
 
-    saveAuditoriumData(){
+    saveAuditoriumData() {
 
         const errors = {
             number: false,
@@ -44,77 +44,105 @@ class AuditoriumDetails extends Component {
             numberOfRows: false
         };
 
-        if(!this.state.auditorium.number){
+        if (!this.state.auditorium.number) {
             errors.number = true;
         }
-        if(!this.state.auditorium.numberOfColumns){
+        if (!this.state.auditorium.numberOfColumns) {
             errors.numberOfColumns = true;
         }
-        if(!this.state.auditorium.numberOfRows){
+        if (!this.state.auditorium.numberOfRows) {
             errors.numberOfRows = true;
         }
 
         this.setState({
             errors,
         }, () => {
-            if(!this.auditoriumHasErrors()) {
+            if (!this.auditoriumHasErrors()) {
                 this.props.callback(this.state.auditorium);
             }
         });
 
     }
 
-    auditoriumHasErrors(){
+    auditoriumHasErrors() {
         return this.state.errors.number && this.state.errors.numberOfColumns && this.state.errors.numberOfRows
     }
 
     render() {
         return (
-            <div>
+            <div className="justify-content-center">
                 <div className="auditoriumDetailsSeparator"/>
                 <div className="auditoriumDetailsSeparator"/>
-                <div className="auditoriumDetailsContainer">
-                    <div className="auditoriumDetailsPageTitle">AUDITORIUM INFORMATION</div>
+
+                <form className="container auditoriumDetailsContainer">
+                    <div className="auditoriumDetailsPageTitle">Auditorium Information</div>
                     <div className="auditoriumDetailsSeparator"/>
-                    <div className="auditoriumDetailsTitle">Number:</div>
-                    <input className="auditoriumInput" value={this.state.auditorium.number} onChange={(event) => {
-                        const auditorium = this.state.auditorium;
-                        auditorium.number = event.target.value;
-                        this.setState({
-                            auditorium
-                        });
-                    }}/>
-                    {this.state.errors.number ? <div className="auditoriumDetailsErrorMessage">There is an error in the number</div> : null}
-                    <div className="auditoriumDetailsSeparator"/>
-                    <div className="auditoriumDetailsTitle">Number of columns:</div>
-                    {this.props.isEdit ? <div className="auditoriumInput">{this.state.auditorium.numberOfColumns}</div>
-                        :
-                        <input className="auditoriumInput" value={this.state.auditorium.numberOfColumns} onChange={(event) => {
+
+                    <div className="form-group">
+                        <label className="auditoriumDetailsTitle">Number:</label>
+                        <input className="form-control" value={this.state.auditorium.number} onChange={(event) => {
                             const auditorium = this.state.auditorium;
-                            auditorium.numberOfColumns = event.target.value;
+                            auditorium.number = event.target.value;
                             this.setState({
                                 auditorium
                             });
-                    }}/>}
-                    {this.state.errors.numberOfColumns ? <div className="auditoriumDetailsErrorMessage">There is an error in the number of columns</div> : null}
+                        }}/>
+                        {this.state.errors.number ?
+                            <div className="auditoriumDetailsErrorMessage">There is an error in the
+                                number</div> : null}
+                    </div>
+
                     <div className="auditoriumDetailsSeparator"/>
-                    <div className="auditoriumDetailsTitle">Number of rows:</div>
-                    {this.props.isEdit ? <div className="auditoriumInput">{this.state.auditorium.numberOfRows}</div>
-                        :
-                        <input className="auditoriumInput" value={this.state.auditorium.numberOfRows} onChange={(event) => {
-                            const auditorium = this.state.auditorium;
-                            auditorium.numberOfRows = event.target.value;
-                            this.setState({
-                                auditorium
-                            });
-                    }}/>}
-                    {this.state.errors.numberOfRows ? <div className="auditoriumDetailsErrorMessage">There is an error in the number of rows</div> : null}
+
+                    <div className="form-group">
+                        <label className="auditoriumDetailsTitle">Number of columns:</label>
+                        {this.props.isEdit ?
+                            <fieldset disabled>
+                                <input className="form-control" value={this.state.auditorium.numberOfColumns}/>
+                            </fieldset>
+                            :
+                            <input className="form-control" value={this.state.auditorium.numberOfColumns}
+                                   onChange={(event) => {
+                                       const auditorium = this.state.auditorium;
+                                       auditorium.numberOfColumns = event.target.value;
+                                       this.setState({
+                                           auditorium
+                                       });
+                                   }}/>}
+
+                        {this.state.errors.numberOfColumns ?
+                            <div className="auditoriumDetailsErrorMessage">There is an error in the number of
+                                columns</div> : null}
+                    </div>
+
+                    <div className="auditoriumDetailsSeparator"/>
+
+                    <div className="form-group">
+                        <label className="auditoriumDetailsTitle">Number of rows:</label>
+                        {this.props.isEdit ?
+                            <fieldset disabled>
+                                <input className="form-control" value={this.state.auditorium.numberOfRows}/>
+                            </fieldset>
+                            :
+                            <input className="form-control" value={this.state.auditorium.numberOfRows}
+                                   onChange={(event) => {
+                                       const auditorium = this.state.auditorium;
+                                       auditorium.numberOfRows = event.target.value;
+                                       this.setState({
+                                           auditorium
+                                       });
+                                   }}/>}
+                        {this.state.errors.numberOfRows ?
+                            <div className="auditoriumDetailsErrorMessage">There is an error in the number of
+                                rows</div> : null}
+                    </div>
+
                     <div className="auditoriumDetailsSeparator"/>
                     <div className="auditoriumDetailsSeparator"/>
                     <div className="auditoriumDetailsSeparator"/>
                     <div className="auditoriumDetailsSeparator"/>
                     <OptionButton onClick={this.saveAuditoriumData} text={this.props.buttonText}/>
-                </div>
+                </form>
                 <div className="auditoriumDetailsSeparator"/>
                 <div className="auditoriumDetailsSeparator"/>
             </div>

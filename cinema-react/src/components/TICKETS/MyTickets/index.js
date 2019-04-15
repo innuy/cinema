@@ -7,17 +7,17 @@ import './styles.css';
 
 class MyTickets extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.renderTickets = this.renderTickets.bind(this);
     }
 
-    renderTickets(){
+    renderTickets() {
         const result = [];
 
-        for(let i = 0; i < this.props.tickets.length; i++){
-            result.push(<TicketElement key={"ticket_"+i} ticket={this.props.tickets[i]} isAdmin={false}/>);
+        for (let i = 0; i < this.props.tickets.length; i++) {
+            result.push(<TicketElement key={"ticket_" + i} ticket={this.props.tickets[i]} isAdmin={false}/>);
         }
 
         return result
@@ -28,7 +28,7 @@ class MyTickets extends Component {
         return (
             <div>
                 <div className="ticketViewTitle">Your Tickets</div>
-                <div className="row ticketViewContainer justify-content-center">
+                <div className="row display-flex userViewContainer justify-content-around">
                     {this.renderTickets()}
                 </div>
             </div>

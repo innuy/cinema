@@ -1,11 +1,9 @@
-.loginDetailsContainer{
-    width: 40%;
-    margin-left: 30%;
-    margin-top: 20pt;
+.loginDetailsContainer {
+    margin: 20pt 5%;
     background-color: var(--background);
 }
 
-.loginDetailsPageTitle{
+.loginDetailsPageTitle {
     color: var(--headerText);
     font-size: 20px;
     width: 100%;
@@ -13,39 +11,39 @@
     font-weight: bolder;
 }
 
-.loginDetailsErrorMessage{
+.loginDetailsErrorMessage {
     color: var(--dangerText);
 }
 
-.loginDetailsTitleContainer{
+.loginDetailsTitleContainer {
     width: 100%;
 }
 
-.loginDetailsTitle{
+.loginDetailsTitle {
     margin-left: 5%;
     color: var(--subText);
     font-weight: bold;
 }
 
-.loginDetailsTitleButton{
+.loginDetailsTitleButton {
     width: 10%;
     float: right;
 }
 
-.loginInput{
+.loginInput {
     margin-left: 5%;
     width: 90%;
     color: var(--text);
 }
 
-.loginChangeScreenButton{
+.loginChangeScreenButton {
     width: 100%;
     color: blue;
     font-size: 10px;
     text-align: center;
 }
 
-.loginDetailsSeparator{
+.loginDetailsSeparator {
     height: 15px;
     width: 100%;
 }

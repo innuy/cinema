@@ -1,6 +1,5 @@
-//const BASE_URL = "http://localhost:8000";
-
-const BASE_URL = "https://cinema-innuy-backend.now.sh"; //SERVER
+// const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://cinema-innuy-backend.herokuapp.com"; //SERVER
 //const BASE_URL = "http://192.168.0.109:8000"; //JP PC
 
 export const urls = {
@@ -15,5 +14,6 @@ export const urls = {
     topMovies: BASE_URL + '/dashboard/top-movies',
     ticketsSold: BASE_URL + '/dashboard/sold-ratio',
     busyTimes: BASE_URL + '/dashboard/busy-times',
-    socket: BASE_URL + '/socket',
+    dashboardNamespace: BASE_URL + '/dashboard',
+    reservingTicketsNamespace: BASE_URL + '/reservingTickets',
 };

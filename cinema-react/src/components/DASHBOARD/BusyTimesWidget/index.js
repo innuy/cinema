@@ -1,44 +1,68 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import LineChart from 'react-linechart';
 
 import './styles.css';
+
+import AmCharts from "@amcharts/amcharts3-react";
+
 
 class BusyTimesWidget extends Component {
 
 
-    parseBusyData(data){
-
-        const res = [];
-
-        for(let i = 0; i < data.length; i++){
-            res.push({
-                x: data[i].hour,
-                y: data[i].tickets,
-            });
-        }
-
-        return res;
-    }
-
     render() {
 
-        const data = [{color: "steelblue",
-            points: this.parseBusyData(this.props.busyTimes) }];
-
+        let config = {
+            "theme": "light",
+            "type": "serial",
+            "dataProvider": this.props.busyTimes,
+            "valueAxes": [{
+                "id": "v1",
+                "axisAlpha": 0.1
+            }],
+            "graphs": [{
+                "useNegativeColorIfDown": true,
+                "balloonText": "[[category]]h<br>reserved: [[value]]",
+                "bullet": "round",
+                "bulletBorderAlpha": 1,
+                "bulletBorderColor": "#FFFFFF",
+                "hideBulletsCount": 50,
+                "lineThickness": 2,
+                "lineColor": "#67b7dc",
+                "valueField": "tickets",
+                "fillAlphas": 0.2,
+            }],
+            "chartScrollbar": {
+                "scrollbarHeight": 5,
+                "backgroundAlpha": 0.1,
+                "backgroundColor": "#868686",
+                "selectedBackgroundColor": "#67b7dc",
+                "selectedBackgroundAlpha": 1
+            },
+            "chartCursor": {
+                "valueLineEnabled": true,
+                "valueLineBalloonEnabled": true
+            },
+            "categoryField": "hour",
+            "categoryAxis": {
+                "axisAlpha": 0,
+                "minHorizontalGap": 60,
+                "autoWrap": true,
+            },
+            "export": {
+                "enabled": true
+            }
+        };
 
         return (
-            <div className="busyTimesWidgetContainer offset-2 col-4">
+            <div className="container">
                 <div className="busyTimesViewTitle">Busy Times</div>
-
-                {this.props.busyTimes ? <LineChart
-                    data={data}
-                    width={400}
-                    height={400}
-                    hideXLabel={true}
-                    hideYLabel={true}
-                    interpolate={"linear"}
-                /> : null}
+                <AmCharts.React
+                    className="myClass"
+                    style={{
+                        width: "100%",
+                        height: "35vh"
+                    }}
+                    options={config}/>
             </div>
         );
     }

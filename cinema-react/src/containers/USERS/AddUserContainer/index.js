@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import UserDetails from "../../../components/USERS/UserDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -18,7 +18,7 @@ class AddUserContainer extends Component {
         errorText: '',
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.addUser = this.addUser.bind(this);
@@ -32,13 +32,12 @@ class AddUserContainer extends Component {
 
     }
 
-    addUser(id, email, password, firstName, lastName, role){
+    addUser(id, email, password, firstName, lastName, role) {
         addUser(email, password, firstName, lastName, role, (success, msg) => {
-            if(success){
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
-                if(msg) {
+            } else {
+                if (msg) {
                     this.setState({
                         errorVisible: true,
                         errorText: msg,
@@ -54,10 +53,13 @@ class AddUserContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <UserDetails isAdmin={true} callback={this.addUser} isNewUser={true}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={() => {this.setState({errorVisible: false})}} text={this.state.errorText}/> : null}
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <UserDetails isAdmin={true} callback={this.addUser} isNewUser={true}/>
+                    {this.state.errorVisible ? <ErrorAlert callback={() => {
+                        this.setState({errorVisible: false})
+                    }} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

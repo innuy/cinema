@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import NavBar from "../../../components/GENERAL/NavBar";
 import ReserveTicket from "../../../components/TICKETS/ReserveTicket";
 import {getSinglePresentation} from "../../../API/presentations";
-import {getTicketsOfPresentation, reserveTicket} from "../../../API/tickets";
+import {reserveTicket} from "../../../API/tickets";
 import {navigateBack} from "../../../utils/navigation";
 import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
+import {setReservingTicketsSocket} from "../../../API/socket";
 
 
 class ReserveTicketContainer extends Component {
@@ -25,7 +26,7 @@ class ReserveTicketContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.getPresentationInfo = this.getPresentationInfo.bind(this);
@@ -42,24 +43,22 @@ class ReserveTicketContainer extends Component {
         });
     }
 
-    getPresentationInfo(){
+    getPresentationInfo() {
         this.hideError();
-        getTicketsOfPresentation(this.state.presentationId, (success, ticketsData) => {
-            if(success) {
-                if(ticketsData.length > 0) {
+        setReservingTicketsSocket(this.state.presentationId, (success, ticketsData) => {
+            if (success) {
+                if (ticketsData.length > 0) {
                     this.setState({
                         tickets: ticketsData,
                         auditorium: ticketsData[0].auditorium,
                     });
-                }
-                else{
+                } else {
                     getSinglePresentation(this.state.presentationId, (success, data) => {
-                        if(success){
+                        if (success) {
                             this.setState({
-                               auditorium: data.auditoriumData,
+                                auditorium: data.auditoriumData,
                             });
-                        }
-                        else{
+                        } else {
                             this.setState({
                                 errorVisible: true,
                                 errorText: data,
@@ -68,8 +67,7 @@ class ReserveTicketContainer extends Component {
                         }
                     });
                 }
-            }
-            else{
+            } else {
                 this.setState({
                     errorVisible: true,
                     errorText: ticketsData,
@@ -81,12 +79,11 @@ class ReserveTicketContainer extends Component {
 
     }
 
-    makeReservation(row, column){
+    makeReservation(row, column) {
         reserveTicket(this.state.presentationId, row, column, (success, errorMsg) => {
-            if(success){
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
+            } else {
                 this.setState({
                     errorVisible: true,
                     errorText: errorMsg,
@@ -96,7 +93,7 @@ class ReserveTicketContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -106,11 +103,13 @@ class ReserveTicketContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={false} history={this.history}/>
-                            <ReserveTicket tickets={this.state.tickets} auditorium={this.state.auditorium} finalSelection={this.makeReservation}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                        </div>);
-            }} />
+                    <NavBar isAdmin={false} history={this.history}/>
+                    <ReserveTicket tickets={this.state.tickets} auditorium={this.state.auditorium}
+                                   finalSelection={this.makeReservation}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import AuditoriumDetails from "../../../components/AUDITORIUMS/AuditoriumDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -16,7 +16,7 @@ class AddAuditoriumContainer extends Component {
         errorVisible: false,
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.addAuditorium = this.addAuditorium.bind(this);
@@ -30,12 +30,11 @@ class AddAuditoriumContainer extends Component {
 
     }
 
-    addAuditorium(newAuditorium){
+    addAuditorium(newAuditorium) {
         addAuditorium(newAuditorium, (success) => {
-            if(success){
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
+            } else {
                 this.setState({
                     errorVisible: true,
                 });
@@ -49,10 +48,13 @@ class AddAuditoriumContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <AuditoriumDetails callback={this.addAuditorium} isEdit={false} buttonText={"ADD"}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={() => {this.setState({errorVisible: false})}} text={'There was an error'}/> : null}
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <AuditoriumDetails callback={this.addAuditorium} isEdit={false} buttonText={"ADD"}/>
+                    {this.state.errorVisible ? <ErrorAlert callback={() => {
+                        this.setState({errorVisible: false})
+                    }} text={'There was an error'}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

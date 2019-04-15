@@ -9,13 +9,17 @@ import './styles.css';
 
 class PresentationView extends Component {
 
-    renderPresentations(){
+    renderPresentations() {
         const elementList = [];
 
-        for(let i = 0; i < this.props.presentations.length; i++){
-            elementList.push(<PresentationElement key={"presentation_"+i} films={this.props.films} auditoriums={this.props.auditoriums}
-                                                  navigateToDetails={this.props.navigateToDetails} presentation={this.props.presentations[i]}
-                                                  reserveTicket={this.props.reserveTicket} deletePresentation={this.props.deletePresentation} isAdmin={this.props.isAdmin}/>);
+        for (let i = 0; i < this.props.presentations.length; i++) {
+            elementList.push(<PresentationElement key={"presentation_" + i} films={this.props.films}
+                                                  auditoriums={this.props.auditoriums}
+                                                  navigateToDetails={this.props.navigateToDetails}
+                                                  presentation={this.props.presentations[i]}
+                                                  reserveTicket={this.props.reserveTicket}
+                                                  deletePresentation={this.props.deletePresentation}
+                                                  isAdmin={this.props.isAdmin}/>);
         }
 
         return elementList;
@@ -27,7 +31,7 @@ class PresentationView extends Component {
         return (
             <div>
                 <div className="presentationViewTitle">All Presentations</div>
-                <div className="row presentationViewContainer justify-content-center">
+                <div className="row display-flex presentationViewContainer justify-content-around">
                     {this.renderPresentations()}
                 </div>
                 {this.props.isAdmin ? <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">

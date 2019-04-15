@@ -1,10 +1,8 @@
-.userDataContainer{
-    width: 40%;
-    margin-left: 5%;
+.userDataContainer {
     background-color: var(--background);
 }
 
-.userDataPageTitle{
+.userDataPageTitle {
     color: var(--headerText);
     font-size: 20px;
     width: 100%;
@@ -12,33 +10,28 @@
     font-weight: bolder;
 }
 
-.userDataErrorMessage{
+.userDataErrorMessage {
     margin-left: 5%;
     color: var(--dangerText);
 }
 
-.userDataTitleContainer{
+.userDataTitleContainer {
     width: 100%;
 }
 
-.userDataTitle{
-    margin-left: 5%;
-    color: var(--subText);
-    font-weight: bold;
+.userDataTitle {
 }
 
-.userDataTitleButton{
+.userDataTitleButton {
     width: 10%;
     float: right;
 }
 
-.userDataInput{
+.userDataInput {
     width: 90%;
-    margin-left: 5%;
-    color: var(--text);
 }
 
-.userDataSeparator{
+.userDataSeparator {
     height: 15px;
     width: 100%;
 }

@@ -8,13 +8,13 @@ import './styles.css';
 
 class UserView extends Component {
 
-    renderUsers(){
+    renderUsers() {
         const result = [];
 
-        for(let i = 0; i < this.props.users.length; i++){
-            result.push(<UserElement key={"user_"+i} user={this.props.users[i]}
-                                           deleteUser={this.props.deleteUser} isAdmin={this.props.isAdmin}
-                                           navigateToDetails={this.props.navigateToDetails}/>);
+        for (let i = 0; i < this.props.users.length; i++) {
+            result.push(<UserElement key={"user_" + i} user={this.props.users[i]}
+                                     deleteUser={this.props.deleteUser} isAdmin={this.props.isAdmin}
+                                     navigateToDetails={this.props.navigateToDetails}/>);
         }
 
         return result
@@ -26,7 +26,7 @@ class UserView extends Component {
         return (
             <div>
                 <div className="userViewTitle">All Users</div>
-                <div className="row userViewContainer justify-content-center">
+                <div className="row display-flex userViewContainer justify-content-around">
                     {this.renderUsers()}
                 </div>
                 <div className="row col-lg-2 offset-lg-5 col-sm-4 offset-sm-4">

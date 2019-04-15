@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FilmDetails from "../../../components/FILMS/FilmDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -16,7 +16,7 @@ class AddFilmContainer extends Component {
         errorVisible: false,
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.addFilm = this.addFilm.bind(this);
@@ -29,22 +29,20 @@ class AddFilmContainer extends Component {
         });
     }
 
-    addFilm(newFilm, filmImage){
+    addFilm(newFilm, filmImage) {
         addFilm(newFilm, (success, data) => {
-            if(success){
+            if (success) {
                 addImageToFilm(data, filmImage, (success) => {
-                    if(success) {
+                    if (success) {
                         navigateBack(this.history);
-                    }
-                    else{
+                    } else {
                         this.setState({
                             errorVisible: true,
                         });
                     }
                 });
 
-            }
-            else{
+            } else {
                 this.setState({
                     errorVisible: true,
                 });
@@ -58,10 +56,13 @@ class AddFilmContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <FilmDetails callback={this.addFilm} buttonText={"ADD"}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={() => {this.setState({errorVisible: false})}} text={'There was an error'}/> : null}
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <FilmDetails callback={this.addFilm} buttonText={"ADD"}/>
+                    {this.state.errorVisible ? <ErrorAlert callback={() => {
+                        this.setState({errorVisible: false})
+                    }} text={'There was an error'}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

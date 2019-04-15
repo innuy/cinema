@@ -3,44 +3,43 @@ import {urls} from "../utils/urls";
 import {hasAuthorizationError} from "../utils/errorHandler";
 import {getUserToken} from "../utils/cookieStorage";
 
-export function getTopFilms(callback){
-    axios.get(urls.topMovies + '?amount=10', {headers: {"Authorization": 'Token '+ getUserToken()}})
+export function getTopFilms(callback) {
+    axios.get(urls.topMovies + '?amount=10', {headers: {"Authorization": 'Token ' + getUserToken()}})
         .then((response) => {
             callback(true, parseTopFilms(response.data));
         }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error obtaining top films");
-            }
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error obtaining top films");
+        }
     });
 }
 
-export function getSoldRatio(callback){
-    axios.get(urls.ticketsSold, {headers: {"Authorization": 'Token '+ getUserToken()}})
+export function getSoldRatio(callback) {
+    axios.get(urls.ticketsSold, {headers: {"Authorization": 'Token ' + getUserToken()}})
         .then((response) => {
             callback(true, parseSoldRatioData(response.data));
         }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error obtaining sold ratio");
-            }
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error obtaining sold ratio");
+        }
     });
 }
 
-export function getBusyTimes(callback){
-    axios.get(urls.busyTimes, {headers: {"Authorization": 'Token '+ getUserToken()}})
+export function getBusyTimes(callback) {
+    axios.get(urls.busyTimes, {headers: {"Authorization": 'Token ' + getUserToken()}})
         .then((response) => {
             callback(true, parseBusyTimesData(response.data));
         }).catch((error) => {
-            if(error && error.response && !hasAuthorizationError(error)) {
-                callback(false, "There was an error obtaining busy times");
-            }
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error obtaining busy times");
+        }
     });
 }
 
-
-function parseTopFilms(topMovies){
+export function parseTopFilms(topMovies) {
     const res = [];
 
-    for(let i = 0; i < topMovies.length; i++){
+    for (let i = 0; i < topMovies.length; i++) {
         res.push({
             id: topMovies[i].movie._id,
             name: topMovies[i].movie.name,
@@ -52,18 +51,18 @@ function parseTopFilms(topMovies){
     return res;
 }
 
-function parseSoldRatioData(data){
+function parseSoldRatioData(data) {
     return {
         reserved: data.reservedTickets,
         sold: data.soldTickets,
     }
 }
 
-function parseBusyTimesData(data){
+export function parseBusyTimesData(data) {
 
     const res = [];
 
-    for(let i = 0; i < data.length; i++){
+    for (let i = 0; i < data.length; i++) {
         res.push({
             hour: data[i].hour,
             tickets: data[i].tickets,

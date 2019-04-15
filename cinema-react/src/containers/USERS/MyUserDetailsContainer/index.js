@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import NavBar from "../../../components/GENERAL/NavBar";
 
 import {Route} from "react-router-dom";
@@ -23,7 +23,7 @@ class MyUserDetailsContainer extends Component {
         unauthorizedVisible: false,
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.editUserInfo = this.editUserInfo.bind(this);
@@ -35,16 +35,15 @@ class MyUserDetailsContainer extends Component {
         this.obtainMyUserData();
     }
 
-    obtainMyUserData(){
+    obtainMyUserData() {
         this.hideError();
         getMyUserData((success, data) => {
-            if (success){
+            if (success) {
                 this.setState({
                     user: data
                 });
-            }
-            else{
-                if(data) {
+            } else {
+                if (data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -55,10 +54,10 @@ class MyUserDetailsContainer extends Component {
         });
     }
 
-    editUserInfo(id, email, password, firstName, lastName, oldPassword){
+    editUserInfo(id, email, password, firstName, lastName, oldPassword) {
         editMyUserData(email, firstName, lastName, (success, msg) => {
             if (success) {
-                if(oldPassword) {
+                if (oldPassword) {
                     changePassword(email, oldPassword, password, (passSuccess, passMsg) => {
                         if (passSuccess) {
                             navigateBack(this.history);
@@ -72,13 +71,12 @@ class MyUserDetailsContainer extends Component {
                             }
                         }
                     });
-                }
-                else{
+                } else {
                     navigateBack(this.history);
                 }
 
             } else {
-                if(msg) {
+                if (msg) {
                     this.setState({
                         errorVisible: true,
                         errorText: msg,
@@ -89,7 +87,7 @@ class MyUserDetailsContainer extends Component {
         });
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -101,8 +99,10 @@ class MyUserDetailsContainer extends Component {
                 return (<div>
                     <NavBar isAdmin={false} history={this.history}/>
                     <UserDetails user={this.state.user} callback={this.editUserInfo} isAdmin={false} isNewUser={false}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                </div>);}} />
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

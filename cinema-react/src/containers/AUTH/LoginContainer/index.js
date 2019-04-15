@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import LoginView from "../../../components/AUTH/LoginView";
 
 import {login} from "../../../API/auth";
@@ -18,23 +18,21 @@ class LoginContainer extends Component {
     }
 
 
-    login(username, password){
-        login(username,password,(success, data) => {
-            if(success){
-                if(data.role === USER_ROLES.USER){
+    login(username, password) {
+        login(username, password, (success, data) => {
+            if (success) {
+                if (data.role === USER_ROLES.USER) {
                     navigate(this.history, '/seePresentations');
-                }
-                else{
+                } else {
                     navigate(this.history, 'films');
                 }
-            }
-            else{
+            } else {
                 //TODO: HANDLE ERROR
             }
         })
     }
 
-    navigateToSignup(){
+    navigateToSignup() {
         navigate(this.history, '/signUp');
     }
 
@@ -44,7 +42,8 @@ class LoginContainer extends Component {
                 this.history = history;
                 return (
                     <LoginView login={this.login} navigateToSignup={this.navigateToSignup}/>
-                )}}/>
+                )
+            }}/>
         );
     }
 }

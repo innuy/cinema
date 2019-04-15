@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import PresentationView from "../../../components/PRESENTATIONS/PresentationView";
 import {getPresentations, deletePresentation} from "../../../API/presentations";
@@ -26,7 +26,7 @@ class PresentationContainer extends Component {
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.deletePresentation = this.deletePresentation.bind(this);
@@ -40,16 +40,15 @@ class PresentationContainer extends Component {
         this.refreshPresentations();
     }
 
-    refreshPresentations(){
+    refreshPresentations() {
         getPresentations((success, data) => {
 
-            if(success) {
+            if (success) {
                 this.setState({
                     presentations: data,
                 });
-            }
-            else{
-                if(!this.state.errorVisible && data) {
+            } else {
+                if (!this.state.errorVisible && data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -60,13 +59,12 @@ class PresentationContainer extends Component {
         });
 
         getAuditoriums((success, data) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     auditoriums: data,
                 });
-            }
-            else{
-                if(!this.state.errorVisible && data) {
+            } else {
+                if (!this.state.errorVisible && data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -77,13 +75,12 @@ class PresentationContainer extends Component {
         });
 
         getFilms((success, data) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     films: data,
                 });
-            }
-            else{
-                if(!this.state.errorVisible && data) {
+            } else {
+                if (!this.state.errorVisible && data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -94,17 +91,16 @@ class PresentationContainer extends Component {
         });
     }
 
-    addPresentation(){
+    addPresentation() {
         navigate(this.history, '/addPresentation')
     }
 
-    deletePresentation(id){
+    deletePresentation(id) {
         deletePresentation(id, (success, data) => {
-            if(success) {
+            if (success) {
                 this.refreshPresentations();
-            }
-            else{
-                if(!this.state.errorVisible && data) {
+            } else {
+                if (!this.state.errorVisible && data) {
                     this.setState({
                         errorVisible: true,
                         errorText: data,
@@ -115,12 +111,12 @@ class PresentationContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
-    navigateToDetails(id){
-        navigate(this.history, '/presentation/'+id)
+    navigateToDetails(id) {
+        navigate(this.history, '/presentation/' + id)
     }
 
     render() {
@@ -129,12 +125,16 @@ class PresentationContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <PresentationView navigateToDetails={this.navigateToDetails} presentations={this.state.presentations}
-                                      addPresentation={this.addPresentation} deletePresentation={this.deletePresentation}
-                                      films={this.state.films} auditoriums={this.state.auditoriums} isAdmin={this.state.isAdmin}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                    <PresentationView navigateToDetails={this.navigateToDetails}
+                                      presentations={this.state.presentations}
+                                      addPresentation={this.addPresentation}
+                                      deletePresentation={this.deletePresentation}
+                                      films={this.state.films} auditoriums={this.state.auditoriums}
+                                      isAdmin={this.state.isAdmin}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }
