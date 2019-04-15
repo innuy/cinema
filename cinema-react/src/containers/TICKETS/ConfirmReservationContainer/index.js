@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import {getTickets} from "../../../API/tickets";
 import NavBar from "../../../components/GENERAL/NavBar";
-import MyTickets from '../../../components/TICKETS/MyTickets';
 import ConfirmReservation from "../../../components/TICKETS/ConfirmReservation";
+import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 
 
 class ConfirmReservationContainer extends Component {
@@ -12,11 +12,15 @@ class ConfirmReservationContainer extends Component {
     state = {
         tickets: [],
         isAdmin: true,
+
+        errorVisible: false,
+        errorText: "",
+        errorCallback: null,
     };
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.refreshTickets = this.refreshTickets.bind(this);
@@ -26,22 +30,32 @@ class ConfirmReservationContainer extends Component {
         this.refreshTickets();
     }
 
-    refreshTickets(){
+    refreshTickets() {
+        this.hideError();
         getTickets((success, data) => {
 
-            if(success) {
+            if (success) {
                 this.setState({
                     tickets: data,
                 });
-            }
-            else{
-                /*TODO: HANDLE ERROR*/
+            } else {
+                if (data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.refreshTickets,
+                    });
+                }
             }
         });
     }
 
-    confirmTicket(){
+    confirmTicket() {
 
+    }
+
+    hideError() {
+        this.setState({errorVisible: false});
     }
 
     render() {
@@ -51,8 +65,10 @@ class ConfirmReservationContainer extends Component {
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
                     <ConfirmReservation confirmTicket={this.confirmTicket} tickets={this.state.tickets}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

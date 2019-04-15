@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PresentationDetails from "../../../components/PRESENTATIONS/PresentationDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -20,7 +20,7 @@ class AddPresentationContainer extends Component {
         errorVisible: false,
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.addPresentation = this.addPresentation.bind(this);
@@ -32,24 +32,22 @@ class AddPresentationContainer extends Component {
             id: this.props.match.params.id,
         }, () => {
             getFilms((success, films) => {
-                if(success) {
+                if (success) {
                     this.setState({
                         films
                     });
-                }
-                else{
+                } else {
                     this.setState({
                         errorVisible: true,
                     });
                 }
             });
             getAuditoriums((success, auditoriums) => {
-                if(success) {
+                if (success) {
                     this.setState({
                         auditoriums
                     });
-                }
-                else{
+                } else {
                     this.setState({
                         errorVisible: true,
                     });
@@ -60,12 +58,11 @@ class AddPresentationContainer extends Component {
 
     }
 
-    addPresentation(newPresentation){
+    addPresentation(newPresentation) {
         addPresentation(newPresentation, (success) => {
-            if(success){
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
+            } else {
                 this.setState({
                     errorVisible: true,
                 });
@@ -80,10 +77,14 @@ class AddPresentationContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={true} history={this.history}/>
-                    <PresentationDetails callback={this.addPresentation} films={this.state.films} auditoriums={this.state.auditoriums}
-                                         buttonText={"ADD"}/>
-                    {this.state.errorVisible ? <ErrorAlert callback={() => {this.setState({errorVisible: false})}} text={'There was an error'}/> : null}
-                </div>);}} />
+                    <PresentationDetails callback={this.addPresentation} films={this.state.films}
+                                         auditoriums={this.state.auditoriums}
+                                         buttonText={"ADD"} newPresentation={true}/>
+                    {this.state.errorVisible ? <ErrorAlert callback={() => {
+                        this.setState({errorVisible: false})
+                    }} text={'There was an error'}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

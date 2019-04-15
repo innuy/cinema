@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import AuditoriumDetails from "../../../components/AUDITORIUMS/AuditoriumDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -20,7 +20,7 @@ class AuditoriumDetailsContainer extends Component {
         errorCallback: null,
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.editAuditorium = this.editAuditorium.bind(this);
@@ -37,53 +37,57 @@ class AuditoriumDetailsContainer extends Component {
         });
     }
 
-    obtainAuditoriumData(){
+    obtainAuditoriumData() {
         this.hideError();
-        getSingleAuditorium(this.state.id, (success, auditorium) => {
-            if(success) {
+        getSingleAuditorium(this.state.id, (success, data) => {
+            if (success) {
                 this.setState({
-                    auditorium
+                    auditorium: data
                 });
-            }
-            else{
-                this.setState({
-                    errorVisible: true,
-                    errorText: "There was an error obtaining auditorium details",
-                    errorCallback: this.obtainAuditoriumData,
-                });
+            } else {
+                if (data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.obtainAuditoriumData,
+                    });
+                }
             }
         });
     }
 
-    editAuditorium(newAuditorium){
-        editAuditorium(newAuditorium, (success) => {
-            if(success){
+    editAuditorium(newAuditorium) {
+        editAuditorium(newAuditorium, (success, msg) => {
+            if (success) {
                 navigateBack(this.history);
+            } else {
+                if (msg) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: msg,
+                        errorCallback: this.hideError,
+                    });
+                }
             }
-            else{
-                this.setState({
-                    errorVisible: true,
-                    errorText: "There was an error saving the auditorium",
-                    errorCallback: this.hideError,
-                });
-            }
-        })
+        });
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
-
 
     render() {
         return (
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <AuditoriumDetails auditorium={this.state.auditorium} isEdit={true} callback={this.editAuditorium} buttonText={"EDIT"}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <AuditoriumDetails auditorium={this.state.auditorium} isEdit={true} callback={this.editAuditorium}
+                                       buttonText={"EDIT"}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

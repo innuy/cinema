@@ -1,7 +1,7 @@
-export function navigate(history, destination){
+export function navigate(history, destination) {
     history.push(destination);
 }
 
-export function navigateBack(history){
+export function navigateBack(history) {
     history.goBack();
 }

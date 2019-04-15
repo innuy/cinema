@@ -20,14 +20,13 @@ class TicketDetails extends Component {
 
     constructor(props) {
         super(props);
-
         this.updateInformation = this.updateInformation.bind(this);
         this.handlePaidChange = this.handlePaidChange.bind(this);
     }
 
 
     componentWillReceiveProps(newProps) {
-        if(newProps.ticket){
+        if (newProps.ticket) {
 
             this.setState({
                 ticket: newProps.ticket,
@@ -35,26 +34,21 @@ class TicketDetails extends Component {
         }
     }
 
-    updateInformation(index){
+    updateInformation(index) {
 
         const ticket = this.state.ticket;
-
-        //console.log(index);
-        //console.log(this.props.presentations[index]);
-
-        console.log(this.props.presentations[index].auditorium[0]._id);
 
         let filmResult = this.props.films.find(obj => {
             return obj.id === this.props.presentations[index].film
         });
-        if(filmResult) {
+        if (filmResult) {
             ticket.film = filmResult;
         }
 
         let auditoriumResult = this.props.auditoriums.find(obj => {
             return obj.id === this.props.presentations[index].auditorium[0]._id
         });
-        if(auditoriumResult) {
+        if (auditoriumResult) {
             ticket.auditorium = auditoriumResult;
         }
 
@@ -66,15 +60,15 @@ class TicketDetails extends Component {
         });
     }
 
-    renderPresentations(){
+    renderPresentations() {
         const res = [];
 
-        if(this.props.films.length > 0) {
+        if (this.props.films.length > 0) {
             for (let i = 0; i < this.props.presentations.length; i++) {
                 let result = this.props.films.find(obj => {
                     return obj.id === this.props.presentations[i].film
                 });
-                if(result) {
+                if (result) {
                     res.push(<option key={"presentation_" + i}
                                      value={i}>{"Film: " + result.name + " - Auditorium:" + this.props.presentations[i].auditorium[0].number + " - At:" + this.props.presentations[i].startTime}</option>);
                 }
@@ -84,7 +78,7 @@ class TicketDetails extends Component {
         return res;
     }
 
-    handlePaidChange(){
+    handlePaidChange() {
         const newTicket = this.state.ticket;
         newTicket.sold = !newTicket.sold;
         this.setState({
@@ -94,43 +88,84 @@ class TicketDetails extends Component {
 
     render() {
 
+        let date = new Date(this.state.ticket.startTime);
+        date = date.toISOString().substring(0, 23);
+
         return (
-            <div>
+            <div className="justify-content-center">
                 <div className="ticketDetailsSeparator"/>
                 <div className="ticketDetailsSeparator"/>
-                <div className="ticketDetailsContainer">
-                    <div className="ticketDetailsPageTitle">TICKET INFORMATION</div>
+                <form className="container ticketDetailsContainer">
+                    <div className="ticketDetailsPageTitle">Ticket Information</div>
                     <div className="ticketDetailsSeparator"/>
-                    <select className="ticketDetailsSelect" onChange={(data) => {
-                        this.updateInformation(data.target.value);
-                    }}>
-                        {this.renderPresentations()}
-                    </select>
+
+                    <div className="form-group">
+                        <label className="ticketDetailsTitle">Presentation list:</label>
+                        <select className="custom-select ticketDetailsSelect form-control" onChange={(data) => {
+                            this.updateInformation(data.target.value);
+                        }}>
+                            {this.renderPresentations()}
+                        </select>
+                    </div>
+
                     <div className="ticketDetailsSeparator"/>
-                    <div className="ticketDetailsTitle">Film:</div>
-                    <div className="ticketInput">{this.state.ticket.film.name}</div>
+
+                    <div className="form-group">
+                        <label className="ticketDetailsTitle">Film:</label>
+                        <fieldset disabled>
+                            <input className="ticketInput form-control" value={this.state.ticket.film.name}/>
+                        </fieldset>
+                    </div>
+
                     <div className="ticketDetailsSeparator"/>
-                    <div className="ticketDetailsTitle">Auditorium:</div>
-                    <div className="ticketInput">{this.state.ticket.auditorium.number}</div>
+
+                    <div className="form-group">
+                        <label className="ticketDetailsTitle">Auditorium:</label>
+                        <fieldset disabled>
+                            <input className="ticketInput form-control" value={this.state.ticket.auditorium.number}/>
+                        </fieldset>
+                    </div>
+
                     <div className="ticketDetailsSeparator"/>
-                    <div className="ticketDetailsTitle">Start time:</div>
-                    <div className="ticketInput">{this.state.ticket.startTime}</div>
+
+                    <fieldset disabled>
+                        <input className="custom-select form-control ticketInput" type="datetime-local"
+                               value={date} onChange={(event) => {
+                            const ticket = this.state.ticket;
+                            ticket.startTime = event.target.value;
+                            this.setState({
+                                ticket
+                            });
+                        }}/>
+                    </fieldset>
+
                     <div className="ticketDetailsSeparator"/>
+
                     <div className="ticketDetailsTitle">Seat:</div>
-                    <div className="ticketInput">{"Row: " + this.state.ticket.seat.row + " - Column: " + this.state.ticket.seat.column}</div>
+                    <div
+                        className="ticketInput">{"Row: " + this.state.ticket.seat.row + " - Column: " + this.state.ticket.seat.column}</div>
+
                     <div className="ticketDetailsSeparator"/>
-                    <div className="ticketDetailsTitle">Has it been paid?</div>
-                    <input className="ticketInput" type="checkbox" checked={this.state.ticket.sold} onChange={this.handlePaidChange}/>
+
+
+                    <div className="custom-control custom-switch">
+                        <input type="checkbox" className="custom-control-input" id="isAdminSwitch"
+                               checked={this.state.ticket.sold}
+                               onChange={this.handlePaidChange}/>
+                        <label className="custom-control-label ticketDetailsTitle" htmlFor="isAdminSwitch">Has it been
+                            paid?</label>
+                    </div>
+
+
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <div className="ticketDetailsSeparator"/>
                     <OptionButton onClick={() => {
-                        //TODO: CHECK ALL DATA IS PRESENT
                         this.props.callback(this.state.ticket);
                     }} text={this.props.buttonText}/>
                     <div className="ticketDetailsSeparator"/>
-                </div>
+                </form>
                 <div className="ticketDetailsSeparator"/>
             </div>
         );

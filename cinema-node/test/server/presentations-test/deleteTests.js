@@ -24,7 +24,7 @@ const testingPresentationData = {
 };
 
 function presentationDeleteTestbyId(done) {
-    request(app)
+    request(app.app)
         .del('/presentations/' + testingPresentationIdToDelete)
         .send()
         .then((res) => {
@@ -40,7 +40,7 @@ function presentationDeleteTestbyId(done) {
 }
 
 function presentationWrongIdDeleteTest(done) {
-    request(app)
+    request(app.app)
         .del('/presentations/' + testingPresentationWrongIdToDelete)
         .send()
         .then((res) => {
@@ -56,7 +56,7 @@ function presentationWrongIdDeleteTest(done) {
 }
 
 function presentationDbErrorWhenCheckingPresentationTest(done) {
-    request(app)
+    request(app.app)
         .del('/presentations/' + testingPresentationWrongIdToDelete)
         .send()
         .then((res) => {
@@ -72,7 +72,7 @@ function presentationDbErrorWhenCheckingPresentationTest(done) {
 }
 
 function presentationDbErrorWhenDeletingPresentationTest(done) {
-    request(app)
+    request(app.app)
         .del('/presentations/' + testingPresentationWrongIdToDelete)
         .send()
         .then((res) => {
@@ -88,7 +88,7 @@ function presentationDbErrorWhenDeletingPresentationTest(done) {
 }
 
 function presentationDbErrorWhenDeletingTicketsTest(done) {
-    request(app)
+    request(app.app)
         .del('/presentations/' + testingPresentationWrongIdToDelete)
         .send()
         .then((res) => {

@@ -1,10 +1,12 @@
 const sinon = require('sinon');
-const expect = require("chai").expect;
 const assert = require("chai").assert;
 const should = require("chai").should();
 const request = require('supertest');
-let app;
 
+let app;
+let dashboardNamespace;
+let dashboardSocket;
+let reservingTicketsSocket;
 require('../setup');
 
 const Ticket = require("../../../db/models/tickets");
@@ -55,7 +57,7 @@ const testingPresentationData = {
 };
 
 function ticketWithAlreadyStartedTicketPostTest(done) {
-    request(app)
+    request(app.app)
         .put('/tickets/' + testingTicketIdToSearch)
         .send(testingTicketDataWithTicketWrongInformation)
         .then(res => {
@@ -70,7 +72,7 @@ function ticketWithAlreadyStartedTicketPostTest(done) {
 }
 
 function ticketWithDbErrorPostTest(done) {
-    request(app)
+    request(app.app)
         .put('/tickets/' + testingTicketIdToSearch)
         .send(testingTicketDataWithTicketWrongInformation)
         .then(res => {
@@ -85,7 +87,7 @@ function ticketWithDbErrorPostTest(done) {
 }
 
 function ticketWrongTicketIdPostTest(done) {
-    request(app)
+    request(app.app)
         .put('/tickets/' + testingTicketWrongId)
         .send(testingTicketDataWithSeatWrongInformation)
         .then(res => {
@@ -103,26 +105,38 @@ describe("Ticket Put Test", function () {
     beforeEach(() => {
         sinon.stub(Seat, 'findById').resolves(testingSeatData);
         sinon.stub(Presentation, 'findById').resolves(testingPresentationData);
-        sinon.stub(Ticket, 'findOneAndUpdate').resolves(testingTicketData);
+        sinon.stub(Ticket, 'findByIdAndUpdate').resolves(testingTicketData);
+        sinon.stub(Ticket, 'findById').resolves(testingTicketData);
         app = require('../../../app');
+
+        dashboardNamespace = app.dashboardNamespace;
+        dashboardSocket = require('../../../websockets/dashboard');
+        reservingTicketsSocket = require('../../../websockets/ticketReservation');
+        sinon.stub(dashboardSocket, 'sendDataToDashboardNamespace').resolves('ok');
+        sinon.stub(reservingTicketsSocket, 'sendTicketListToCurrentPresentationRoom')
+            .withArgs(testingPresentationId)
+            .resolves('ok');
     });
     afterEach(() => {
-        Ticket.findOneAndUpdate.restore();
+        Ticket.findByIdAndUpdate.restore();
+        Ticket.findById.restore();
         Presentation.findById.restore();
-        Seat.findById.restore()
+        Seat.findById.restore();
+        dashboardSocket.sendDataToDashboardNamespace.restore();
+        reservingTicketsSocket.sendTicketListToCurrentPresentationRoom.restore();
     });
 
     it('Successful - Update ticket', (done) => {
         ticketWithAlreadyStartedTicketPostTest(done);
     });
     it('Failed - Request with wrong ticket id ', (done) => {
-        Ticket.findOneAndUpdate.restore();
-        sinon.stub(Ticket, 'findOneAndUpdate').resolves(null);
+        Ticket.findByIdAndUpdate.restore();
+        sinon.stub(Ticket, 'findByIdAndUpdate').resolves(null);
         ticketWrongTicketIdPostTest(done);
     });
     it('Failed - Db error test', (done) => {
-        Ticket.findOneAndUpdate.restore();
-        sinon.stub(Ticket, 'findOneAndUpdate').rejects(Error("DB error"));
+        Ticket.findByIdAndUpdate.restore();
+        sinon.stub(Ticket, 'findByIdAndUpdate').rejects(Error("DB error"));
         ticketWithDbErrorPostTest(done);
     });
 });

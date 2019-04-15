@@ -7,11 +7,11 @@ import './styles.css';
 class LoginView extends Component {
 
     state = {
-        username: "",
+        email: "",
         password: "",
 
         errors: {
-            username: false,
+            email: false,
             password: false,
         }
     };
@@ -19,29 +19,36 @@ class LoginView extends Component {
     render() {
 
         return (
-            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12" onClick={this.handleClick}>
+            <div className="container">
                 <div className="loginDetailsPageTitle">LOGIN</div>
                 <div className="loginDetailsContainer">
                     <div className="loginDetailsSeparator"/>
-                    <div className="loginDetailsTitle">Username:</div>
-                    <input className="loginInput" value={this.state.username} onChange={(event) => {
+                    <div className="loginDetailsTitle">Email:</div>
+                    <input className="loginInput" value={this.state.email} onChange={(event) => {
                         this.setState({
-                            username: event.target.value,
+                            email: event.target.value,
                         });
                     }}/>
-                    {this.state.errors.username ? <div className="loginDetailsErrorMessage">There is an error in the username</div> : null}
+                    {this.state.errors.email ?
+                        <div className="loginDetailsErrorMessage">There is an error in the email</div> : null}
                     <div className="loginDetailsSeparator"/>
                     <div className="loginDetailsTitle">Password:</div>
-                    <input className="loginInput" value={this.state.password} onChange={(event) => {
+                    <input type="password" className="loginInput" value={this.state.password} onChange={(event) => {
                         this.setState({
                             password: event.target.value,
                         });
                     }}/>
-                    {this.state.errors.password ? <div className="loginDetailsErrorMessage">There is an error in the number of columns</div> : null}
+                    {this.state.errors.password ?
+                        <div className="loginDetailsErrorMessage">There is an error in the number of
+                            columns</div> : null}
                     <div className="loginDetailsSeparator"/>
-                    <OptionButton onClick={this.props.login} text={"Login"}/>
+                    <OptionButton onClick={() => {
+                        this.props.login(this.state.email, this.state.password)
+                    }} text={"Login"}/>
                     <div className="loginDetailsSeparator"/>
-                    <div className="loginChangeScreenButton" onClick={this.props.navigateToSignup}>Don't have an account? Sign up!</div>
+                    <div className="loginChangeScreenButton" onClick={this.props.navigateToSignup}>Don't have an
+                        account? Sign up!
+                    </div>
                 </div>
                 <div className="loginDetailsSeparator"/>
                 <div className="loginDetailsSeparator"/>

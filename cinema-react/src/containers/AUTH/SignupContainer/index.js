@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import SignupView from '../../../components/AUTH/SignupView/index';
 
 import {signUp} from "../../../API/auth";
@@ -17,13 +17,17 @@ class SignUpContainer extends Component {
     }
 
 
-    signUp(username, password){
-        signUp(username,password,(data) => {
-            //TODO: NAVIGATE TO PAGE
+    signUp(username, password, firstName, lastName) {
+        signUp(username, password, firstName, lastName, (success, data) => {
+            if (success) {
+                navigate(this.history, '/seePresentations');
+            } else {
+                //TODO: HANDLE ERROR
+            }
         })
     }
 
-    navigateToLogin(){
+    navigateToLogin() {
         navigate(this.history, '/');
     }
 
@@ -33,7 +37,8 @@ class SignUpContainer extends Component {
                 this.history = history;
                 return (
                     <SignupView signUp={this.signUp} navigateToLogin={this.navigateToLogin}/>
-                )}}/>
+                )
+            }}/>
         );
     }
 }

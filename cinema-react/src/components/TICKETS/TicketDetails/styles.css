@@ -1,11 +1,8 @@
-.ticketDetailsContainer{
-    width: fit-content;
-    margin-left: 5%;
-    padding-right: 10px;
+.ticketDetailsContainer {
     background-color: var(--background);
 }
 
-.ticketDetailsPageTitle{
+.ticketDetailsPageTitle {
     color: var(--headerText);
     font-size: 20px;
     width: 100%;
@@ -13,33 +10,24 @@
     font-weight: bolder;
 }
 
-.ticketDetailsTitleContainer{
+.ticketDetailsTitleContainer {
     width: 100%;
-    margin-left: 10px;
 }
 
-.ticketDetailsTitle{
+.ticketDetailsTitle {
     color: var(--subText);
     font-weight: bold;
-    margin-left: 10px;
 }
 
-.ticketDetailsTitleButton{
+.ticketDetailsTitleButton {
     width: 10%;
     float: right;
 }
 
-.ticketDetailsSelect{
-    margin-left: 10px;
+.ticketDetailsSelect {
 }
 
-.ticketInput{
-    width: 100%;
-    color: var(--text);
-    margin-left: 10px;
-}
-
-.ticketDetailsSeparator{
+.ticketDetailsSeparator {
     height: 15px;
     width: 100%;
 }

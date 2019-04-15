@@ -3,7 +3,7 @@ const errors = require("./errors");
 const Auditorium = require('../../db/models/auditoriums');
 const Presentation = require("../../db/models/presentations");
 const Ticket = require("../../db/models/tickets");
-
+const auth = require('../../middlewares/auth');
 
 var ObjectID = require('mongodb').ObjectID;
 const Tools = require('./tools');
@@ -55,7 +55,7 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.get = (req, res) => {
-    const filter = getFilterFromQuery(req.query);
+    const filter = getFilter(req);
     Presentation.aggregate([
         {$match: filter},
         {
@@ -73,7 +73,8 @@ module.exports.get = (req, res) => {
             }
         },
         {$project: {ticketsSoldArray: 0}},
-        getAuditoriumDetailsSubQuery
+        getAuditoriumDetailsSubQuery,
+        {$sort: {movie: 1, start: -1}}
     ])
         .then(presentation => res.send(presentation))
         .catch(err => errors.databaseError(err, res));
@@ -133,12 +134,11 @@ module.exports.putById = (req, res) => {
 };
 
 module.exports.deleteById = (req, res) => {
-    const presentationFilter = {'_id': new ObjectID(req.params.id)};
     checkPresentation(req.params.id)
         .then(presentation => {
             return Promise.all([
-                deletePresentationById(presentationFilter),
-                deleteTicketWithFilter(presentationFilter),
+                deletePresentationById(req.params.id),
+                deleteTicketWithFilter(req.params.id),
             ])
 
         })
@@ -176,15 +176,30 @@ const createPresentation = newPresentation => new Promise((resolve, reject) => {
         .catch(err => reject(err));
 });
 
-const getFilterFromQuery = query => {
+const getFilter = req => {
+    const query = req.query;
     if (query.movie !== undefined) {
         query.movie = ObjectID(query.movie);
     }
     if (query.auditorium !== undefined) {
         query.auditorium = ObjectID(query.auditorium);
     }
+
+    const userLogged = req.requestingUser;
+    if (isNotLogAsAdmin(userLogged)) {
+        const now = new Date();
+        query.start = {$gte: now};
+    }
     return query;
 };
+
+const isNotLogAsAdmin = userLogged => {
+    if (userLogged === undefined)
+        return true;
+    else
+        return userLogged.role !== auth.adminRoleKey;
+};
+
 
 const thereIsNoPresentation = presentation => {
     if (Array.isArray(presentation))
@@ -194,13 +209,10 @@ const thereIsNoPresentation = presentation => {
 };
 
 const updatePresentation = req => new Promise((resolve, reject) => {
-    const id_filter = {'_id': new ObjectID(req.params.id)};
-    const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: req.body};
-    Presentation.findOneAndUpdate(
-        id_filter,
+    Presentation.findByIdAndUpdate(
+        req.params.id,
         parametersToSet,
-        setToReturnUpdatedValue,
     )
         .then(presentation => {
             if (thereIsNoPresentation(presentation)) {
@@ -224,15 +236,17 @@ const checkPresentation = id => new Promise((resolve, reject) => {
         .catch(err => reject(err))
 });
 
-const deletePresentationById = id_filter => new Promise((resolve, reject) => {
-    Presentation.findOneAndDelete(id_filter)
+const deletePresentationById = id => new Promise((resolve, reject) => {
+    const filter = {'_id': new ObjectID(id)};
+    Presentation.findOneAndDelete(filter)
         .then(dbResponse => {
             resolve(dbResponse);
         })
         .catch(err => reject(err))
 });
 
-const deleteTicketWithFilter = filter => new Promise((resolve, reject) => {
+const deleteTicketWithFilter = id => new Promise((resolve, reject) => {
+    const filter = {'presentation': new ObjectID(id)};
     Ticket.deleteMany(filter)
         .then(dbResponse => {
             resolve(dbResponse);

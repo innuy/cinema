@@ -15,3 +15,21 @@ module.exports.userNotFound = res => {
         "message": "there is no user here"
     });
 };
+
+module.exports.authenticationError = (err, res) => {
+    res.status(403);
+    res.send({
+        "statusCode": 403,
+        "error": "Authentication error",
+        "message": err
+    });
+};
+
+module.exports.needAdminAccessError = (err, res) => {
+    res.status(401);
+    res.send({
+        "statusCode": 401,
+        "error": "Authentication error",
+        "message": err
+    });
+};

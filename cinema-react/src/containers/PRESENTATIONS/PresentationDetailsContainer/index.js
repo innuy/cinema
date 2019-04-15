@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PresentationDetails from "../../../components/PRESENTATIONS/PresentationDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -24,7 +24,7 @@ class PresentationDetailsContainer extends Component {
         errorText: "",
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.editPresentation = this.editPresentation.bind(this);
@@ -40,16 +40,15 @@ class PresentationDetailsContainer extends Component {
         });
     }
 
-    getAllInfo(){
+    getAllInfo() {
         this.hideError();
         getSinglePresentation(this.state.id, (success, presentation) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     presentation
                 });
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible) {
                     this.setState({
                         errorVisible: true,
                         errorText: "There was an error obtaining presentation details",
@@ -59,13 +58,12 @@ class PresentationDetailsContainer extends Component {
             }
         });
         getFilms((success, films) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     films
                 });
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible) {
                     this.setState({
                         errorVisible: true,
                         errorText: "There was an error obtaining films details",
@@ -75,13 +73,12 @@ class PresentationDetailsContainer extends Component {
             }
         });
         getAuditoriums((success, auditoriums) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     auditoriums
                 });
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible) {
                     this.setState({
                         errorVisible: true,
                         errorText: "There was an error obtaining auditoriums details",
@@ -93,16 +90,15 @@ class PresentationDetailsContainer extends Component {
     }
 
 
-    editPresentation(newPresentation){
-        editPresentation(newPresentation, (success) => {
-            if(success){
+    editPresentation(newPresentation) {
+        editPresentation(newPresentation, (success, data) => {
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible && data) {
                     this.setState({
                         errorVisible: true,
-                        errorText: "There was an error saving the presentation",
+                        errorText: data,
                         errorCallback: this.hideError,
                     });
                 }
@@ -110,7 +106,7 @@ class PresentationDetailsContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -120,11 +116,14 @@ class PresentationDetailsContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <PresentationDetails presentation={this.state.presentation} films={this.state.films}
-                                                 auditoriums={this.state.auditoriums} callback={this.editPresentation} buttonText={"EDIT"}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <PresentationDetails presentation={this.state.presentation} films={this.state.films}
+                                         auditoriums={this.state.auditoriums} callback={this.editPresentation}
+                                         buttonText={"EDIT"} newPresentation={false}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

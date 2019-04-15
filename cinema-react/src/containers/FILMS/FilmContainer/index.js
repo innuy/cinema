@@ -1,65 +1,86 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route} from 'react-router-dom';
 
 import FilmView from "../../../components/FILMS/FilmView";
 import {getFilms, deleteFilm} from "../../../API/films";
 import NavBar from "../../../components/GENERAL/NavBar";
 import {navigate} from "../../../utils/navigation";
+import ErrorAlert from "../../../components/GENERAL/ErrorAlert";
 
 
 class FilmContainer extends Component {
 
     state = {
-        films: [{},{},{}],
+        films: [{}, {}, {}],
         isAdmin: true,
+
+        errorVisible: false,
+        errorText: "",
+        errorCallback: null,
     };
 
     history = null;
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.deleteFilm = this.deleteFilm.bind(this);
         this.refreshFilms = this.refreshFilms.bind(this);
         this.addFilm = this.addFilm.bind(this);
         this.navigateToDetails = this.navigateToDetails.bind(this);
+        this.hideError = this.hideError.bind(this);
     }
 
     componentWillMount() {
         this.refreshFilms();
     }
 
-    refreshFilms(){
+    refreshFilms() {
+        this.hideError();
         getFilms((success, data) => {
 
-            if(success) {
+            if (success) {
                 this.setState({
                     films: data,
                 });
-            }
-            else{
-                /*TODO: HANDLE ERROR*/
+            } else {
+                if (data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.refreshFilms,
+                    });
+                }
             }
         });
     }
 
-    addFilm(){
+    addFilm() {
         navigate(this.history, '/addFilm');
     }
 
-    navigateToDetails(id){
-        navigate(this.history, 'film/'+id);
-    }
-
-    deleteFilm(id){
-        deleteFilm(id, (success) => {
-            if(success) {
+    deleteFilm(id) {
+        deleteFilm(id, (success, data) => {
+            if (success) {
                 this.refreshFilms();
-            }
-            else{
-                /* TODO: HANDLE ERROR */
+            } else {
+                if (data) {
+                    this.setState({
+                        errorVisible: true,
+                        errorText: data,
+                        errorCallback: this.hideError,
+                    });
+                }
             }
         })
+    }
+
+    hideError() {
+        this.setState({errorVisible: false});
+    }
+
+    navigateToDetails(id) {
+        navigate(this.history, 'film/' + id);
     }
 
     render() {
@@ -68,9 +89,12 @@ class FilmContainer extends Component {
                 this.history = history;
                 return (<div>
                     <NavBar isAdmin={this.state.isAdmin} history={this.history}/>
-                    <FilmView films={this.state.films} addFilm={this.addFilm} deleteFilm={this.deleteFilm} navigateToDetails={this.navigateToDetails} isAdmin={this.state.isAdmin}/>
+                    <FilmView films={this.state.films} addFilm={this.addFilm} deleteFilm={this.deleteFilm}
+                              navigateToDetails={this.navigateToDetails} isAdmin={this.state.isAdmin}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
                 </div>);
-            }} />
+            }}/>
         );
     }
 }

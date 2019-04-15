@@ -12,13 +12,13 @@ const testingUserIdToDelete = '5c2e105c8509f424122c4067';
 const testingUserWrongIdToDelete = '000000000000000000000001';
 const testingUserData = {
     name: "Great",
-    surname: "uset",
+    surname: "user",
     email: "test@test.com",
     role: "1",
 };
 
-async function userDeleteTestbyId(done) {
-    await request(app)
+function userDeleteTestById(done) {
+    request(app.app)
         .del('/users/' + testingUserIdToDelete)
         .send()
         .then((res) => {
@@ -33,8 +33,8 @@ async function userDeleteTestbyId(done) {
         })
 }
 
-async function userWrongIdDeleteTest(done) {
-    await request(app)
+function userWrongIdDeleteTest(done) {
+    request(app.app)
         .del('/users/' + testingUserWrongIdToDelete)
         .send()
         .then((res) => {
@@ -49,7 +49,7 @@ async function userWrongIdDeleteTest(done) {
         })
 }
 
-describe("User Delete by id test", async function () {
+describe("User Delete by id test", function () {
     beforeEach(() => {
         app = require('../../../app');
     });
@@ -62,7 +62,7 @@ describe("User Delete by id test", async function () {
     it('Successful - Delete user', (done) => {
         sinon.stub(User, 'find').resolves([testingUserData]);
         sinon.stub(User, 'findOneAndDelete').resolves();
-        userDeleteTestbyId(done);
+        userDeleteTestById(done);
     });
     it('Failed - Wrong id', (done) => {
         sinon.stub(User, 'find').resolves(null);

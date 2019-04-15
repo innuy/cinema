@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import TicketDetails from "../../../components/TICKETS/TicketDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -23,7 +23,7 @@ class TicketDetailsContainer extends Component {
             seat: {}
         },
         presentations: [],
-        films:[],
+        films: [],
         auditoriums: [],
 
         errorVisible: false,
@@ -31,7 +31,7 @@ class TicketDetailsContainer extends Component {
         errorText: "",
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.editTicket = this.editTicket.bind(this);
@@ -49,15 +49,14 @@ class TicketDetailsContainer extends Component {
 
     }
 
-    getAllInfo(){
+    getAllInfo() {
         getSingleTicket(this.state.id, (success, data) => {
-            if(success){
+            if (success) {
                 this.setState({
                     ticket: data,
                 });
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible) {
                     this.setState({
                         errorVisible: true,
                         errorText: "There was an error obtaining ticket details",
@@ -68,16 +67,15 @@ class TicketDetailsContainer extends Component {
         });
 
         getPresentations((success, data) => {
-            if(success){
+            if (success) {
                 this.setState({
                     presentations: data
                 });
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible && data) {
                     this.setState({
                         errorVisible: true,
-                        errorText: "There was an error obtaining presentations details",
+                        errorText: data,
                         errorCallback: this.getAllInfo,
                     });
                 }
@@ -85,13 +83,12 @@ class TicketDetailsContainer extends Component {
         });
 
         getFilms((success, data) => {
-            if(success){
+            if (success) {
                 this.setState({
                     films: data
                 });
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible) {
                     this.setState({
                         errorVisible: true,
                         errorText: "There was an error obtaining film details",
@@ -102,13 +99,12 @@ class TicketDetailsContainer extends Component {
         });
 
         getAuditoriums((success, data) => {
-            if(success){
+            if (success) {
                 this.setState({
                     auditoriums: data
                 });
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible) {
                     this.setState({
                         errorVisible: true,
                         errorText: "There was an error obtaining auditorium details",
@@ -119,13 +115,12 @@ class TicketDetailsContainer extends Component {
         });
     }
 
-    editTicket(newTicket){
+    editTicket(newTicket) {
         editTicket(newTicket, (success) => {
-            if(success){
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
-                if(!this.state.errorVisible) {
+            } else {
+                if (!this.state.errorVisible) {
                     this.setState({
                         errorVisible: true,
                         errorText: "There was an error saving the ticket",
@@ -136,7 +131,7 @@ class TicketDetailsContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -145,11 +140,14 @@ class TicketDetailsContainer extends Component {
             <Route render={({history}) => {
                 this.history = history;
                 return (<div>
-                            <NavBar isAdmin={true} history={this.history}/>
-                            <TicketDetails presentations={this.state.presentations} ticket={this.state.ticket} films={this.state.films}
-                                           auditoriums={this.state.auditoriums} callback={this.editTicket} buttonText={"EDIT"}/>
-                            {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                        </div>);}} />
+                    <NavBar isAdmin={true} history={this.history}/>
+                    <TicketDetails presentations={this.state.presentations} ticket={this.state.ticket}
+                                   films={this.state.films}
+                                   auditoriums={this.state.auditoriums} callback={this.editTicket} buttonText={"EDIT"}/>
+                    {this.state.errorVisible ?
+                        <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                </div>);
+            }}/>
         );
     }
 }

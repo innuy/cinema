@@ -22,6 +22,7 @@ module.exports.create = (req, res) => {
 
 module.exports.get = (req, res) => {
     Auditorium.find(req.query)
+        .sort([['number', 'ascending']])
         .then(auditorium => res.send(auditorium))
         .catch(err => errors.databaseError(err, res))
 };
@@ -137,13 +138,10 @@ const auditoriumSizeUpdated = (auditorium, newAuditorium) => (auditorium.seatRow
     (auditorium.seatColumns !== newAuditorium.seatColumns);
 
 const updateAuditoriumDocument = (id, newAuditorium) => new Promise((resolve, reject) => {
-    const idFilter = {'_id': new ObjectID(id)};
-    const setToReturnUpdatedValue = {new: true};
     const parametersToSet = {$set: newAuditorium};
-    Auditorium.findOneAndUpdate(
-        idFilter,
+    Auditorium.findByIdAndUpdate(
+        id,
         parametersToSet,
-        setToReturnUpdatedValue,
     )
         .then(auditorium => {
             if (thereIsNoAuditorium(auditorium)) {
@@ -209,10 +207,10 @@ const deletePresentationsAndRelatedTickets = presentationsList => {
     const deleteTicketPromiseArray = [];
 
     presentationsList.forEach(presentation => {
-        const ticketFilter = {presentation: presentation._id};
         const presentationFilter = {'_id': new ObjectID(presentation._id)};
-        deleteTicketPromiseArray.push(deleteTicketWithFilter(ticketFilter));
         deleteTicketPromiseArray.push(deletePresentationsWithFilter(presentationFilter));
+        const ticketFilter = {presentation: presentation._id};
+        deleteTicketPromiseArray.push(deleteTicketWithFilter(ticketFilter));
     });
 
     return Promise.all(deleteTicketPromiseArray);

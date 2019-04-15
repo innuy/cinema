@@ -1,22 +1,22 @@
-.errorAlertContainer{
+.errorAlertContainer {
     position: absolute;
     top: 0;
     height: 100%;
     background-color: #444444CC;
 }
 
-.errorAlertInnerContainer{
+.errorAlertInnerContainer {
     top: 15%;
     background-color: white;
 }
 
-.errorAlertText{
+.errorAlertText {
     width: 100%;
     text-align: center;
     padding-top: 20pt;
 }
 
-.errorAlertButton{
+.errorAlertButton {
     width: 20%;
     margin-left: 40%;
     margin-top: 20pt;

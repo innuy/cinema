@@ -1,21 +1,76 @@
 import axios from 'axios';
 import {urls} from '../utils/urls';
 import {getUserToken} from "../utils/cookieStorage";
+import {hasAuthorizationError} from "../utils/errorHandler";
 
-export function getPresentations(callback){
-    axios.get(urls.presentations)
+export function addPresentation(presentation, callback) {
+    axios.post(urls.presentations, {
+        movie: presentation.film,
+        auditorium: presentation.auditorium,
+        start: presentation.startTime,
+    }, {headers: {"Authorization": 'Token ' + getUserToken()}})
         .then((response) => {
-            callback(true, parsePresentations(response.data));
+            callback(true);
         }).catch((error) => {
+        console.log(JSON.stringify(error));
         callback(false, "There was an error with the connection");
     });
 }
 
-function parsePresentations(presentations){
-    const res = [];
-    for(let i = 0; i < presentations.length; i++){
+export function getPresentations(callback) {
+    axios.get(urls.presentations, {headers: {"Authorization": 'Token ' + getUserToken()}})
+        .then((response) => {
+            console.log(response);
+            callback(true, parsePresentations(response.data));
+        }).catch((error) => {
+        console.log(JSON.stringify(error));
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error obtaining presentations");
+        }
+    });
+}
 
-        if(presentations[i] && presentations[i].movie && presentations[i].auditorium) {
+export function getSinglePresentation(id, callback) {
+    axios.get(urls.presentations + "/" + id, {headers: {"Authorization": 'Token ' + getUserToken()}})
+        .then((response) => {
+            callback(true, parseSinglePresentation(response.data[0]));
+        }).catch((error) => {
+        callback(false, "There was an error obtaining data");
+    });
+}
+
+export function editPresentation(presentation, callback) {
+    axios.put(urls.presentations + "/" + presentation.id, {
+        "movie": presentation.film,
+        "auditorium": presentation.auditorium,
+        "start": presentation.startTime,
+    }, {headers: {"Authorization": 'Token ' + getUserToken()}})
+        .then((response) => {
+            callback(true);
+        }).catch((error) => {
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error editing the presentation");
+        }
+    });
+}
+
+export function deletePresentation(id, callback) {
+    axios.delete(urls.presentations + "/" + id, {headers: {"Authorization": 'Token ' + getUserToken()}})
+        .then((response) => {
+            callback(true);
+        }).catch((error) => {
+        if (error && error.response && !hasAuthorizationError(error)) {
+            callback(false, "There was an error deleting the presentation");
+        }
+    });
+}
+
+function parsePresentations(presentations) {
+    const res = [];
+    for (let i = 0; i < presentations.length; i++) {
+        console.log(presentations[i]);
+
+        if (presentations[i] && presentations[i].movie && presentations[i].auditorium && presentations[i].auditorium[0]) {
             res.push({
                 id: presentations[i]._id,
                 film: presentations[i].movie,
@@ -35,11 +90,11 @@ function parsePresentations(presentations){
     return res;
 }
 
-function parseSinglePresentation(presentation){
+function parseSinglePresentation(presentation) {
 
     let res = {};
 
-    if(presentation && presentation.movie && presentation.auditorium) {
+    if (presentation && presentation.movie && presentation.auditorium) {
         res = {
             id: presentation._id,
             film: presentation.movie,
@@ -56,51 +111,4 @@ function parseSinglePresentation(presentation){
     }
 
     return res;
-}
-
-export function getSinglePresentation(id, callback){
-    axios.get(urls.presentations + "/" + id)
-        .then((response) => {
-            callback(true, parseSinglePresentation(response.data[0]));
-        }).catch((error) => {
-        callback(false, "There was an error with the connection");
-    });
-}
-
-export function addPresentation(presentation, callback){
-
-    axios.post(urls.presentations, {
-        movie: presentation.film,
-        auditorium: presentation.auditorium,
-        start: presentation.startTime,
-    })
-        .then((response) => {
-            callback(true);
-        }).catch((error) => {
-            console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
-    });
-}
-
-export function editPresentation(presentation, callback){
-    axios.put(urls.presentations + "/" + presentation.id, {
-        "movie": presentation.film,
-        "auditorium": presentation.auditorium,
-        "start": presentation.startTime,
-    })
-        .then((response) => {
-            callback(true);
-        }).catch((error) => {
-            console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
-    });
-}
-
-export function deletePresentation(id, callback){
-    axios.delete(urls.presentations + "/" + id)
-        .then((response) => {
-            callback(true);
-        }).catch((error) => {
-        callback(false, "There was an error with the connection");
-    });
 }

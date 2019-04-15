@@ -26,13 +26,13 @@ const testingIncompleteAuditoriumData = {
 };
 
 function auditoriumPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {
             setTimeout(() => {
-            res.body.should.be.an('object');
-            res.status.should.equal(200);
+                res.body.should.be.an('object');
+                res.status.should.equal(200);
             });
             done();
         })
@@ -42,13 +42,13 @@ function auditoriumPutTest(done) {
 }
 
 function auditoriumIncompletePutTest(done) {
-    request(app)
+    request(app.app)
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingIncompleteAuditoriumData)
         .then(res => {
             setTimeout(() => {
-            res.body.should.be.an('object');
-            res.status.should.equal(400);
+                res.body.should.be.an('object');
+                res.status.should.equal(400);
             });
             done();
         })
@@ -58,13 +58,13 @@ function auditoriumIncompletePutTest(done) {
 }
 
 function auditoriumWrongIdPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/auditoriums/' + testingAuditoriumWrongIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {
             setTimeout(() => {
-            res.body.should.be.an('object');
-            res.status.should.equal(404);
+                res.body.should.be.an('object');
+                res.status.should.equal(404);
             });
             done();
         })
@@ -74,7 +74,7 @@ function auditoriumWrongIdPutTest(done) {
 }
 
 function auditoriumDbErrorPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/auditoriums/' + testingAuditoriumIdToSearch)
         .send(testingUpdateAuditoriumData)
         .then(res => {
@@ -95,32 +95,32 @@ describe("Auditorium Put Test", function () {
     });
 
     afterEach(() => {
-        Auditorium.findOneAndUpdate.restore();
+        Auditorium.findByIdAndUpdate.restore();
         Auditorium.findOne.restore();
         Seat.deleteMany.restore();
     });
 
-    it('Successful - Update auditorium',(done) => {
+    it('Successful - Update auditorium', (done) => {
         sinon.stub(Auditorium, 'findOne').resolves(testingUpdateAuditoriumData);
-        sinon.stub(Auditorium, 'findOneAndUpdate').resolves(testingUpdateAuditoriumData);
+        sinon.stub(Auditorium, 'findByIdAndUpdate').resolves(testingUpdateAuditoriumData);
         sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumPutTest(done);
     });
-    it('Failed - Incomplete auditorium data',(done) => {
+    it('Failed - Incomplete auditorium data', (done) => {
         sinon.stub(Auditorium, 'findOne').resolves();
-        sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Auditorium, 'findByIdAndUpdate').resolves();
         sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumIncompletePutTest(done);
     });
-    it('Failed - Wrong id',(done) => {
+    it('Failed - Wrong id', (done) => {
         sinon.stub(Auditorium, 'findOne').resolves(null);
-        sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Auditorium, 'findByIdAndUpdate').resolves();
         sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumWrongIdPutTest(done);
     });
-    it('Failed - Db error',(done) => {
+    it('Failed - Db error', (done) => {
         sinon.stub(Auditorium, 'findOne').rejects();
-        sinon.stub(Auditorium, 'findOneAndUpdate').resolves();
+        sinon.stub(Auditorium, 'findByIdAndUpdate').resolves();
         sinon.stub(Seat, 'deleteMany').resolves();
         auditoriumDbErrorPutTest(done);
     });

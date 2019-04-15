@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import OptionButton from "../../GENERAL/OptionButton";
-
 import './styles.css';
 import {parseTime} from "../../../utils/time";
 
@@ -24,12 +22,12 @@ class ConfirmReservation extends Component {
     }
 
 
-    renderData(){
+    renderData() {
         const res = [];
 
-        for(let i = 0; i < this.props.tickets.length; i++){
+        for (let i = 0; i < this.props.tickets.length; i++) {
 
-            if(this.shouldShowTicket(this.props.tickets[i])){
+            if (this.shouldShowTicket(this.props.tickets[i])) {
                 res.push(<tr onClick={this.props.confirmTicket}>
                     <td className="reservationTableField">{this.props.tickets[i].film.name}</td>
                     <td className="reservationTableField">{this.props.tickets[i].auditorium.number}</td>
@@ -42,9 +40,9 @@ class ConfirmReservation extends Component {
         return res;
     }
 
-    shouldShowTicket(ticket){
+    shouldShowTicket(ticket) {
 
-        if( //Ticket was not already sold
+        if ( //Ticket was not already sold
             (!ticket.sold) &&
             //Filter with name of movie
             (ticket.film.name.startsWith(this.state.filteredMovie) || !this.state.filteredMovie) &&
@@ -53,8 +51,8 @@ class ConfirmReservation extends Component {
             //Filter with seat row
             (!this.state.filteredRow || ticket.seat.row === parseInt(this.state.filteredRow)) &&
             //Filter with seat column
-            (!this.state.filteredColumn || ticket.seat.column === parseInt(this.state.filteredColumn))){
-                return true;
+            (!this.state.filteredColumn || ticket.seat.column === parseInt(this.state.filteredColumn))) {
+            return true;
         }
         return false;
     }
@@ -70,29 +68,31 @@ class ConfirmReservation extends Component {
                     });
                 }}/>
                 <div className="reservationInputTitle">AUDITORIUM FILTER</div>
-                <input className="reservationInput" type="number" value={this.state.filteredAuditorium} onChange={(event) => {
-                    if(event.target.value >= 0) {
-                        this.setState({
-                            filteredAuditorium: event.target.value
-                        });
-                    }
-                }}/>
+                <input className="reservationInput" type="number" value={this.state.filteredAuditorium}
+                       onChange={(event) => {
+                           if (event.target.value >= 0) {
+                               this.setState({
+                                   filteredAuditorium: event.target.value
+                               });
+                           }
+                       }}/>
                 <div className="reservationInputTitle">ROW FILTER</div>
                 <input className="reservationInput" type="number" value={this.state.filteredRow} onChange={(event) => {
-                    if(event.target.value >= 0) {
+                    if (event.target.value >= 0) {
                         this.setState({
                             filteredRow: event.target.value
                         });
                     }
                 }}/>
                 <div className="reservationInputTitle">COLUMN FILTER</div>
-                <input className="reservationInput" type="number" value={this.state.filteredColumn} onChange={(event) => {
-                    if(event.target.value >= 0) {
-                        this.setState({
-                            filteredColumn: event.target.value
-                        });
-                    }
-                }}/>
+                <input className="reservationInput" type="number" value={this.state.filteredColumn}
+                       onChange={(event) => {
+                           if (event.target.value >= 0) {
+                               this.setState({
+                                   filteredColumn: event.target.value
+                               });
+                           }
+                       }}/>
 
                 <table className="reservationTable">
                     <tr>

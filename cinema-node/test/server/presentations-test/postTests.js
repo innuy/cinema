@@ -61,7 +61,7 @@ const testingAuditoriumData = {
 };
 
 function presentationPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/presentations')
         .send(testingPresentationData)
         .then(res => {
@@ -77,7 +77,7 @@ function presentationPostTest(done) {
 }
 
 function presentationEmptyPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/presentations')
         .send()
         .then(res => {
@@ -92,7 +92,7 @@ function presentationEmptyPostTest(done) {
 }
 
 function presentationWrongInformationPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/presentations')
         .send(testingPresentationDataWithWrongInformation)
         .then(res => {
@@ -107,7 +107,7 @@ function presentationWrongInformationPostTest(done) {
 }
 
 function presentationWrongMovieIdPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/presentations')
         .send(testingPresentationDataWithMovieWrongInformation)
         .then(res => {
@@ -122,7 +122,7 @@ function presentationWrongMovieIdPostTest(done) {
 }
 
 function presentationWrongAuditoriumInformationPostTest(done) {
-    request(app)
+    request(app.app)
         .post('/presentations')
         .send(testingPresentationDataWithAuditoriumWrongInformation)
         .then(res => {

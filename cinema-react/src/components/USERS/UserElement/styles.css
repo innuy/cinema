@@ -1,0 +1,29 @@
+.userElementContainer {
+    margin-bottom: 2.5vh;
+    padding: 1rem;
+    background-color: var(--background);
+}
+
+.userElementDelete {
+    width: 1rem;
+    margin-left: 95%;
+    margin-top: -0.5rem;
+}
+
+.userElementMainText {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--subText);
+}
+
+.userElementSecondaryText {
+    font-size: 10px;
+    margin-top: 5px;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.userElementImage {
+    width: 70%;
+    margin-left: 15%;
+}

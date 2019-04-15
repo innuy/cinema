@@ -33,7 +33,7 @@ const testingPresentationAnswerData = {
 };
 
 function auditoriumDeleteTestbyId(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -47,8 +47,9 @@ function auditoriumDeleteTestbyId(done) {
             console.log(err);
         })
 }
+
 function auditoriumNotFoundTest(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -62,8 +63,9 @@ function auditoriumNotFoundTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumPresentationNotFoundTest(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -77,8 +79,9 @@ function auditoriumPresentationNotFoundTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorFindingPresentationTest(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -92,8 +95,9 @@ function auditoriumDbErrorFindingPresentationTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorDeletingAuditoriumTest(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -107,8 +111,9 @@ function auditoriumDbErrorDeletingAuditoriumTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorDeletingSeatsTest(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -122,8 +127,9 @@ function auditoriumDbErrorDeletingSeatsTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorDeletingTicketsTest(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -137,8 +143,9 @@ function auditoriumDbErrorDeletingTicketsTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumDbErrorDeletingPresentationTest(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumIdToDelete)
         .send()
         .then((res) => {
@@ -152,8 +159,9 @@ function auditoriumDbErrorDeletingPresentationTest(done) {
             console.log(err);
         })
 }
+
 function auditoriumWrongIdDeleteTest(done) {
-    request(app)
+    request(app.app)
         .del('/auditoriums/' + testingAuditoriumWrongIdToDelete)
         .send()
         .then((res) => {

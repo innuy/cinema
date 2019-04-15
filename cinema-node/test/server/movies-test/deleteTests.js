@@ -36,7 +36,7 @@ const testingPresentationAnswerData = {
 };
 
 function movieDeleteTestbyId(done) {
-    request(app)
+    request(app.app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
         .then((res) => {
@@ -52,7 +52,7 @@ function movieDeleteTestbyId(done) {
 }
 
 function movieNotFoundTest(done) {
-    request(app)
+    request(app.app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
         .then((res) => {
@@ -68,7 +68,7 @@ function movieNotFoundTest(done) {
 }
 
 function moviePresentationNotFoundTest(done) {
-    request(app)
+    request(app.app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
         .then((res) => {
@@ -84,7 +84,7 @@ function moviePresentationNotFoundTest(done) {
 }
 
 function movieDbErrorFindingPresentationTest(done) {
-    request(app)
+    request(app.app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
         .then((res) => {
@@ -100,7 +100,7 @@ function movieDbErrorFindingPresentationTest(done) {
 }
 
 function movieDbErrorDeletingMovieTest(done) {
-    request(app)
+    request(app.app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
         .then((res) => {
@@ -116,7 +116,7 @@ function movieDbErrorDeletingMovieTest(done) {
 }
 
 function movieDbErrorDeletingTicketsTest(done) {
-    request(app)
+    request(app.app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
         .then((res) => {
@@ -132,7 +132,7 @@ function movieDbErrorDeletingTicketsTest(done) {
 }
 
 function movieDbErrorDeletingPresentationTest(done) {
-    request(app)
+    request(app.app)
         .del('/movies/' + testingMovieIdToDelete)
         .send()
         .then((res) => {
@@ -148,7 +148,7 @@ function movieDbErrorDeletingPresentationTest(done) {
 }
 
 function movieWrongIdDeleteTest(done) {
-    request(app)
+    request(app.app)
         .del('/movies/' + testingMovieWrongIdToDelete)
         .send()
         .then((res) => {

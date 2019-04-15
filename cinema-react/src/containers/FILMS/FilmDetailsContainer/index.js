@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FilmDetails from "../../../components/FILMS/FilmDetails";
 import NavBar from "../../../components/GENERAL/NavBar";
 
@@ -20,7 +20,7 @@ class FilmDetailsContainer extends Component {
         errorText: "",
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.editFilm = this.editFilm.bind(this);
@@ -37,15 +37,14 @@ class FilmDetailsContainer extends Component {
         });
     }
 
-    obtainFilmData(){
+    obtainFilmData() {
         this.hideError();
         getSingleFilm(this.state.id, (success, film) => {
-            if(success) {
+            if (success) {
                 this.setState({
                     film
                 });
-            }
-            else{
+            } else {
                 this.setState({
                     errorVisible: true,
                     errorText: "There was an error obtaining film details",
@@ -55,12 +54,11 @@ class FilmDetailsContainer extends Component {
         })
     }
 
-    editFilm(newFilm){
+    editFilm(newFilm) {
         editFilm(newFilm, (success) => {
-            if(success){
+            if (success) {
                 navigateBack(this.history);
-            }
-            else{
+            } else {
                 this.setState({
                     errorVisible: true,
                     errorText: "There was an error saving the film",
@@ -70,7 +68,7 @@ class FilmDetailsContainer extends Component {
         })
     }
 
-    hideError(){
+    hideError() {
         this.setState({errorVisible: false});
     }
 
@@ -83,8 +81,10 @@ class FilmDetailsContainer extends Component {
                     <div>
                         <NavBar isAdmin={true} history={this.history}/>
                         <FilmDetails film={this.state.film} callback={this.editFilm} buttonText={"EDIT"}/>
-                        {this.state.errorVisible ? <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
-                    </div>);}}
+                        {this.state.errorVisible ?
+                            <ErrorAlert callback={this.state.errorCallback} text={this.state.errorText}/> : null}
+                    </div>);
+            }}
             />
         );
     }

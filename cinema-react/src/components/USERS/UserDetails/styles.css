@@ -1,0 +1,37 @@
+.userDataContainer {
+    background-color: var(--background);
+}
+
+.userDataPageTitle {
+    color: var(--headerText);
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.userDataErrorMessage {
+    margin-left: 5%;
+    color: var(--dangerText);
+}
+
+.userDataTitleContainer {
+    width: 100%;
+}
+
+.userDataTitle {
+}
+
+.userDataTitleButton {
+    width: 10%;
+    float: right;
+}
+
+.userDataInput {
+    width: 90%;
+}
+
+.userDataSeparator {
+    height: 15px;
+    width: 100%;
+}

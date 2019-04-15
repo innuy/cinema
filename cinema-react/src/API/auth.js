@@ -1,23 +1,40 @@
 import axios from 'axios';
 import {urls} from '../utils/urls';
-import {getUserToken} from "../utils/cookieStorage";
+import {deleteUserToken, saveUserToken} from "../utils/cookieStorage";
+import {parseSingleUser, USER_ROLES} from "./users";
 
-export function login(username, password, callback){
-    axios.post(urls.login)
+
+export function login(email, password, callback) {
+    deleteUserToken();
+    axios.post(urls.login, {
+        user: {
+            email,
+            password,
+        }
+    })
         .then((response) => {
-            callback(true);
+            const userData = parseSingleUser(response.data.user);
+            saveUserToken(userData.token);
+            callback(true, userData);
         }).catch((error) => {
-        console.log(JSON.stringify(error));
-        callback(false, "There was an error with the connection");
+        callback(false, "There was an error logging in");
     });
 }
 
-export function signUp(username, password, callback){
-    axios.post(urls.signUp)
+export function signUp(email, password, firstName, lastName, callback) {
+    deleteUserToken();
+    axios.post(urls.users, {
+        email,
+        password,
+        name: firstName,
+        surname: lastName,
+        role: USER_ROLES.USER,
+    })
         .then((response) => {
+            const userData = parseSingleUser(response.data.user);
+            saveUserToken(userData.token);
             callback(true);
         }).catch((error) => {
-        console.log(JSON.stringify(error));
         callback(false, "There was an error with the connection");
     });
 }

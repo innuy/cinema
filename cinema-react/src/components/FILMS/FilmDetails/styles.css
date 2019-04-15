@@ -1,12 +1,8 @@
-.filmDetailsContainer{
-    width: 60%;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-left: 5%;
+.filmDetailsContainer {
     background-color: var(--background);
 }
 
-.filmDetailsPageTitle{
+.filmDetailsPageTitle {
     color: var(--headerText);
     font-size: 20px;
     width: 100%;
@@ -14,30 +10,28 @@
     font-weight: bolder;
 }
 
-.filmDetailsErrorMessage{
+.filmDetailsErrorMessage {
     color: var(--dangerText);
 }
 
-.filmDetailsTitleContainer{
+.filmDetailsTitleContainer {
     width: 100%;
 }
 
-.filmDetailsTitle{
+.filmDetailsTitle {
     color: var(--subText);
     font-weight: bold;
 }
 
-.filmDetailsTitleButton{
-    width: 10%;
-    float: right;
+.filmDetailsTitleButton {
 }
 
-.filmInput{
+.filmInput {
     width: 100%;
     color: var(--text);
 }
 
-.filmDetailsSeparator{
+.filmDetailsSeparator {
     height: 15px;
     width: 100%;
 }
