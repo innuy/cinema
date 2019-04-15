@@ -3,9 +3,10 @@ const errors = require("./errors");
 const Seat = require('../../db/models/seats');
 const Presentation = require('../../db/models/presentations');
 const Ticket = require("../../db/models/tickets");
-const Auditorium = require("../../db/models/auditoriums");
+const sendTicketListToCurrentPresentationRoom = require("../../websockets/ticketReservation").sendTicketListToCurrentPresentationRoom;
+const sendDataToDashboardNamespace = require("../../websockets/dashboard").sendDataToDashboardNamespace;
 
-var ObjectID = require('mongodb').ObjectID;
+let ObjectID = require('mongodb').ObjectID;
 const populateGetQuery = [
     {path: 'presentation', populate: {path: 'movie'}},
     {path: 'presentation', populate: {path: 'auditorium'}},
@@ -29,8 +30,11 @@ module.exports.create = async (req, res) => {
                 }
             }
         })
-        .then(ticket => {
+        .then(async ticket => {
+            sendDataToDashboardNamespace();
+            sendTicketListToCurrentPresentationRoom(presentationId);
             res.send(ticket);
+
         })
         .catch(err => {
             if (err instanceof Function) {
@@ -42,7 +46,9 @@ module.exports.create = async (req, res) => {
 };
 
 module.exports.get = async (req, res) => {
+
     let ticket = req.query;
+
     if (requestedWithRowAndColumnInsteadOfId(ticket) && ticket.presentation !== undefined) {
         const seatId = await getSeatIdWithRowAndColumn(ticket);
         ticket = {
@@ -55,8 +61,7 @@ module.exports.get = async (req, res) => {
         .then(tickets => {
             res.send(tickets)
         })
-        .catch(err =>
-            errors.databaseError(err, res))
+        .catch(err => errors.databaseError(err, res))
 };
 
 module.exports.getById = (req, res) => {
@@ -87,7 +92,8 @@ module.exports.putById = (req, res) => {
         .then(message => {
             return updateTickets(ticketId, ticketToUpdate);
         })
-        .then(ticket => {
+        .then(async ticket => {
+            sendDataToDashboardNamespace();
             res.send();
         })
         .catch(err => {
@@ -122,6 +128,13 @@ module.exports.deleteById = (req, res) => {
         });
 };
 
+module.exports.getTicketByPresentationId = presentationId => new Promise((resolve, reject) => {
+    console.log(presentationId);
+    Ticket.find({presentation: presentationId})
+        .populate(populateGetQuery)
+        .then(tickets => resolve(tickets))
+        .catch(err => reject(err));
+});
 
 const getPresentationById = presentationId => new Promise((resolve, reject) => {
     Presentation.findById(presentationId)
@@ -264,7 +277,7 @@ const getSeatIdWithRowAndColumn = ticket => new Promise((resolve, reject) => {
 });
 
 const checkPresentationAndUpdateTicket = (seat, ticketToUpdate) => new Promise((resolve, reject) => {
-    var seatAuditoriumId = seat.auditorium;
+    let seatAuditoriumId = seat.auditorium;
     Presentation.findById(ticketToUpdate.presentation)
         .then(presentation => {
             if (thereIsNo(presentation)) {
@@ -281,7 +294,6 @@ const checkPresentationAndUpdateTicket = (seat, ticketToUpdate) => new Promise((
 });
 
 const updateTickets = (ticketId, newTicket) => new Promise((resolve, reject) => {
-    const id_filter = {'_id': new ObjectID(ticketId)};
     const parametersToSet = {$set: newTicket};
     Ticket.findByIdAndUpdate(
         ticketId,
@@ -308,13 +320,14 @@ const thereIsNo = obj => {
 
 const getTicketById = ticketId => {
     return new Promise((resolve, reject) => {
-        Ticket.findById(ticketId).then(ticket => {
-            if (ticket === null) {
-                reject(errors.ticketNotFound);
-            } else {
-                resolve(ticket);
-            }
-        })
+        Ticket.findById(ticketId)
+            .then(ticket => {
+                if (ticket === null) {
+                    reject(errors.ticketNotFound);
+                } else {
+                    resolve(ticket);
+                }
+            })
             .catch(err => {
                 reject(err)
             });

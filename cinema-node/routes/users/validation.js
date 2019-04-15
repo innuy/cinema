@@ -5,21 +5,21 @@ const maxPasswordlength = 20;
 
 const create = celebrate({
     body: {
-        email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
+        email: Joi.string().email({minDomainAtoms: 2}).required(),
         name: Joi.string().required(),
         surname: Joi.string().required(),
-        role: Joi.number().positive().integer().valid([ 1, 2 ]).required(),
+        role: Joi.number().positive().integer().valid([1, 2]).required(),
         password: Joi.string().min(minPasswordlength).max(maxPasswordlength).required(),
     }
 });
 
 const get = celebrate({
     query: {
-        email:  Joi.string().email({ minDomainAtoms: 2 }),
+        email: Joi.string().email({minDomainAtoms: 2}),
         user: Joi.string(),
         name: Joi.string(),
         surname: Joi.number().positive().integer(),
-        role: Joi.number().positive().integer().valid([ 1, 2 ]),
+        role: Joi.number().positive().integer().valid([1, 2]),
     }
 });
 
@@ -34,10 +34,10 @@ const putById = celebrate({
         id: Joi.objectId(),
     },
     body: {
-        email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
+        email: Joi.string().email({minDomainAtoms: 2}).required(),
         name: Joi.string().required(),
         surname: Joi.string().required(),
-        role: Joi.number().positive().integer().valid([ 1, 2 ]).required(),
+        role: Joi.number().positive().integer().valid([1, 2]).required(),
     }
 });
 
@@ -49,7 +49,7 @@ const deleteById = celebrate({
 
 const putCurrent = celebrate({
     body: {
-        email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
+        email: Joi.string().email({minDomainAtoms: 2}).required(),
         name: Joi.string().required(),
         surname: Joi.string().required(),
     }
@@ -58,7 +58,7 @@ const putCurrent = celebrate({
 const updatePassword = celebrate({
     body: {
         user: Joi.object().required().keys({
-            email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
+            email: Joi.string().email({minDomainAtoms: 2}).required(),
             password: Joi.string().min(minPasswordlength).max(maxPasswordlength).required(),
         }),
         newPassword: Joi.string().min(minPasswordlength).max(maxPasswordlength).required(),

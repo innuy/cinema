@@ -1,5 +1,4 @@
 const sinon = require('sinon');
-const expect = require("chai").expect;
 const assert = require("chai").assert;
 const should = require("chai").should();
 const request = require('supertest');
@@ -39,7 +38,7 @@ const wrongPasswordUserData = {
 };
 
 function userLoginTest(done) {
-    request(app)
+    request(app.app)
         .post('/session')
         .send(loginRequest)
         .then(res => {
@@ -55,7 +54,7 @@ function userLoginTest(done) {
 }
 
 function userEmptyTest(done) {
-    request(app)
+    request(app.app)
         .post('/session')
         .send({})
         .then(res => {
@@ -70,7 +69,7 @@ function userEmptyTest(done) {
 }
 
 function userWrongEmailTest(done) {
-    request(app)
+    request(app.app)
         .post('/session')
         .send(wrongEmailUserData)
         .then(res => {
@@ -85,7 +84,7 @@ function userWrongEmailTest(done) {
 }
 
 function userWrongPasswordTest(done) {
-    request(app)
+    request(app.app)
         .post('/session')
         .send(wrongPasswordUserData)
         .then(res => {
@@ -101,7 +100,9 @@ function userWrongPasswordTest(done) {
 
 describe("User login Test", function () {
     beforeEach(() => {
-        this.authenticate = sinon.stub(passport, 'authenticate').returns(() => {return 1});
+        this.authenticate = sinon.stub(passport, 'authenticate').returns(() => {
+            return 1
+        });
         sinon.stub(User, 'create').resolves(userData);
         sinon
             .stub(User.prototype, 'save')

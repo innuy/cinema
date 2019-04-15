@@ -1,5 +1,4 @@
 const sinon = require('sinon');
-const expect = require("chai").expect;
 const assert = require("chai").assert;
 const should = require("chai").should();
 const request = require('supertest');
@@ -46,7 +45,7 @@ const seatModel = {
 
 function getTicketWithFilters(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets')
         .query(ticketFilter)
         .then(res => {
@@ -68,7 +67,7 @@ function getTicketWithFilters(done) {
 
 function getTicketWithSeatIdFilters(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets')
         .query(ticketSeatIdFilter)
         .then(res => {
@@ -89,7 +88,7 @@ function getTicketWithSeatIdFilters(done) {
 
 function getTicketWithSeatRowAndColumnFilters(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets')
         .query(ticketSeatRowAndColumnFilter)
         .then(res => {
@@ -110,7 +109,7 @@ function getTicketWithSeatRowAndColumnFilters(done) {
 
 function getTicketWithFiltersWithId(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets/' + testTicketId)
         .then(res => {
             setTimeout(() => {
@@ -129,7 +128,7 @@ function getTicketWithFiltersWithId(done) {
 
 function getTicketWithWrongId(done) {
 
-    request(app)
+    request(app.app)
         .get('/tickets/' + testTicketId)
         .then(res => {
             setTimeout(() => {
@@ -146,7 +145,7 @@ describe("Ticket Get Test", function () {
     beforeEach(() => {
         sinon.stub(Ticket, 'find').returns({
             populate: sinon.stub().callsFake(function fakeFn() {
-                return new Promise((resolve,reject)=>{
+                return new Promise((resolve, reject) => {
                     resolve([ticketModel])
                 })
             })
@@ -187,7 +186,7 @@ describe("Ticket Get by Id Test", function () {
     it('Failed - Wrong id', (done) => {
         sinon.stub(Ticket, 'findById').returns({
             populate: sinon.stub().callsFake(function fakeFn() {
-                return new Promise((resolve,reject)=>{
+                return new Promise((resolve, reject) => {
                     resolve(null);
                 })
             })
@@ -197,7 +196,7 @@ describe("Ticket Get by Id Test", function () {
     it('Successful - Get ticket by id', (done) => {
         sinon.stub(Ticket, 'findById').returns({
             populate: sinon.stub().callsFake(function fakeFn() {
-                return new Promise((resolve,reject)=>{
+                return new Promise((resolve, reject) => {
                     resolve(ticketModel);
                 })
             })

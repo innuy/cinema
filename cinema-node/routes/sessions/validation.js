@@ -6,7 +6,7 @@ const maxPasswordLenght = 20;
 const login = celebrate({
     body: {
         user: Joi.object().required().keys({
-            email:  Joi.string().email({ minDomainAtoms: 2 }).required(),
+            email: Joi.string().email({minDomainAtoms: 2}).required(),
             password: Joi.string().min(minPasswordLenght).max(maxPasswordLenght).required(),
         })
     }

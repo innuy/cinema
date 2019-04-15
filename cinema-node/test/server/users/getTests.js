@@ -23,7 +23,7 @@ const testingUserWrongFilterData = {
 };
 
 function getUserListWithFilters(done) {
-    request(app)
+    request(app.app)
         .get('/users')
         .query(testingUserFilterData)
         .then(res => {
@@ -43,7 +43,7 @@ function getUserListWithFilters(done) {
 }
 
 function getUserListWithoutFilters(done) {
-    request(app)
+    request(app.app)
         .get('/users')
         .query()
         .then(res => {
@@ -60,7 +60,7 @@ function getUserListWithoutFilters(done) {
 }
 
 function getUserListWithWrongFilters(done) {
-    request(app)
+    request(app.app)
         .get('/users')
         .query(testingUserWrongFilterData)
         .then(res => {
@@ -76,7 +76,7 @@ function getUserListWithWrongFilters(done) {
 }
 
 function getUserById(done) {
-    request(app)
+    request(app.app)
         .get('/users/' + testingUserIdToSearch)
         .query()
         .then(res => {
@@ -92,7 +92,7 @@ function getUserById(done) {
 }
 
 function getUserWithWrongId(done) {
-    request(app)
+    request(app.app)
         .get('/users/' + testingUserWrongId)
         .query()
         .then(res => {

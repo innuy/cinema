@@ -60,7 +60,7 @@ const testingAuditoriumData = {
 };
 
 function presentationPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingUpdatePresentationData)
         .then(res => {
@@ -76,7 +76,7 @@ function presentationPutTest(done) {
 }
 
 function presentationIncompletePutTest(done) {
-    request(app)
+    request(app.app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingIncompletePresentationData)
         .then(res => {
@@ -92,7 +92,7 @@ function presentationIncompletePutTest(done) {
 }
 
 function presentationWrongIdPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/presentations/' + testingPresentationWrongIdToSearch)
         .send(testingUpdatePresentationData)
         .then(res => {
@@ -108,7 +108,7 @@ function presentationWrongIdPutTest(done) {
 }
 
 function presentationWrongMovieIdPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingUpdatePresentationDataWithMovieWrongInformation)
         .then(res => {
@@ -123,7 +123,7 @@ function presentationWrongMovieIdPutTest(done) {
 }
 
 function presentationWrongAuditoriumInformationPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingUpdatePresentationDataWithAuditoriumWrongInformation)
         .then(res => {
@@ -138,7 +138,7 @@ function presentationWrongAuditoriumInformationPutTest(done) {
 }
 
 function presentationDbErrorPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/presentations/' + testingPresentationIdToSearch)
         .send(testingUpdatePresentationData)
         .then(res => {

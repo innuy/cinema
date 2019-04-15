@@ -28,7 +28,7 @@ const testingIncompleteUserData = {
 };
 
 function userPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/' + testingUserIdToSearch)
         .send(testingUpdateUserData)
         .then(res => {
@@ -44,7 +44,7 @@ function userPutTest(done) {
 }
 
 function userIncompletePutTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/' + testingUserIdToSearch)
         .send(testingIncompleteUserData)
         .then(res => {
@@ -60,7 +60,7 @@ function userIncompletePutTest(done) {
 }
 
 function userWrongIdPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/' + testingUserWrongIdToSearch)
         .send(testingUpdateUserData)
         .then(res => {
@@ -76,7 +76,7 @@ function userWrongIdPutTest(done) {
 }
 
 function userWrongIdPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/' + testingUserWrongIdToSearch)
         .send(testingUpdateUserData)
         .then(res => {
@@ -92,7 +92,7 @@ function userWrongIdPutTest(done) {
 }
 
 function userDbErrorPutTest(done) {
-    request(app)
+    request(app.app)
         .put('/users/' + testingUserIdToSearch)
         .send(testingUpdateUserData)
         .then(res => {

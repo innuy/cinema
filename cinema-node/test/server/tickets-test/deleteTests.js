@@ -41,7 +41,7 @@ const presentationModelOneLessTicketSold = {
 };
 
 function ticketDeleteTestbyId(done) {
-    request(app)
+    request(app.app)
         .del('/tickets/' + testingTicketIdToDelete)
         .send()
         .then((res) => {
@@ -57,7 +57,7 @@ function ticketDeleteTestbyId(done) {
 }
 
 function ticketDeleteTestbyIdDatabaseError(done) {
-    request(app)
+    request(app.app)
         .del('/tickets/' + testingTicketIdToDelete)
         .send()
         .then((res) => {
@@ -73,7 +73,7 @@ function ticketDeleteTestbyIdDatabaseError(done) {
 }
 
 function ticketWrongPresentationIdDeleteTest(done) {
-    request(app)
+    request(app.app)
         .del('/tickets/' + testingTicketIdToDelete)
         .send()
         .then((res) => {
@@ -89,7 +89,7 @@ function ticketWrongPresentationIdDeleteTest(done) {
 }
 
 function ticketWrongTicketIdDeleteTest(done) {
-    request(app)
+    request(app.app)
         .del('/tickets/' + testingTicketWrongIdToDelete)
         .send()
         .then((res) => {

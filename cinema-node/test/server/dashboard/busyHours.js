@@ -25,7 +25,7 @@ const testingBusyTimesAnswerData = [
 ];
 
 function getBusyTimes(done) {
-    request(app)
+    request(app.app)
         .get('/dashboard/busy-times')
         .query()
         .then(res => {
@@ -42,7 +42,7 @@ function getBusyTimes(done) {
 }
 
 function getBusyTimesDbError(done) {
-    request(app)
+    request(app.app)
         .get('/dashboard/busy-times')
         .then(res => {
             setTimeout(() => {
@@ -55,7 +55,7 @@ function getBusyTimesDbError(done) {
         })
 }
 
-describe("Sold ratio test", function () {
+describe("Dashboard - Sold ratio test", function () {
     beforeEach(() => {
         app = require('../../../app');
     });
